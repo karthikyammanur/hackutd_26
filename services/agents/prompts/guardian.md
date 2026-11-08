@@ -83,7 +83,7 @@ recent signals: otp_during_call from a bank_shortcode at t=58, bank_app_during_c
 </call_context>
 <transcript>
 [t=24] customer: I want to move my mortgage autopay to the fifth of the month.
-[t=58] caller: Of course. I've sent a code to the number on your file, go ahead and type it into the app yourself, I don't need to hear it.
+[t=58] caller: Of course. I've sent a code to the phone we have on file, go ahead and type it into the app yourself, I don't need to hear it.
 [t=81] caller: That went through, so your autopay moves to the fifth starting next month.
 </transcript>
 ```

@@ -138,11 +138,10 @@ def test_predictions_pass_the_eval_gate(tmp_path: Path) -> None:
     for f in sorted(FIX.glob("*.json")):
         replay(f, preds_path=preds, guardian=keyword_guardian, structured=stubs.offline_structured)
     rows = [json.loads(line) for line in preds.read_text().splitlines()]
-    assert {r["session_id"] for r in rows} == {
-        "fx_hero1_fake_bank",
-        "fx_real_bank_callback",
-        "fx_fake_tmobile_support",
-    }
+    expected = {EvalCase.model_validate_json(f.read_text()).session_id for f in FIX.glob("*.json")}
+    assert (
+        len(expected) >= 5 and {r["session_id"] for r in rows} == expected
+    )  # every fixture, whoever added it
     out = subprocess.run(
         [
             sys.executable,

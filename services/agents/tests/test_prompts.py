@@ -276,6 +276,11 @@ def _shingles(text: str, n: int = 6) -> set[str]:
     return {" ".join(words[i : i + n]) for i in range(len(words) - n + 1)}
 
 
+CARRIER = (
+    "T-Mobile"  # Safe Signal runs for this carrier's customers; it is product context, not a fixture value
+)
+
+
 def test_no_example_reuses_fixture_wording() -> None:
     """An example drawn from a fixture turns the live test into replay. Keep the two sets disjoint."""
     banned: set[str] = set()
@@ -287,7 +292,7 @@ def test_no_example_reuses_fixture_wording() -> None:
                 fixture_shingles |= _shingles(e.text)
             elif isinstance(e, CallStart):
                 banned.add(e.number)
-                if e.verified_org:
+                if e.verified_org and e.verified_org != CARRIER:  # prompts name the carrier on purpose
                     banned.add(e.verified_org)
     assert fixture_shingles, "no fixture turns found"
     for name in PROMPT_NAMES:
