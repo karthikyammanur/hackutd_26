@@ -128,6 +128,19 @@ def main() -> int:
     for t, cs in sorted(by_type.items()):
         out.append(f"| {t} | {pct(sum(max_level(alerts(c)) >= LEVELS['alert'] for c in cs), len(cs))} |")
 
+    benign_by_type: dict[str, list[dict]] = defaultdict(list)
+    for c in benign:
+        benign_by_type[c["label"]["type"]].append(c)
+    out += [
+        "",
+        "## False alerts on benign sessions, by type",
+        "",
+        "| Type | False alert rate |",
+        "| --- | --- |",
+    ]
+    for t, cs in sorted(benign_by_type.items()):
+        out.append(f"| {t} | {pct(sum(max_level(alerts(c)) >= LEVELS['alert'] for c in cs), len(cs))} |")
+
     deltas = []
     for c in scam:
         ft, ask = first_t_at(alerts(c), LEVELS["whisper"]), c["label"].get("first_scam_t")
