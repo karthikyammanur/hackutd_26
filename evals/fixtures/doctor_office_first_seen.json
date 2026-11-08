@@ -1,0 +1,15 @@
+{
+  "session_id": "fx_doctor_office_first_seen",
+  "label": {"scam": false, "type": "benign_doctor_office", "hard_negative": true, "first_scam_t": null},
+  "events": [
+    {"session_id": "fx_doctor_office_first_seen", "t": 0, "source": "network", "kind": "call_start", "direction": "inbound", "number": "+19725550168", "carrier_label": "none", "attestation": "B", "first_seen": true, "verified_org": null},
+    {"session_id": "fx_doctor_office_first_seen", "t": 7, "source": "network", "kind": "turn", "speaker": "caller", "text": "Hi, this is Renee at Bluebonnet Family Clinic calling about the lab order Dr. Osei placed for you."},
+    {"session_id": "fx_doctor_office_first_seen", "t": 16, "source": "network", "kind": "turn", "speaker": "customer", "text": "Oh good. I tried to look it up but I can't get into the portal."},
+    {"session_id": "fx_doctor_office_first_seen", "t": 28, "source": "network", "kind": "turn", "speaker": "caller", "text": "The insurer rejected the billing code, so I need to transfer the order to a different lab. Your results should go through by Friday."},
+    {"session_id": "fx_doctor_office_first_seen", "t": 41, "source": "network", "kind": "turn", "speaker": "customer", "text": "Okay. Hang on, I'm logging into the portal now, it's sending me something."},
+    {"session_id": "fx_doctor_office_first_seen", "t": 47, "source": "network", "kind": "sms_otp", "sender_type": "other_shortcode", "org": "Bluebonnet Family Clinic"},
+    {"session_id": "fx_doctor_office_first_seen", "t": 60, "source": "network", "kind": "turn", "speaker": "caller", "text": "Great. Keep that code to yourself, we never need it. I'll hold while it loads, please don't hang up."},
+    {"session_id": "fx_doctor_office_first_seen", "t": 92, "source": "network", "kind": "turn", "speaker": "customer", "text": "Got it, I can see the order now. Thanks."},
+    {"session_id": "fx_doctor_office_first_seen", "t": 100, "source": "network", "kind": "call_end"}
+  ]
+}

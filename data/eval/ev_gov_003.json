@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_gov_003",
+ "label": {
+  "scam": true,
+  "type": "gov_impersonation",
+  "hard_negative": false,
+  "first_scam_t": 53.0
+ },
+ "events": [
+  {
+   "session_id": "ev_gov_003",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+14695550136",
+   "carrier_label": "none",
+   "attestation": "C",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_gov_003",
+   "t": 7.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Dallas County Sheriff's Office. You missed federal jury duty and there's a bench warrant."
+  },
+  {
+   "session_id": "ev_gov_003",
+   "t": 15.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I never got a summons."
+  },
+  {
+   "session_id": "ev_gov_003",
+   "t": 30.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "I understand, but the warrant is active. You can post a bond by phone to avoid going to jail tonight."
+  },
+  {
+   "session_id": "ev_gov_003",
+   "t": 53.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "You'll get MoneyPak vouchers, then read me the numbers."
+  },
+  {
+   "session_id": "ev_gov_003",
+   "t": 78.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I need to call a lawyer."
+  },
+  {
+   "session_id": "ev_gov_003",
+   "t": 82.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Don't. If you disconnect, officers come out within the hour."
+  },
+  {
+   "session_id": "ev_gov_003",
+   "t": 115.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

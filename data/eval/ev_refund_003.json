@@ -1,0 +1,85 @@
+{
+ "session_id": "ev_refund_003",
+ "label": {
+  "scam": true,
+  "type": "refund_overpayment",
+  "hard_negative": false,
+  "first_scam_t": 48.0
+ },
+ "events": [
+  {
+   "session_id": "ev_refund_003",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+18175550166",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_refund_003",
+   "t": 7.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "You've overpaid your cable bill, we'd like to return 180."
+  },
+  {
+   "session_id": "ev_refund_003",
+   "t": 13.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Oh, nice."
+  },
+  {
+   "session_id": "ev_refund_003",
+   "t": 26.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "The refund goes to a card. What's the number?"
+  },
+  {
+   "session_id": "ev_refund_003",
+   "t": 48.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Great. And the system will text you a code, read that out for me so I can post it."
+  },
+  {
+   "session_id": "ev_refund_003",
+   "t": 52.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "bank_shortcode",
+   "org": "Mesquite Community Bank"
+  },
+  {
+   "session_id": "ev_refund_003",
+   "t": 72.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "It says purchase of 1,500?"
+  },
+  {
+   "session_id": "ev_refund_003",
+   "t": 77.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Ignore that part, that's how the system words it."
+  },
+  {
+   "session_id": "ev_refund_003",
+   "t": 105.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

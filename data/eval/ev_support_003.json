@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_support_003",
+ "label": {
+  "scam": true,
+  "type": "fake_support_outbound",
+  "hard_negative": false,
+  "first_scam_t": 62.0
+ },
+ "events": [
+  {
+   "session_id": "ev_support_003",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "outbound",
+   "number": "+18665550118",
+   "carrier_label": "none",
+   "attestation": "C",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_support_003",
+   "t": 8.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hi, you've reached the Amazon-style marketplace help line. What's the issue?"
+  },
+  {
+   "session_id": "ev_support_003",
+   "t": 15.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "There's a 1,200 dollar laptop order on my account that I didn't make."
+  },
+  {
+   "session_id": "ev_support_003",
+   "t": 32.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Okay. I'm connecting to your account to cancel it."
+  },
+  {
+   "session_id": "ev_support_003",
+   "t": 62.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Please download the support app from the link I'm texting you and give me the nine digit ID, so I can see your screen."
+  },
+  {
+   "session_id": "ev_support_003",
+   "t": 84.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Do I need to?"
+  },
+  {
+   "session_id": "ev_support_003",
+   "t": 90.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "It's the only way to cancel. Otherwise you will be billed tonight."
+  },
+  {
+   "session_id": "ev_support_003",
+   "t": 125.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

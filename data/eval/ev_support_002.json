@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_support_002",
+ "label": {
+  "scam": true,
+  "type": "fake_support_outbound",
+  "hard_negative": false,
+  "first_scam_t": 58.0
+ },
+ "events": [
+  {
+   "session_id": "ev_support_002",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "outbound",
+   "number": "+18775550117",
+   "carrier_label": "none",
+   "attestation": "C",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_support_002",
+   "t": 6.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Thank you for calling airline reservations, how can I help you?"
+  },
+  {
+   "session_id": "ev_support_002",
+   "t": 14.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "My flight was cancelled and I need a refund."
+  },
+  {
+   "session_id": "ev_support_002",
+   "t": 30.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Yes, I have your booking. There's a 200 dollar processing fee on the refund."
+  },
+  {
+   "session_id": "ev_support_002",
+   "t": 58.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "We can't take credit cards for this, so you'll pay it with a Zelle to my supervisor's account or with gift cards."
+  },
+  {
+   "session_id": "ev_support_002",
+   "t": 78.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Why not my card?"
+  },
+  {
+   "session_id": "ev_support_002",
+   "t": 83.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "The card system is down until next week."
+  },
+  {
+   "session_id": "ev_support_002",
+   "t": 115.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

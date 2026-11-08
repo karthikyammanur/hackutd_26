@@ -1,0 +1,76 @@
+{
+ "session_id": "ev_realbank_001",
+ "label": {
+  "scam": false,
+  "type": "benign_bank_callback",
+  "hard_negative": true,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_realbank_001",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "outbound",
+   "number": "+18005550171",
+   "carrier_label": "none",
+   "attestation": "A",
+   "first_seen": false,
+   "verified_org": "Lone Star Bank"
+  },
+  {
+   "session_id": "ev_realbank_001",
+   "t": 12.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Thank you for calling Lone Star Bank. This call may be recorded. How can I help you?"
+  },
+  {
+   "session_id": "ev_realbank_001",
+   "t": 19.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I'd like to raise the daily limit on my debit card."
+  },
+  {
+   "session_id": "ev_realbank_001",
+   "t": 33.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Sure. I'll send a verification code, and you can type it in the app. Please don't read it out to me."
+  },
+  {
+   "session_id": "ev_realbank_001",
+   "t": 41.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "bank_shortcode",
+   "org": "Lone Star Bank"
+  },
+  {
+   "session_id": "ev_realbank_001",
+   "t": 44.0,
+   "source": "network",
+   "kind": "bank_app_traffic",
+   "org": "Lone Star Bank"
+  },
+  {
+   "session_id": "ev_realbank_001",
+   "t": 66.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "That's done. The new limit's in effect today."
+  },
+  {
+   "session_id": "ev_realbank_001",
+   "t": 80.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

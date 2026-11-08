@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_tech_004",
+ "label": {
+  "scam": true,
+  "type": "tech_support_remote",
+  "hard_negative": false,
+  "first_scam_t": 55.0
+ },
+ "events": [
+  {
+   "session_id": "ev_tech_004",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+15125550128",
+   "carrier_label": "none",
+   "attestation": "none",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_tech_004",
+   "t": 8.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hello, Microsoft-certified support. Your license expired and your PC will be shut down."
+  },
+  {
+   "session_id": "ev_tech_004",
+   "t": 16.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I don't have a license problem."
+  },
+  {
+   "session_id": "ev_tech_004",
+   "t": 31.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "I show that you do. We can renew it for 399."
+  },
+  {
+   "session_id": "ev_tech_004",
+   "t": 55.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "I just need you to let me into the computer with this little program called TeamViewer, and then we'll process the payment."
+  },
+  {
+   "session_id": "ev_tech_004",
+   "t": 80.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I'd rather go to a store."
+  },
+  {
+   "session_id": "ev_tech_004",
+   "t": 86.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "The shutdown is in one hour, you won't make it."
+  },
+  {
+   "session_id": "ev_tech_004",
+   "t": 125.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_utility_002",
+ "label": {
+  "scam": true,
+  "type": "utility_shutoff",
+  "hard_negative": false,
+  "first_scam_t": 50.0
+ },
+ "events": [
+  {
+   "session_id": "ev_utility_002",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+14695550160",
+   "carrier_label": "none",
+   "attestation": "none",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_utility_002",
+   "t": 5.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hello, this is the gas utility disconnect department. Your meter has failed inspection."
+  },
+  {
+   "session_id": "ev_utility_002",
+   "t": 13.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "What does that mean?"
+  },
+  {
+   "session_id": "ev_utility_002",
+   "t": 30.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "A new meter deposit is required, or we'll shut off service today."
+  },
+  {
+   "session_id": "ev_utility_002",
+   "t": 50.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "It's 350 dollars by Zelle or Cash App to our field technician. He's on your street."
+  },
+  {
+   "session_id": "ev_utility_002",
+   "t": 75.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Can it go on my bill?"
+  },
+  {
+   "session_id": "ev_utility_002",
+   "t": 80.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "No, the system can't accept it. It has to be today."
+  },
+  {
+   "session_id": "ev_utility_002",
+   "t": 112.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_family_001",
+ "label": {
+  "scam": true,
+  "type": "family_emergency_scam",
+  "hard_negative": false,
+  "first_scam_t": 43.0
+ },
+ "events": [
+  {
+   "session_id": "ev_family_001",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+12145550152",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_family_001",
+   "t": 5.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Grandma? It's me. I'm in trouble."
+  },
+  {
+   "session_id": "ev_family_001",
+   "t": 11.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Tyler? You sound different."
+  },
+  {
+   "session_id": "ev_family_001",
+   "t": 22.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "I broke my nose in an accident. I'm in jail in Laredo. Please don't tell Mom."
+  },
+  {
+   "session_id": "ev_family_001",
+   "t": 43.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "The lawyer says bail is 8,000 and you've got to get cash today. He'll send someone over to pick it up."
+  },
+  {
+   "session_id": "ev_family_001",
+   "t": 65.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Oh honey."
+  },
+  {
+   "session_id": "ev_family_001",
+   "t": 70.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Please don't call anyone, please."
+  },
+  {
+   "session_id": "ev_family_001",
+   "t": 105.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

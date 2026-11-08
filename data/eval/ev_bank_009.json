@@ -1,0 +1,84 @@
+{
+ "session_id": "ev_bank_009",
+ "label": {
+  "scam": true,
+  "type": "bank_safe_account",
+  "hard_negative": false,
+  "first_scam_t": 55.0
+ },
+ "events": [
+  {
+   "session_id": "ev_bank_009",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+19035550109",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_bank_009",
+   "t": 6.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "This is Red River Bank. Your online access has been frozen after a suspicious transfer."
+  },
+  {
+   "session_id": "ev_bank_009",
+   "t": 14.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Frozen? I need that account for rent."
+  },
+  {
+   "session_id": "ev_bank_009",
+   "t": 30.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "I'll get it back on. I'm going to have you sign in to the app while we talk."
+  },
+  {
+   "session_id": "ev_bank_009",
+   "t": 40.0,
+   "source": "network",
+   "kind": "bank_app_traffic",
+   "org": "Red River Bank"
+  },
+  {
+   "session_id": "ev_bank_009",
+   "t": 47.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "bank_shortcode",
+   "org": "Red River Bank"
+  },
+  {
+   "session_id": "ev_bank_009",
+   "t": 55.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "You'll see a code. Don't type it in, give it to me and I'll unfreeze it on my end."
+  },
+  {
+   "session_id": "ev_bank_009",
+   "t": 75.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Thanks, now approve the pending item in the app, that's the unfreeze."
+  },
+  {
+   "session_id": "ev_bank_009",
+   "t": 105.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

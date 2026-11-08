@@ -40,12 +40,12 @@ cd apps/web && npm run dev        # web (Lane 3)
 uvicorn services.api.main:app --reload   # API (Lane 4)
 ```
 
-## How to work (humans and Claude alike)
+## How to work (humans and agents alike)
 - **Plan before editing.** State the plan in 3 to 6 lines, then change the fewest files that do it.
 - **Every task has a done-when** in `tasks.json`. Done means the check passes, not "looks right".
 - **Build against fixtures and mocks first** (`evals/fixtures/`, `services/agents/tools/mock.py`), so
   no lane waits on another.
-- **Small PRs, one task each.** A fresh Claude session reviews each PR against `context/rules.md`;
+- **Small PRs, one task each.** A fresh agent session reviews each PR against `context/rules.md`;
   the author never approves their own.
 - **Update `PROGRESS.md`** when you merge: what landed, what's next, what's blocked.
 - **Name your assumptions** in the PR description. Unsure about intent? Ask in the team chat, don't guess.

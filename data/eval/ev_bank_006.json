@@ -1,0 +1,85 @@
+{
+ "session_id": "ev_bank_006",
+ "label": {
+  "scam": true,
+  "type": "bank_safe_account",
+  "hard_negative": false,
+  "first_scam_t": 39.0
+ },
+ "events": [
+  {
+   "session_id": "ev_bank_006",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+18325550106",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_bank_006",
+   "t": 6.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "This is the card services center for Pecos Valley Credit Union. A new device was added to your online banking."
+  },
+  {
+   "session_id": "ev_bank_006",
+   "t": 13.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I didn't add anything."
+  },
+  {
+   "session_id": "ev_bank_006",
+   "t": 24.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "I'm removing it now. You'll get a text, and that's the removal key."
+  },
+  {
+   "session_id": "ev_bank_006",
+   "t": 33.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "bank_shortcode",
+   "org": "Pecos Valley Credit Union"
+  },
+  {
+   "session_id": "ev_bank_006",
+   "t": 39.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "What's the removal key? I need it to finish, otherwise the device stays linked."
+  },
+  {
+   "session_id": "ev_bank_006",
+   "t": 58.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Should I call you back?"
+  },
+  {
+   "session_id": "ev_bank_006",
+   "t": 63.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "If you hang up the case closes and the fraud goes through. Stay with me."
+  },
+  {
+   "session_id": "ev_bank_006",
+   "t": 85.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

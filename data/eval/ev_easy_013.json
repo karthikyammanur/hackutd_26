@@ -1,0 +1,45 @@
+{
+ "session_id": "ev_easy_013",
+ "label": {
+  "scam": false,
+  "type": "benign_service",
+  "hard_negative": false,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_easy_013",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+17375550183",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_easy_013",
+   "t": 6.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hi, this is a short survey on local parks. Do you have one minute?"
+  },
+  {
+   "session_id": "ev_easy_013",
+   "t": 13.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Not today, thanks."
+  },
+  {
+   "session_id": "ev_easy_013",
+   "t": 18.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

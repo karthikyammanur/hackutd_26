@@ -1,0 +1,85 @@
+{
+ "session_id": "ev_gov_004",
+ "label": {
+  "scam": true,
+  "type": "gov_impersonation",
+  "hard_negative": false,
+  "first_scam_t": 68.0
+ },
+ "events": [
+  {
+   "session_id": "ev_gov_004",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+18005550137",
+   "carrier_label": "none",
+   "attestation": "C",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_gov_004",
+   "t": 5.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "This is a benefits officer from Medicare. We're issuing new cards with chips."
+  },
+  {
+   "session_id": "ev_gov_004",
+   "t": 12.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Okay?"
+  },
+  {
+   "session_id": "ev_gov_004",
+   "t": 25.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "I need to confirm your record first. Your date of birth?"
+  },
+  {
+   "session_id": "ev_gov_004",
+   "t": 36.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Why?"
+  },
+  {
+   "session_id": "ev_gov_004",
+   "t": 50.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Without confirmation your coverage stops this month."
+  },
+  {
+   "session_id": "ev_gov_004",
+   "t": 68.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "And you'll get a verification code, tell me that when it arrives. Then give me your Medicare number."
+  },
+  {
+   "session_id": "ev_gov_004",
+   "t": 72.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "other_shortcode",
+   "org": "Medicare"
+  },
+  {
+   "session_id": "ev_gov_004",
+   "t": 100.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

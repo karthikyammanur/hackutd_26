@@ -1,0 +1,85 @@
+{
+ "session_id": "ev_bank_011",
+ "label": {
+  "scam": true,
+  "type": "bank_safe_account",
+  "hard_negative": false,
+  "first_scam_t": 46.0
+ },
+ "events": [
+  {
+   "session_id": "ev_bank_011",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+19405550111",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_bank_011",
+   "t": 4.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Good evening, automated security from Lone Star Bank. A representative is joining you now."
+  },
+  {
+   "session_id": "ev_bank_011",
+   "t": 10.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Thanks for holding. We flagged a purchase at an electronics store for 1,620."
+  },
+  {
+   "session_id": "ev_bank_011",
+   "t": 18.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Not mine."
+  },
+  {
+   "session_id": "ev_bank_011",
+   "t": 36.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "bank_shortcode",
+   "org": "Lone Star Bank"
+  },
+  {
+   "session_id": "ev_bank_011",
+   "t": 46.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "That text is your dispute PIN. I'll need you to say it aloud so the recording logs your dispute."
+  },
+  {
+   "session_id": "ev_bank_011",
+   "t": 64.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Is this recorded?"
+  },
+  {
+   "session_id": "ev_bank_011",
+   "t": 68.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Yes, and we need that PIN right now."
+  },
+  {
+   "session_id": "ev_bank_011",
+   "t": 90.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

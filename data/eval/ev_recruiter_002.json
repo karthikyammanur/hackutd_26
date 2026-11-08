@@ -1,0 +1,69 @@
+{
+ "session_id": "ev_recruiter_002",
+ "label": {
+  "scam": false,
+  "type": "benign_recruiter",
+  "hard_negative": true,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_recruiter_002",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+12145550196",
+   "carrier_label": "none",
+   "attestation": "A",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_recruiter_002",
+   "t": 8.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hello, I'm Ravi from Northwind Talent. We're making you an offer."
+  },
+  {
+   "session_id": "ev_recruiter_002",
+   "t": 15.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "That's wonderful!"
+  },
+  {
+   "session_id": "ev_recruiter_002",
+   "t": 31.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "You'll get a link to the portal. Please enter your social security number and direct deposit there, not to me. Never share them over the phone."
+  },
+  {
+   "session_id": "ev_recruiter_002",
+   "t": 62.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Okay."
+  },
+  {
+   "session_id": "ev_recruiter_002",
+   "t": 70.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Congratulations!"
+  },
+  {
+   "session_id": "ev_recruiter_002",
+   "t": 80.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

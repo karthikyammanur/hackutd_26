@@ -1,0 +1,61 @@
+{
+ "session_id": "ev_recruiter_004",
+ "label": {
+  "scam": false,
+  "type": "benign_recruiter",
+  "hard_negative": true,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_recruiter_004",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+19725550198",
+   "carrier_label": "none",
+   "attestation": "C",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_recruiter_004",
+   "t": 6.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hi, I work with the HR team at Summit Logistics. Calling to schedule your background check."
+  },
+  {
+   "session_id": "ev_recruiter_004",
+   "t": 13.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Okay."
+  },
+  {
+   "session_id": "ev_recruiter_004",
+   "t": 24.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "It's free for you. Our vendor will email a secure link to you, and it'll ask for your documents."
+  },
+  {
+   "session_id": "ev_recruiter_004",
+   "t": 48.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Sounds good."
+  },
+  {
+   "session_id": "ev_recruiter_004",
+   "t": 55.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

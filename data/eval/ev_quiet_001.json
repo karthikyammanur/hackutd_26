@@ -1,0 +1,92 @@
+{
+ "session_id": "ev_quiet_001",
+ "label": {
+  "scam": true,
+  "type": "signal_only_quiet",
+  "hard_negative": false,
+  "first_scam_t": 34.0
+ },
+ "events": [
+  {
+   "session_id": "ev_quiet_001",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+12145550168",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_quiet_001",
+   "t": 6.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hi, I'm calling about your account."
+  },
+  {
+   "session_id": "ev_quiet_001",
+   "t": 12.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Okay."
+  },
+  {
+   "session_id": "ev_quiet_001",
+   "t": 22.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Just one moment, please, I'm pulling it up."
+  },
+  {
+   "session_id": "ev_quiet_001",
+   "t": 34.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "bank_shortcode",
+   "org": "Lone Star Bank"
+  },
+  {
+   "session_id": "ev_quiet_001",
+   "t": 36.0,
+   "source": "network",
+   "kind": "bank_app_traffic",
+   "org": "Lone Star Bank"
+  },
+  {
+   "session_id": "ev_quiet_001",
+   "t": 50.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Okay. Thanks for that."
+  },
+  {
+   "session_id": "ev_quiet_001",
+   "t": 60.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Is that everything?"
+  },
+  {
+   "session_id": "ev_quiet_001",
+   "t": 66.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Yes, thanks, have a good day."
+  },
+  {
+   "session_id": "ev_quiet_001",
+   "t": 70.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

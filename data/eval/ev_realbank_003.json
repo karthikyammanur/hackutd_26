@@ -1,0 +1,93 @@
+{
+ "session_id": "ev_realbank_003",
+ "label": {
+  "scam": false,
+  "type": "benign_bank_callback",
+  "hard_negative": true,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_realbank_003",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "outbound",
+   "number": "+18005550173",
+   "carrier_label": "none",
+   "attestation": "A",
+   "first_seen": true,
+   "verified_org": "Red River Bank"
+  },
+  {
+   "session_id": "ev_realbank_003",
+   "t": 14.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Red River Bank customer care, thank you for holding."
+  },
+  {
+   "session_id": "ev_realbank_003",
+   "t": 21.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I'm locked out of my online banking."
+  },
+  {
+   "session_id": "ev_realbank_003",
+   "t": 35.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "I can reset that. What's the last four of your card and your date of birth?"
+  },
+  {
+   "session_id": "ev_realbank_003",
+   "t": 52.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Okay, it's 2281 and March 3rd."
+  },
+  {
+   "session_id": "ev_realbank_003",
+   "t": 60.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Thanks. You'll get a one time code, read me just the first two digits so that I can confirm the session."
+  },
+  {
+   "session_id": "ev_realbank_003",
+   "t": 64.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "bank_shortcode",
+   "org": "Red River Bank"
+  },
+  {
+   "session_id": "ev_realbank_003",
+   "t": 78.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "It starts with 4 9."
+  },
+  {
+   "session_id": "ev_realbank_003",
+   "t": 86.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Perfect, thanks. You can now log in."
+  },
+  {
+   "session_id": "ev_realbank_003",
+   "t": 98.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

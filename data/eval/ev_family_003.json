@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_family_003",
+ "label": {
+  "scam": true,
+  "type": "family_emergency_scam",
+  "hard_negative": false,
+  "first_scam_t": 61.0
+ },
+ "events": [
+  {
+   "session_id": "ev_family_003",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+18325550154",
+   "carrier_label": "none",
+   "attestation": "none",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_family_003",
+   "t": 5.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hello sir, I'm attorney Paul Winters representing your grandson."
+  },
+  {
+   "session_id": "ev_family_003",
+   "t": 12.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "What happened?"
+  },
+  {
+   "session_id": "ev_family_003",
+   "t": 28.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "There's been a collision with a pregnant woman. He's facing charges, and he's asked me to reach you."
+  },
+  {
+   "session_id": "ev_family_003",
+   "t": 61.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "A retainer of 9,500 will get him out. You can pay by wire or send cash in a box to my associate."
+  },
+  {
+   "session_id": "ev_family_003",
+   "t": 88.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I'd like to talk to him."
+  },
+  {
+   "session_id": "ev_family_003",
+   "t": 94.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "He can't speak. There's a gag order on this, so you must keep it secret."
+  },
+  {
+   "session_id": "ev_family_003",
+   "t": 130.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

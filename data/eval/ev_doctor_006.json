@@ -1,0 +1,61 @@
+{
+ "session_id": "ev_doctor_006",
+ "label": {
+  "scam": false,
+  "type": "benign_doctor_office",
+  "hard_negative": true,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_doctor_006",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+12815550194",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_doctor_006",
+   "t": 5.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hello, this is the hospital's patient financial services. You've a past due balance of 1,800."
+  },
+  {
+   "session_id": "ev_doctor_006",
+   "t": 13.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I can't pay that right now."
+  },
+  {
+   "session_id": "ev_doctor_006",
+   "t": 30.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "That's okay, we offer payment plans, and you can apply for financial assistance."
+  },
+  {
+   "session_id": "ev_doctor_006",
+   "t": 60.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Nothing's urgent, you can call us back at the number on your statement."
+  },
+  {
+   "session_id": "ev_doctor_006",
+   "t": 75.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

@@ -1,0 +1,85 @@
+{
+ "session_id": "ev_bank_014",
+ "label": {
+  "scam": true,
+  "type": "bank_safe_account",
+  "hard_negative": false,
+  "first_scam_t": 50.0
+ },
+ "events": [
+  {
+   "session_id": "ev_bank_014",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+17375550114",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_bank_014",
+   "t": 6.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "It's the fraud desk at Pecos Valley. I'm so sorry to bother you, but you have a suspicious wire from this morning."
+  },
+  {
+   "session_id": "ev_bank_014",
+   "t": 13.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Oh."
+  },
+  {
+   "session_id": "ev_bank_014",
+   "t": 28.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "It'll take one minute. The passcode we send identifies you to the wire room."
+  },
+  {
+   "session_id": "ev_bank_014",
+   "t": 42.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "bank_shortcode",
+   "org": "Pecos Valley Credit Union"
+  },
+  {
+   "session_id": "ev_bank_014",
+   "t": 50.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Can you confirm what you received please?"
+  },
+  {
+   "session_id": "ev_bank_014",
+   "t": 62.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "It's 5 5 9..."
+  },
+  {
+   "session_id": "ev_bank_014",
+   "t": 66.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Mm hm, and the rest?"
+  },
+  {
+   "session_id": "ev_bank_014",
+   "t": 85.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

@@ -1,0 +1,85 @@
+{
+ "session_id": "ev_care_005",
+ "label": {
+  "scam": false,
+  "type": "benign_carrier_care",
+  "hard_negative": true,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_care_005",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "outbound",
+   "number": "+18005550183",
+   "carrier_label": "none",
+   "attestation": "A",
+   "first_seen": true,
+   "verified_org": "T-Mobile"
+  },
+  {
+   "session_id": "ev_care_005",
+   "t": 11.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hi, you've reached T-Mobile. How can I help?"
+  },
+  {
+   "session_id": "ev_care_005",
+   "t": 18.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I want to change my account PIN."
+  },
+  {
+   "session_id": "ev_care_005",
+   "t": 31.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "No problem. I'm sending a verification code, then I'll have you read me the code."
+  },
+  {
+   "session_id": "ev_care_005",
+   "t": 39.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "other_shortcode",
+   "org": "T-Mobile"
+  },
+  {
+   "session_id": "ev_care_005",
+   "t": 48.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "It's 7 1 9 0 3 3."
+  },
+  {
+   "session_id": "ev_care_005",
+   "t": 55.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Thanks, you're verified. What's your new PIN going to be? You can type it on your keypad."
+  },
+  {
+   "session_id": "ev_care_005",
+   "t": 76.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "All done."
+  },
+  {
+   "session_id": "ev_care_005",
+   "t": 88.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

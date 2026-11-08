@@ -1,0 +1,85 @@
+{
+ "session_id": "ev_realbank_006",
+ "label": {
+  "scam": false,
+  "type": "benign_bank_callback",
+  "hard_negative": true,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_realbank_006",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "outbound",
+   "number": "+18005550176",
+   "carrier_label": "none",
+   "attestation": "A",
+   "first_seen": false,
+   "verified_org": "Lone Star Bank"
+  },
+  {
+   "session_id": "ev_realbank_006",
+   "t": 10.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Lone Star Bank."
+  },
+  {
+   "session_id": "ev_realbank_006",
+   "t": 18.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I got a call saying my account was hacked and that I should move my money to a safe account. Was that you?"
+  },
+  {
+   "session_id": "ev_realbank_006",
+   "t": 35.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "No, that wasn't us, and I'm glad you called. We'd never ask you to move money to a safe account or to give us a code. That's a scam."
+  },
+  {
+   "session_id": "ev_realbank_006",
+   "t": 62.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Oh, thank goodness. What should I do?"
+  },
+  {
+   "session_id": "ev_realbank_006",
+   "t": 74.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "I'll put a note on your profile, and we'll change your password. You'll get a text from us."
+  },
+  {
+   "session_id": "ev_realbank_006",
+   "t": 79.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "bank_shortcode",
+   "org": "Lone Star Bank"
+  },
+  {
+   "session_id": "ev_realbank_006",
+   "t": 96.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "All done. Stay safe."
+  },
+  {
+   "session_id": "ev_realbank_006",
+   "t": 105.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

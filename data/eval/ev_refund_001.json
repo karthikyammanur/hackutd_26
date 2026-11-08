@@ -1,0 +1,84 @@
+{
+ "session_id": "ev_refund_001",
+ "label": {
+  "scam": true,
+  "type": "refund_overpayment",
+  "hard_negative": false,
+  "first_scam_t": 62.0
+ },
+ "events": [
+  {
+   "session_id": "ev_refund_001",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+12145550164",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_refund_001",
+   "t": 6.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hi, it's the refund department for your computer service. You're owed 300."
+  },
+  {
+   "session_id": "ev_refund_001",
+   "t": 14.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Okay."
+  },
+  {
+   "session_id": "ev_refund_001",
+   "t": 31.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Log in to your bank and I'll put it in."
+  },
+  {
+   "session_id": "ev_refund_001",
+   "t": 36.0,
+   "source": "network",
+   "kind": "bank_app_traffic",
+   "org": "Red River Bank"
+  },
+  {
+   "session_id": "ev_refund_001",
+   "t": 62.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Oops, my finger slipped and I sent 3,000. I'm going to lose my job. You have to send the difference back in gift cards."
+  },
+  {
+   "session_id": "ev_refund_001",
+   "t": 88.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I don't see that."
+  },
+  {
+   "session_id": "ev_refund_001",
+   "t": 93.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "It's pending. Please, I have kids."
+  },
+  {
+   "session_id": "ev_refund_001",
+   "t": 130.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

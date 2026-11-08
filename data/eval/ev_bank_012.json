@@ -1,0 +1,92 @@
+{
+ "session_id": "ev_bank_012",
+ "label": {
+  "scam": true,
+  "type": "bank_safe_account",
+  "hard_negative": false,
+  "first_scam_t": 59.0
+ },
+ "events": [
+  {
+   "session_id": "ev_bank_012",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+16825550112",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_bank_012",
+   "t": 8.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "This is Dana at Bluebonnet Savings. I'm calling because your account shows a change of address that we think is fraudulent."
+  },
+  {
+   "session_id": "ev_bank_012",
+   "t": 17.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I didn't move."
+  },
+  {
+   "session_id": "ev_bank_012",
+   "t": 33.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "We'll reverse it. Log in please, and go to transfers."
+  },
+  {
+   "session_id": "ev_bank_012",
+   "t": 45.0,
+   "source": "network",
+   "kind": "bank_app_traffic",
+   "org": "Bluebonnet Savings"
+  },
+  {
+   "session_id": "ev_bank_012",
+   "t": 59.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Now enter the account ending 4471. It's our internal safekeeping ledger, so the fraudster can't reach your money."
+  },
+  {
+   "session_id": "ev_bank_012",
+   "t": 80.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Okay it's asking for a code."
+  },
+  {
+   "session_id": "ev_bank_012",
+   "t": 86.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "bank_shortcode",
+   "org": "Bluebonnet Savings"
+  },
+  {
+   "session_id": "ev_bank_012",
+   "t": 92.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Yes, enter that and press send. Don't stop, we're almost done."
+  },
+  {
+   "session_id": "ev_bank_012",
+   "t": 120.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

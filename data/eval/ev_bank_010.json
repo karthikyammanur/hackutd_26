@@ -1,0 +1,85 @@
+{
+ "session_id": "ev_bank_010",
+ "label": {
+  "scam": true,
+  "type": "bank_safe_account",
+  "hard_negative": false,
+  "first_scam_t": 74.0
+ },
+ "events": [
+  {
+   "session_id": "ev_bank_010",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+12545550110",
+   "carrier_label": "none",
+   "attestation": "C",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_bank_010",
+   "t": 9.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hi there, I'm with the fraud team at your bank, Prairie Federal. Do you bank with us?"
+  },
+  {
+   "session_id": "ev_bank_010",
+   "t": 15.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Yes."
+  },
+  {
+   "session_id": "ev_bank_010",
+   "t": 31.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Somebody opened a loan in your name for 12,000 dollars. We have to get ahead of them today."
+  },
+  {
+   "session_id": "ev_bank_010",
+   "t": 46.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "What do I do?"
+  },
+  {
+   "session_id": "ev_bank_010",
+   "t": 74.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "You'll take out the same amount and put it into a protected account our compliance team set up. It cancels the loan out."
+  },
+  {
+   "session_id": "ev_bank_010",
+   "t": 96.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "That doesn't sound right."
+  },
+  {
+   "session_id": "ev_bank_010",
+   "t": 102.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "I understand, but you only have twenty minutes. Don't speak to anyone at the branch about it."
+  },
+  {
+   "session_id": "ev_bank_010",
+   "t": 135.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

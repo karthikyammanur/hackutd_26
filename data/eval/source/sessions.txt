@@ -1,0 +1,1230 @@
+# Frozen eval set, written session by session (not by data/forge) BEFORE any decision rules or thresholds existed.
+# Never read this while tuning. Compile with: python data/eval/source/build_eval.py
+#
+# Block format:
+#   ## <session_id> <type> <scam|hard|easy> [ask=<seconds>]
+#   <in|out> <number> <A|B|C|none> <first|seen> [verified=Org Name]
+#   <t> C <caller text> | <t> U <customer text> | <t> OTP <bank|other|long> [org] | <t> APP [org]
+#   <t> ACC <sim_change|port_out|call_forwarding_on> <attempted|held|completed> | <t> END
+#
+# All numbers are in the reserved fictional 555-01xx range; all organizations and people are invented (R10).
+
+## ev_bank_001 bank_safe_account scam ask=58
+in +14695550101 B first
+5 C Good afternoon, this is Marcus in the fraud prevention unit at Prairie Federal Credit Union. Is this the primary member?
+11 U Yes it is.
+19 C We're seeing a wire for 2,300 dollars queued from your checking. Was that you?
+25 U No, absolutely not.
+36 C I'm going to reverse it. The system is texting you an authorization number now.
+50 OTP bank Prairie Federal Credit Union
+58 C Okay, what's the number that just came in? I have to key it in on my side.
+78 C Quickly please, the wire releases in two minutes.
+100 END
+
+## ev_bank_002 bank_safe_account scam ask=71
+in +12145550102 C first
+6 C This is Officer Grant with Red River Bank's security team. Your debit card was just used in Tampa.
+14 U I've never been to Tampa.
+27 C Right. Your whole account is compromised, so we have to move your money somewhere that's protected until we issue a new one.
+49 U How do we do that?
+71 C Open your app and send the full balance to the holding account I'm about to give you. It's in your name, it's a safe account.
+88 U Is that normal?
+95 C Very normal, and please don't call the branch, the teller may be part of it.
+120 END
+
+## ev_bank_003 bank_safe_account scam ask=44
+in +18175550103 B first
+4 C Hi, Lone Star Bank calling, I'm Tasha from account protection. There are three login attempts from overseas on your profile.
+12 U Oh my god.
+25 C Don't worry. To confirm you're you, I'll trigger a code. When it lands, just give it to me.
+37 OTP bank Lone Star Bank
+44 C Did it land? Go ahead and tell me those six digits.
+60 U It says never share this with anyone.
+66 C That's only for outsiders. I'm the bank, I'm allowed to see it.
+90 END
+
+## ev_bank_004 bank_safe_account scam ask=63
+in +15125550104 none first
+8 C Yes hello, I'm calling from the Mesquite Community Bank investigations department regarding suspicious withdrawals.
+15 U Which withdrawals?
+29 C Two ATM withdrawals in Houston. We believe an employee is involved, so this conversation must stay confidential, tell nobody at your branch.
+47 U Okay.
+63 C We need you to withdraw 4,000 in cash and deposit it at the crypto kiosk I direct you to, so we can trace the thief.
+82 U A crypto kiosk?
+90 C It's how the federal trace works. Stay on the line with me while you drive.
+140 END
+
+## ev_bank_005 bank_safe_account scam ask=52
+in +17135550105 B first
+5 C Good morning, Bluebonnet Savings fraud line. I show a Zelle payment for 980 to a person named Lindsay. Do you recognize her?
+13 U No I don't.
+26 C I'll stop it. To cancel a Zelle I need the confirmation the system sends you.
+42 OTP bank Bluebonnet Savings
+44 APP Bluebonnet Savings
+52 C Perfect, now it should be on your screen. Read me what it says, every digit.
+71 C After that I'll need you to add a new payee named Reversal Department.
+110 END
+
+## ev_bank_006 bank_safe_account scam ask=39
+in +18325550106 B first
+6 C This is the card services center for Pecos Valley Credit Union. A new device was added to your online banking.
+13 U I didn't add anything.
+24 C I'm removing it now. You'll get a text, and that's the removal key.
+33 OTP bank Pecos Valley Credit Union
+39 C What's the removal key? I need it to finish, otherwise the device stays linked.
+58 U Should I call you back?
+63 C If you hang up the case closes and the fraud goes through. Stay with me.
+85 END
+
+## ev_bank_007 bank_safe_account scam ask=66
+in +12105550107 C first
+7 C Hello, is this the account owner at Lone Star Bank? I'm a supervisor in the risk department.
+13 U Yes.
+22 C We detected that your account was linked to a money laundering case. It's not your fault.
+40 U What should I do?
+66 C To protect your savings we will open a secure vault account. Transfer everything there today and we'll return it after the audit.
+85 U How much?
+90 C All of it, every dollar. And don't mention this to family, they may be questioned.
+130 END
+
+## ev_bank_008 bank_safe_account scam ask=48
+in +14305550108 B first
+5 C Hi, it's Jordan at the Trinity Valley Bank help desk. You called earlier about your card?
+12 U Um, I don't think so.
+20 C Well there's a hold on it now. I can lift it but I have to verify you.
+38 OTP bank Trinity Valley Bank
+48 C Great, I'm seeing that the text went out. What are the numbers?
+65 U 7 2... wait why do you need it?
+70 C It's just to lift the hold, it takes a second.
+92 END
+
+## ev_bank_009 bank_safe_account scam ask=55
+in +19035550109 B first
+6 C This is Red River Bank. Your online access has been frozen after a suspicious transfer.
+14 U Frozen? I need that account for rent.
+30 C I'll get it back on. I'm going to have you sign in to the app while we talk.
+40 APP Red River Bank
+47 OTP bank Red River Bank
+55 C You'll see a code. Don't type it in, give it to me and I'll unfreeze it on my end.
+75 C Thanks, now approve the pending item in the app, that's the unfreeze.
+105 END
+
+## ev_bank_010 bank_safe_account scam ask=74
+in +12545550110 C first
+9 C Hi there, I'm with the fraud team at your bank, Prairie Federal. Do you bank with us?
+15 U Yes.
+31 C Somebody opened a loan in your name for 12,000 dollars. We have to get ahead of them today.
+46 U What do I do?
+74 C You'll take out the same amount and put it into a protected account our compliance team set up. It cancels the loan out.
+96 U That doesn't sound right.
+102 C I understand, but you only have twenty minutes. Don't speak to anyone at the branch about it.
+135 END
+
+## ev_bank_011 bank_safe_account scam ask=46
+in +19405550111 B first
+4 C Good evening, automated security from Lone Star Bank. A representative is joining you now.
+10 C Thanks for holding. We flagged a purchase at an electronics store for 1,620.
+18 U Not mine.
+36 OTP bank Lone Star Bank
+46 C That text is your dispute PIN. I'll need you to say it aloud so the recording logs your dispute.
+64 U Is this recorded?
+68 C Yes, and we need that PIN right now.
+90 END
+
+## ev_bank_012 bank_safe_account scam ask=59
+in +16825550112 B first
+8 C This is Dana at Bluebonnet Savings. I'm calling because your account shows a change of address that we think is fraudulent.
+17 U I didn't move.
+33 C We'll reverse it. Log in please, and go to transfers.
+45 APP Bluebonnet Savings
+59 C Now enter the account ending 4471. It's our internal safekeeping ledger, so the fraudster can't reach your money.
+80 U Okay it's asking for a code.
+86 OTP bank Bluebonnet Savings
+92 C Yes, enter that and press send. Don't stop, we're almost done.
+120 END
+
+## ev_bank_013 bank_safe_account scam ask=61
+in +19725550113 none first
+5 C Hello, this is the security department of Trinity Valley Bank. Press one if you did not make a charge of 899 dollars.
+13 U I pressed it.
+21 C Thank you. I'm an agent. To reverse this we use a voucher system.
+44 U A voucher?
+61 C Yes, go to a nearby store and load 899 on prepaid cards, then give me the numbers. The bank reimburses you tomorrow.
+85 U Why can't you just reverse it?
+91 C It's the federal rule on disputed charges.
+125 END
+
+## ev_bank_014 bank_safe_account scam ask=50
+in +17375550114 B first
+6 C It's the fraud desk at Pecos Valley. I'm so sorry to bother you, but you have a suspicious wire from this morning.
+13 U Oh.
+28 C It'll take one minute. The passcode we send identifies you to the wire room.
+42 OTP bank Pecos Valley Credit Union
+50 C Can you confirm what you received please?
+62 U It's 5 5 9...
+66 C Mm hm, and the rest?
+85 END
+
+## ev_bank_015 bank_safe_account scam ask=67
+in +18065550115 C first
+8 C Hi, Lone Star Bank here. Your new card was issued but it needs activating over the phone.
+16 U I didn't order a card.
+29 C Someone did, so we'll deactivate it, then. I'll just need the card number and the three digits on the back.
+45 U Okay, it's 4...
+67 C And a text is coming, that's the last step. Read it to me and we're done.
+70 OTP bank Lone Star Bank
+95 END
+
+## ev_support_001 fake_support_outbound scam ask=49
+out +18885550116 C first
+7 C T-Mobile billing, this is Sean, what can I help with?
+14 U I found this number online, I was charged twice for my plan.
+27 C I see that. Our refunds are issued through store credit codes these days.
+49 C If you pick up a 150 dollar gift card, I activate it for 300 on your account. Just read me the back.
+70 U A gift card? Really?
+75 C It's our new promo refund process.
+105 END
+
+## ev_support_002 fake_support_outbound scam ask=58
+out +18775550117 C first
+6 C Thank you for calling airline reservations, how can I help you?
+14 U My flight was cancelled and I need a refund.
+30 C Yes, I have your booking. There's a 200 dollar processing fee on the refund.
+58 C We can't take credit cards for this, so you'll pay it with a Zelle to my supervisor's account or with gift cards.
+78 U Why not my card?
+83 C The card system is down until next week.
+115 END
+
+## ev_support_003 fake_support_outbound scam ask=62
+out +18665550118 C first
+8 C Hi, you've reached the Amazon-style marketplace help line. What's the issue?
+15 U There's a 1,200 dollar laptop order on my account that I didn't make.
+32 C Okay. I'm connecting to your account to cancel it.
+62 C Please download the support app from the link I'm texting you and give me the nine digit ID, so I can see your screen.
+84 U Do I need to?
+90 C It's the only way to cancel. Otherwise you will be billed tonight.
+125 END
+
+## ev_support_004 fake_support_outbound scam ask=44
+out +18555550119 C first
+7 C T-Mobile care, good afternoon.
+13 U I need to unlock my phone.
+25 C Sure. Unlocking is free but there's a one time carrier release. You'd pay that through the Cash App handle I give you.
+44 C It's 75 dollars. And I'll text you a code too, read that back so I can link the unlock.
+48 OTP other T-Mobile
+65 U I usually just pay in the T-Life app.
+70 C Not for unlocks.
+98 END
+
+## ev_support_005 fake_support_outbound scam ask=55
+out +18335550120 none first
+6 C Streaming support. Your name please?
+12 U My subscription keeps billing me after I cancelled.
+27 C I see an overcharge of 299. I can refund that to your bank.
+55 C Log into your bank while we're on the phone so I can see the refund land.
+58 APP Lone Star Bank
+80 C Oh no, I accidentally refunded 2,990. You need to send back the difference with gift cards so I don't lose my job.
+120 END
+
+## ev_support_006 fake_support_outbound scam ask=66
+out +18885550121 C first
+5 C Hello, thank you for calling crypto wallet support, how can I secure your wallet?
+12 U I can't log in, I think someone took it.
+33 C I can restore it. Our team just needs your recovery phrase to verify ownership.
+66 C Type out all twelve words and read them to me slowly. That's standard.
+85 U I thought I wasn't supposed to do that.
+90 C Only if you're not speaking to official support.
+120 END
+
+## ev_support_007 fake_support_outbound scam ask=53
+out +18775550122 C first
+8 C T-Mobile store line, this is Andre.
+14 U I wanted to ask about the refund for my returned phone.
+31 C That refund is stuck. I can release it, but your account needs a verification.
+53 C Buy a 100 dollar Apple card, and share the code on the back with me. It's refunded right away.
+72 U Doesn't T-Mobile just credit my bill?
+78 C Not for returns.
+108 END
+
+## ev_support_008 fake_support_outbound scam ask=47
+out +18665550123 C first
+6 C Hotel booking helpline, how may I direct your call?
+13 U I'm trying to cancel a reservation I found on a site.
+28 C Yes, it's non-refundable unless we file a waiver.
+47 C The waiver is 89 dollars. Give me your full card number, the expiry, the CVV and the code that comes by text.
+51 OTP bank Red River Bank
+69 U Isn't that code for a purchase?
+74 C It only looks like that.
+105 END
+
+## ev_support_009 fake_support_outbound scam ask=60
+out +18445550124 B first
+7 C PayPal-style dispute center, how can I assist?
+15 U I got a receipt for 450 dollars I didn't buy.
+33 C That's fraud. We'll process a refund to you. I need remote control to look at your statement.
+60 C Install the screen connect tool from this page. When it asks to allow, tap allow.
+79 U Okay it's asking me to allow.
+85 C Yes. Then log in to your bank, I'll wait.
+88 APP Lone Star Bank
+120 END
+
+## ev_tech_001 tech_support_remote scam ask=48
+in +12145550125 C first
+6 C This is Windows technical department. Your computer is sending us error signals.
+13 U What errors?
+26 C Hackers are getting in through the network. I have to fix this before they steal your files.
+48 C Go to your browser, type the address I give you, and install AnyDesk.
+70 U Okay, it's installing.
+76 C Good. Read me the code on the screen.
+120 END
+
+## ev_tech_002 tech_support_remote scam ask=62
+in +14695550126 C first
+7 C Hello, I'm calling from your internet provider's security team. Your router has been compromised.
+15 U Who is this?
+33 C Your IP address is showing malware. I need access to your PC so I can clean it.
+62 C Please press the Windows key and R, and then type what I tell you. It lets my technician connect.
+85 U Are you sure?
+90 C Your data's being uploaded right now, ma'am. Quickly.
+130 END
+
+## ev_tech_003 tech_support_remote scam ask=71
+in +17135550127 B first
+5 C Apple security center here, your iCloud has been hacked, I'm required to notify you.
+13 U Oh no.
+28 C We'll need to secure it. Do you have online banking on the computer?
+44 U Yes.
+71 C Okay, I'll share my screen with you, and you just share yours back with me so I can check the bank portal.
+95 APP Red River Bank
+110 C Stay on the line and don't touch the mouse.
+150 END
+
+## ev_tech_004 tech_support_remote scam ask=55
+in +15125550128 none first
+8 C Hello, Microsoft-certified support. Your license expired and your PC will be shut down.
+16 U I don't have a license problem.
+31 C I show that you do. We can renew it for 399.
+55 C I just need you to let me into the computer with this little program called TeamViewer, and then we'll process the payment.
+80 U I'd rather go to a store.
+86 C The shutdown is in one hour, you won't make it.
+125 END
+
+## ev_tech_005 tech_support_remote scam ask=66
+in +12815550129 C first
+6 C Hi, this is antivirus renewal. Your subscription auto-renewed for 499 dollars.
+14 U I don't want that.
+29 C I'll refund you. I need to get into your computer to enter the refund.
+66 C Open the Quick Assist tool and read me the security code. That lets me connect.
+88 U Okay, I see a code.
+93 C What's the code?
+132 END
+
+## ev_tech_006 tech_support_remote scam ask=58
+in +18175550130 B first
+5 C Hi, it's the Geek team calling regarding your yearly protection plan.
+12 U I don't remember that.
+29 C We owe you 200 back. Do you use online banking on your phone?
+38 U Sure.
+58 C Install this helper app from the link, and I can see your phone and put the refund in.
+80 C Okay. Now open your bank, I'll guide you.
+83 APP Pecos Valley Credit Union
+130 END
+
+## ev_tech_007 tech_support_remote scam ask=43
+in +13465550131 C first
+7 C This is your computer's security department. We've found a virus.
+15 U How do you have my number?
+27 C We have it from your warranty. I'll help you remove it.
+43 C First go to this website and download the program. Then give me control of your mouse.
+68 U Hmm.
+72 C Sir, please don't hang up, you will lose everything.
+112 END
+
+## ev_tech_008 tech_support_remote scam ask=60
+in +19155550132 B first
+6 C Your printer's manufacturer here. We noticed a driver fault on your account.
+12 U A driver fault?
+25 C It opens your network. I can repair it in five minutes.
+60 C If you go to the support page and type in the session number, I'll be able to view your desktop and fix it.
+82 U And how much is that?
+87 C Just 150 for lifetime service, I'll take a gift card or Zelle.
+120 END
+
+## ev_tech_009 tech_support_remote scam ask=52
+in +19565550133 none first
+8 C Hello, I'm with the network protection office. Someone in your home has downloaded illegal content.
+16 U What?!
+30 C You could be arrested, but I can remove the record if you allow me on your device.
+52 C Install the app, accept the permission, and I will erase the logs.
+75 C Then there's a fine of 900 dollars, and that has to be paid by cash app today. Don't tell anyone, this is a legal matter.
+110 END
+
+## ev_gov_001 gov_impersonation scam ask=46
+in +12025550134 C first
+6 C This is Officer Reyes with the Internal Revenue Service. There's a warrant for your arrest over unpaid taxes.
+14 U What? I paid my taxes.
+27 C You owe 3,214 dollars. If you hang up, deputies will be sent to your home.
+46 C You can settle this today only with gift cards from a nearby store. Stay on the line as you go.
+72 U I don't feel comfortable.
+78 C Then I'll transfer this to the sheriff.
+110 END
+
+## ev_gov_002 gov_impersonation scam ask=63
+in +12025550135 none first
+5 C Social Security Administration, this is Agent Lowe. Your social number has been suspended due to fraud.
+13 U Suspended?
+30 C A car rented in your name was found with narcotics. We have to protect your assets.
+63 C Take your funds out and buy Bitcoin at the ATM I'll direct you to. That money will be held in a government wallet.
+90 U Should I talk to my son first?
+95 C This is confidential. You can't tell anyone or you'll be obstructing the case.
+140 END
+
+## ev_gov_003 gov_impersonation scam ask=53
+in +14695550136 C first
+7 C Dallas County Sheriff's Office. You missed federal jury duty and there's a bench warrant.
+15 U I never got a summons.
+30 C I understand, but the warrant is active. You can post a bond by phone to avoid going to jail tonight.
+53 C You'll get MoneyPak vouchers, then read me the numbers.
+78 U I need to call a lawyer.
+82 C Don't. If you disconnect, officers come out within the hour.
+115 END
+
+## ev_gov_004 gov_impersonation scam ask=68
+in +18005550137 C first
+5 C This is a benefits officer from Medicare. We're issuing new cards with chips.
+12 U Okay?
+25 C I need to confirm your record first. Your date of birth?
+36 U Why?
+50 C Without confirmation your coverage stops this month.
+68 C And you'll get a verification code, tell me that when it arrives. Then give me your Medicare number.
+72 OTP other Medicare
+100 END
+
+## ev_gov_005 gov_impersonation scam ask=57
+in +12145550138 B first
+6 C This is the U.S. Treasury grants office. You've been selected for a 9,000 dollar grant.
+14 U I didn't apply for one.
+28 C You were selected from tax records. It only needs a small release fee.
+57 C It's 250 dollars. Buy gift cards in that amount and we'll wire the grant to you the same day.
+85 U Shouldn't this be free?
+90 C Taxes must be paid first by law.
+125 END
+
+## ev_gov_006 gov_impersonation scam ask=41
+in +19035550139 C first
+7 C This is immigration services. There is a problem with your documents, and you may be deported.
+15 U What problem?
+27 C You have to pay a correction fee right now.
+41 C Send 1,800 by wire transfer through this agent. Do not talk to your attorney, it'll make it worse.
+65 U I need to check this.
+70 C You have one hour. I'll stay on the line with you.
+105 END
+
+## ev_gov_007 gov_impersonation scam ask=65
+in +18325550140 C first
+6 C State Police fraud bureau calling, I'm investigating an identity theft in your name.
+13 U Me?
+25 C Yes. We think your bank has an insider. You have to help us catch them.
+65 C Withdraw 6,000 in cash, put it in an envelope, and a courier will collect it as evidence.
+90 U A courier?
+95 C Tell the teller it's for home repairs. Do not tell them the truth.
+145 END
+
+## ev_gov_008 gov_impersonation scam ask=49
+in +12105550141 none first
+8 C Federal Student Aid forgiveness department. You're approved to have your loans erased.
+16 U Really?
+30 C Yes, there's a one time enrollment. We'll also need your login.
+49 C Give me your FSA username, password, and the code it texts you.
+53 OTP other Federal Student Aid
+75 U Is this the government?
+79 C Yes, an authorized partner.
+110 END
+
+## ev_gov_009 gov_impersonation scam ask=56
+in +15125550142 B first
+5 C This is Sergeant Hall from the police department. Your nephew's been in a crash and he has been charged.
+13 U Oh no, is he okay?
+29 C He needs bail. The bondsman is on the other line.
+56 C The bond is 7,500. A courier can pick up the cash from your house, or you can use a Bitcoin machine.
+80 U Can I talk to him?
+85 C He's in holding, and the judge ordered that nobody discuss this.
+125 END
+
+## ev_sim_001 carrier_sim_swap scam ask=45
+in +18005550143 B first
+6 C Hi, it's T-Mobile retention, thanks for being a loyal customer. You've got a free upgrade today.
+14 U Oh, nice.
+26 C I just have to verify the account. I'm sending a code to your phone.
+38 OTP other T-Mobile
+45 C Now what's that code? Then we'll apply the discount.
+62 ACC sim_change attempted
+64 ACC sim_change held
+85 END
+
+## ev_sim_002 carrier_sim_swap scam ask=53
+in +14695550144 C first
+5 C T-Mobile network security. We've detected a hacker trying to port your number to another carrier.
+13 U What should I do?
+29 C We'll lock the line. You'll get a security PIN, and I'll need it to place the lock.
+44 OTP other T-Mobile
+53 C Read that PIN to me.
+66 ACC port_out attempted
+68 ACC port_out held
+72 C Great. Your phone may lose service for a few hours, that's normal, don't panic.
+105 END
+
+## ev_sim_003 carrier_sim_swap scam ask=40
+in +12145550145 B first
+6 C This is T-Mobile care. Your SIM is out of date and it'll stop working tonight.
+14 U It's working fine.
+24 C We can push an update. There's a code coming.
+33 OTP other T-Mobile
+40 C What digits did you get? I'll enter those and activate the new one.
+55 ACC sim_change attempted
+57 ACC sim_change held
+88 END
+
+## ev_sim_004 carrier_sim_swap scam ask=58
+in +18175550146 C first
+8 C T-Mobile billing here. Your bill's past due and you'll be disconnected today.
+16 U I set up autopay though.
+31 C The autopay failed. To keep service I can forward your calls to our payment desk while we fix it.
+58 C Dial star seven two and this number I give you. It's quick.
+62 ACC call_forwarding_on attempted
+64 ACC call_forwarding_on held
+80 C Good, and let's take a payment of 180 on a prepaid card.
+120 END
+
+## ev_sim_005 carrier_sim_swap scam ask=48
+in +12815550147 B first
+5 C Calling from the T-Mobile store. We've got your new phone here, and need to activate it.
+12 U I didn't buy a phone.
+25 C Then that's fraud on your account, and I'll cancel it for you.
+40 OTP other T-Mobile
+48 C You've got a text, that's the cancellation key. Can you tell me what it says?
+63 ACC port_out attempted
+65 ACC port_out held
+92 END
+
+## ev_sim_006 carrier_sim_swap scam ask=61
+in +17135550148 none first
+7 C Network support, we're upgrading all towers in your area. Your phone needs to be re-registered.
+14 U Okay, how?
+30 C You'll receive a message from your carrier. Stay on the line.
+50 OTP other T-Mobile
+61 C Please provide me with the verification you just received.
+73 ACC sim_change attempted
+75 ACC sim_change held
+100 END
+
+## ev_sim_007 carrier_sim_swap scam ask=44
+in +19725550149 C first
+6 C T-Mobile account team. There's a question on the account PIN.
+14 U What about it?
+27 C We were told it was compromised, so what's the current one so that I can change it?
+44 C Thanks. Next you'll get a transfer PIN, and that's what I'll need to protect you.
+48 OTP other T-Mobile
+60 ACC port_out attempted
+62 ACC port_out held
+85 END
+
+## ev_sim_008 carrier_sim_swap scam ask=50
+in +15125550150 B first
+5 C Hi, I'm with T-Mobile's loyalty department. We owe you a 200 dollar credit.
+13 U Oh, great.
+28 C I'll put that on your next bill. Logging in, there will be a code.
+41 OTP other T-Mobile
+50 C Read it out so that I can post the credit.
+60 U Okay, 8 8 1...
+70 ACC sim_change attempted
+95 END
+
+## ev_sim_009 carrier_sim_swap scam ask=63
+in +14305550151 C first
+8 C Hello, it's T-Mobile's fraud department. Someone's trying to buy a phone on your account.
+16 U What?
+30 C We'll stop it, but we need to move your service temporarily to a clean SIM.
+48 OTP other T-Mobile
+63 C I need the code from your phone to move you.
+75 ACC sim_change attempted
+77 ACC sim_change held
+85 C And you may get a text saying your SIM changed. Ignore that.
+115 END
+
+## ev_family_001 family_emergency_scam scam ask=43
+in +12145550152 B first
+5 C Grandma? It's me. I'm in trouble.
+11 U Tyler? You sound different.
+22 C I broke my nose in an accident. I'm in jail in Laredo. Please don't tell Mom.
+43 C The lawyer says bail is 8,000 and you've got to get cash today. He'll send someone over to pick it up.
+65 U Oh honey.
+70 C Please don't call anyone, please.
+105 END
+
+## ev_family_002 family_emergency_scam scam ask=52
+in +14695550153 C first
+7 C Mom, it's me, I got a new number, my phone broke.
+14 U Oh, hi sweetie.
+31 C I'm so stressed, I've got a bill that has to be paid today, and my bank app is locked since the phone broke.
+52 C Can you Zelle 1,900 to this person? It's my landlord. I'll pay you back on Friday.
+75 U Which landlord?
+80 C Just please do it, don't tell Dad, he'll be so mad.
+112 END
+
+## ev_family_003 family_emergency_scam scam ask=61
+in +18325550154 none first
+5 C Hello sir, I'm attorney Paul Winters representing your grandson.
+12 U What happened?
+28 C There's been a collision with a pregnant woman. He's facing charges, and he's asked me to reach you.
+61 C A retainer of 9,500 will get him out. You can pay by wire or send cash in a box to my associate.
+88 U I'd like to talk to him.
+94 C He can't speak. There's a gag order on this, so you must keep it secret.
+130 END
+
+## ev_family_004 family_emergency_scam scam ask=47
+in +19405550155 B first
+6 C Dad? Dad, they've got me. Please help!
+12 U What?! Who is this?
+20 C Listen carefully. We've got your daughter. If you call the police you'll never see her.
+47 C You'll go and buy gift cards, 3,000 dollars' worth. You stay on this phone the entire time.
+70 U Please don't hurt her.
+75 C Then do what I say.
+110 END
+
+## ev_family_005 family_emergency_scam scam ask=56
+in +18175550156 B first
+6 C Aunt Carol, it's your nephew. I'm stuck in Mexico, I lost my passport.
+13 U Danny?
+25 C Yeah. I need help getting home. The embassy told me I need money right now.
+56 C Could you go to Walmart and send 1,400 through a money transfer to this name?
+80 U Have you called your mother?
+85 C No, and please don't tell her, I'd be so embarrassed.
+120 END
+
+## ev_family_006 family_emergency_scam scam ask=51
+in +12545550157 C first
+8 C This is Nurse Adams at Parkland County ER. Your son was brought in after a crash, and he's unconscious.
+15 U Oh my god!
+30 C We need a deposit to start the surgery. We can't wait for insurance.
+51 C Read me a card number, or if you can't, buy prepaid cards and give me those numbers.
+72 U I'm driving over there now.
+78 C There's no time, sir. You have to stay on the phone.
+112 END
+
+## ev_family_007 family_emergency_scam scam ask=64
+in +13615550158 B first
+5 C Hey it's your cousin Maria. I'm helping out with a family thing and my phone's dying.
+12 U Oh hey.
+29 C Abuela needs her medicine today and the pharmacy won't take her card.
+64 C The code that's coming to you is from the pharmacy. Tell me what it says so I can pay with your account.
+68 OTP bank Lone Star Bank
+85 U It's from my bank though.
+90 C It's linked. Just read it.
+120 END
+
+## ev_utility_001 utility_shutoff scam ask=38
+in +12145550159 C first
+6 C This is Oncor-area Power Services. Your electricity will be cut in 45 minutes for a past due balance.
+13 U I paid that!
+24 C We don't have it on file.
+38 C The only way to stop the truck is a payment of 412 through a prepaid card. Can you get to a store?
+60 U I'll call the company.
+65 C That'd take too long. Stay on the line, and I'll walk you through it.
+98 END
+
+## ev_utility_002 utility_shutoff scam ask=50
+in +14695550160 none first
+5 C Hello, this is the gas utility disconnect department. Your meter has failed inspection.
+13 U What does that mean?
+30 C A new meter deposit is required, or we'll shut off service today.
+50 C It's 350 dollars by Zelle or Cash App to our field technician. He's on your street.
+75 U Can it go on my bill?
+80 C No, the system can't accept it. It has to be today.
+112 END
+
+## ev_utility_003 utility_shutoff scam ask=44
+in +17135550161 C first
+8 C This is City Water. We've got a shutoff order on your address.
+15 U For what?
+25 C An unpaid balance of 288.
+44 C Go to the corner store and load a Green Dot card, then give me the numbers on it.
+65 U I'll pay on the city website.
+69 C The site is down today.
+100 END
+
+## ev_utility_004 utility_shutoff scam ask=55
+in +18065550162 B first
+6 C Internet billing department. There's a credit owed back to you, but your service will be cancelled.
+14 U Why?
+29 C We need to update your payment. Go into your bank and I'll walk you through it.
+33 APP Lone Star Bank
+55 C A code will show up. Don't enter it. Read it to me first so I can apply the credit.
+58 OTP bank Lone Star Bank
+80 U Why can't I type it?
+84 C It won't work unless I do it from here.
+115 END
+
+## ev_utility_005 utility_shutoff scam ask=47
+in +15125550163 C first
+7 C Solar rebate program. Your electric company owes you 600 dollars, but it expires today.
+14 U Who is this?
+27 C A program partner. I can release it to your account.
+47 C All I need is your online banking login and password, so that I can deposit it.
+68 U I don't give that out.
+72 C Then you'll lose the rebate, and your bill goes up.
+100 END
+
+## ev_refund_001 refund_overpayment scam ask=62
+in +12145550164 B first
+6 C Hi, it's the refund department for your computer service. You're owed 300.
+14 U Okay.
+31 C Log in to your bank and I'll put it in.
+36 APP Red River Bank
+62 C Oops, my finger slipped and I sent 3,000. I'm going to lose my job. You have to send the difference back in gift cards.
+88 U I don't see that.
+93 C It's pending. Please, I have kids.
+130 END
+
+## ev_refund_002 refund_overpayment scam ask=55
+in +14695550165 C first
+5 C Calling about a refund on your warranty that was cancelled.
+12 U Which warranty?
+27 C The extended one. I'll refund it directly to your account. Which bank do you use?
+36 U Lone Star.
+55 C Let me connect to your computer and pull up the transfer page. Install this app here.
+80 C You've been overpaid. I need you to go to the bank and wire 4,700 back.
+125 END
+
+## ev_refund_003 refund_overpayment scam ask=48
+in +18175550166 B first
+7 C You've overpaid your cable bill, we'd like to return 180.
+13 U Oh, nice.
+26 C The refund goes to a card. What's the number?
+48 C Great. And the system will text you a code, read that out for me so I can post it.
+52 OTP bank Mesquite Community Bank
+72 U It says purchase of 1,500?
+77 C Ignore that part, that's how the system words it.
+105 END
+
+## ev_refund_004 refund_overpayment scam ask=59
+in +17375550167 none first
+6 C Hello ma'am, it's your tax preparer's office. There's an IRS refund of 2,000 waiting.
+13 U Oh.
+30 C We deposited too much by mistake, so we'll need part of it back.
+59 C Please send 1,200 back through Bitcoin. I'll text you the QR code and you scan it at the machine.
+85 U Why Bitcoin?
+90 C It's the fastest way to fix our error.
+125 END
+
+## ev_quiet_001 signal_only_quiet scam ask=34
+in +12145550168 B first
+6 C Hi, I'm calling about your account.
+12 U Okay.
+22 C Just one moment, please, I'm pulling it up.
+34 OTP bank Lone Star Bank
+36 APP Lone Star Bank
+50 C Okay. Thanks for that.
+60 U Is that everything?
+66 C Yes, thanks, have a good day.
+70 END
+
+## ev_quiet_002 signal_only_quiet scam ask=41
+in +14695550169 C first
+7 C Hello, is this the account holder? I'm with customer service.
+14 U Yes.
+27 C I've got a couple of questions about recent activity. One second.
+41 OTP bank Red River Bank
+46 ACC call_forwarding_on attempted
+48 ACC call_forwarding_on held
+62 C Sorry, the system's slow today.
+82 END
+
+## ev_quiet_003 signal_only_quiet scam ask=30
+in +18325550170 none first
+8 C Hello, I'm just confirming the details we've got on file.
+15 U Sure.
+30 OTP bank Prairie Federal Credit Union
+33 OTP bank Prairie Federal Credit Union
+40 ACC sim_change attempted
+42 ACC sim_change held
+55 C That's all I needed. Thank you.
+65 END
+
+## ev_realbank_001 benign_bank_callback hard
+out +18005550171 A seen verified=Lone Star Bank
+12 C Thank you for calling Lone Star Bank. This call may be recorded. How can I help you?
+19 U I'd like to raise the daily limit on my debit card.
+33 C Sure. I'll send a verification code, and you can type it in the app. Please don't read it out to me.
+41 OTP bank Lone Star Bank
+44 APP Lone Star Bank
+66 C That's done. The new limit's in effect today.
+80 END
+
+## ev_realbank_002 benign_bank_callback hard
+out +18005550172 A seen verified=Prairie Federal Credit Union
+10 C Prairie Federal, this is Tomas. What can I do for you?
+18 U I think somebody used my card. I got a fraud alert text.
+31 C Let's look. Oh yes, I see two charges. I'll block the card and I'll transfer you to the claims team.
+45 OTP bank Prairie Federal Credit Union
+61 C Please go ahead and enter that code in the app. We'd never ask for it on the phone.
+77 C You're all set, and a new card ships in five days.
+92 END
+
+## ev_realbank_003 benign_bank_callback hard
+out +18005550173 A first verified=Red River Bank
+14 C Red River Bank customer care, thank you for holding.
+21 U I'm locked out of my online banking.
+35 C I can reset that. What's the last four of your card and your date of birth?
+52 U Okay, it's 2281 and March 3rd.
+60 C Thanks. You'll get a one time code, read me just the first two digits so that I can confirm the session.
+64 OTP bank Red River Bank
+78 U It starts with 4 9.
+86 C Perfect, thanks. You can now log in.
+98 END
+
+## ev_realbank_004 benign_bank_callback hard
+out +18005550174 A seen verified=Bluebonnet Savings
+11 C Bluebonnet Savings. How can I help today?
+18 U I want to send a wire to my title company for closing on my house.
+34 C Sure, we can do that. Wires over 10,000 need a verbal confirmation. You'll get a text code and an alert in the app.
+47 OTP bank Bluebonnet Savings
+50 APP Bluebonnet Savings
+66 C Your wire of 42,000 is sent to the title company. It's safe to close it out.
+85 END
+
+## ev_realbank_005 benign_bank_callback hard
+out +18005550175 A seen verified=Trinity Valley Bank
+9 C Trinity Valley, this is Grace.
+16 U I'd like to move money from savings into my checking.
+27 C Of course, I can transfer that for you. For security I'm sending a code.
+38 OTP bank Trinity Valley Bank
+54 C Go ahead and open your app to approve that.
+57 APP Trinity Valley Bank
+73 C Done. It's in your checking.
+85 END
+
+## ev_realbank_006 benign_bank_callback hard
+out +18005550176 A seen verified=Lone Star Bank
+10 C Lone Star Bank.
+18 U I got a call saying my account was hacked and that I should move my money to a safe account. Was that you?
+35 C No, that wasn't us, and I'm glad you called. We'd never ask you to move money to a safe account or to give us a code. That's a scam.
+62 U Oh, thank goodness. What should I do?
+74 C I'll put a note on your profile, and we'll change your password. You'll get a text from us.
+79 OTP bank Lone Star Bank
+96 C All done. Stay safe.
+105 END
+
+## ev_realbank_007 benign_bank_callback hard
+out +18005550177 A seen verified=Mesquite Community Bank
+12 C Mesquite Community Bank, loans department.
+19 U I'd like to ask about the payoff on my car loan.
+32 C Certainly. Let me verify you. There's a code heading your way.
+42 OTP bank Mesquite Community Bank
+58 C Thanks. Your payoff is 3,811 through the end of the month.
+75 END
+
+## ev_realbank_008 benign_bank_callback hard
+out +18005550178 A seen verified=Pecos Valley Credit Union
+11 C Pecos Valley Credit Union, it's Alma.
+17 U I need to set up a new payee, and the app's failing.
+34 C Let's walk through it. Open the app and go to payees.
+38 APP Pecos Valley Credit Union
+52 C You'll see a security code by text. Type that in and press confirm. Don't share it with anyone, even me.
+56 OTP bank Pecos Valley Credit Union
+78 C That went through.
+90 END
+
+## ev_care_001 benign_carrier_care hard
+out +18005550179 A seen verified=T-Mobile
+9 C T-Mobile, this is Marisol, how can I help?
+16 U My phone was stolen. I need to move my number to my new phone.
+31 C I'm sorry to hear that. I'll send a code to your backup email and to your T-Life app.
+40 OTP other T-Mobile
+56 ACC sim_change attempted
+62 ACC sim_change completed
+78 C You're all set. Your new SIM's active.
+90 END
+
+## ev_care_002 benign_carrier_care hard
+out +18005550180 A seen verified=T-Mobile
+12 C Thanks for calling T-Mobile. Who do I have the pleasure of speaking with?
+20 U I'm switching to another carrier, and I need my transfer PIN.
+36 C Sorry to see you go. Your port-out PIN will be sent to you by text.
+43 OTP other T-Mobile
+55 ACC port_out attempted
+70 C Anything else?
+80 END
+
+## ev_care_003 benign_carrier_care hard
+out +18005550181 A seen verified=T-Mobile
+10 C T-Mobile care, this is Devon.
+17 U I'm traveling and I want to forward calls to my other number.
+30 C Sure, you can dial star seven two followed by the number. Do you want me to do it?
+45 U Yes please.
+52 ACC call_forwarding_on attempted
+57 ACC call_forwarding_on completed
+72 C Done. To undo it, dial star seven three.
+85 END
+
+## ev_care_004 benign_carrier_care hard
+out +18005550182 A seen verified=T-Mobile
+8 C T-Mobile billing department, how can I help you today?
+16 U I was double charged last month.
+31 C I can see that. It's been credited to your next bill. We don't do gift cards or anything like that, the credit just shows on your bill.
+58 U Thanks.
+65 C You're welcome. I'll send a text confirming.
+67 OTP other T-Mobile
+80 END
+
+## ev_care_005 benign_carrier_care hard
+out +18005550183 A first verified=T-Mobile
+11 C Hi, you've reached T-Mobile. How can I help?
+18 U I want to change my account PIN.
+31 C No problem. I'm sending a verification code, then I'll have you read me the code.
+39 OTP other T-Mobile
+48 U It's 7 1 9 0 3 3.
+55 C Thanks, you're verified. What's your new PIN going to be? You can type it on your keypad.
+76 C All done.
+88 END
+
+## ev_care_006 benign_carrier_care hard
+out +18005550184 A seen verified=T-Mobile
+10 C T-Mobile tech support.
+17 U My phone keeps dropping calls.
+30 C Let me look at the towers. I can walk you through a network reset and if that fails, I'll transfer you to a specialist who can see the device diagnostics.
+62 U Okay.
+80 C It looks good on our end now.
+95 END
+
+## ev_realin_001 benign_bank_inbound hard
+in +18005550185 A seen verified=Lone Star Bank
+5 C Hello, this is Lone Star Bank's automated fraud service calling about a charge of 58 dollars.
+13 U Okay.
+22 C Press one if you recognize this charge, press two if you don't.
+30 U I pressed one.
+38 C Thanks. No further action needed. We will never ask for your PIN or code by phone.
+50 END
+
+## ev_realin_002 benign_bank_inbound hard
+in +18005550186 A seen verified=Prairie Federal Credit Union
+6 C Good morning. It's Lamar from Prairie Federal. I'm returning your call regarding your mortgage application.
+15 U Yes, thanks for getting back to me.
+30 C I just need you to upload two pay stubs through the secure message center. I'll send a text link.
+45 OTP bank Prairie Federal Credit Union
+62 U Got it.
+70 C Thanks. We'll be in touch by Thursday.
+85 END
+
+## ev_realin_003 benign_bank_inbound hard
+in +18005550187 A seen verified=Red River Bank
+7 C Hi, this is Red River Bank's card center. We've declined a charge at a gas station, and wanted to check in.
+16 U That was me, I'm on a road trip.
+30 C Great, I'll remove the block. You don't have to do anything.
+45 U Thanks.
+52 END
+
+## ev_realin_004 benign_bank_inbound hard
+in +18005550188 A first verified=Bluebonnet Savings
+6 C Hi, it's Bluebonnet Savings. Your new card is in the mail. Is your address still 12 Elm?
+15 U Yes.
+25 C Good. If you see a text from us, you can activate the card in the app. We'll never call and ask you for the code.
+40 APP Bluebonnet Savings
+58 U Okay, thanks.
+66 END
+
+## ev_doctor_001 benign_doctor_office hard
+in +12145550189 B first
+6 C Hi, it's Kayla from Dr. Nguyen's office. I'm calling to confirm tomorrow at ten.
+13 U Yes, I'll be there.
+25 C Great. Your insurance needs a referral code, and we've got that. Your copay is 40.
+48 U Can I pay it now?
+55 C Sure, you can pay when you come in. Or I can take a card.
+75 END
+
+## ev_doctor_002 benign_doctor_office hard
+in +14695550190 A first
+5 C This is Hannah from Riverbend Pediatrics.
+12 U Oh, is everything okay?
+22 C Everything's fine. Just the lab results. I'll transfer you to the nurse, please hold, don't hang up.
+58 C Hi, this is the nurse. The strep test came back negative.
+80 U What a relief.
+90 END
+
+## ev_doctor_003 benign_doctor_office hard
+in +17135550191 B first
+7 C Hi, calling from Lakeside Dental. We've got a balance of 112 on your account.
+15 U Oh, I thought insurance paid that.
+31 C They paid part. You can pay online or give me a card number now, whichever you prefer.
+50 U I'll do it online.
+54 APP Lone Star Bank
+62 OTP bank Lone Star Bank
+78 U Okay, I just paid it.
+85 C Great, thank you very much.
+95 END
+
+## ev_doctor_004 benign_doctor_office hard
+in +18175550192 C first
+8 C This is the billing line at North Star Imaging. We need to confirm your date of birth before we discuss your account.
+16 U Okay. June 9th.
+28 C Thanks. Your MRI claim was denied due to the wrong procedure code. We've resubmitted.
+58 U Do I owe anything?
+63 C Not at this time.
+75 END
+
+## ev_doctor_005 benign_doctor_office hard
+in +15125550193 B first
+7 C This is Oak Hill Pharmacy. Your prescription's ready, but your doctor must approve the refill.
+14 U Okay.
+28 C We'll fax it over. Is the phone number we have still good? We'll text a pickup code.
+38 OTP other Oak Hill Pharmacy
+52 C That's your code. Show it at the counter.
+65 END
+
+## ev_doctor_006 benign_doctor_office hard
+in +12815550194 B first
+5 C Hello, this is the hospital's patient financial services. You've a past due balance of 1,800.
+13 U I can't pay that right now.
+30 C That's okay, we offer payment plans, and you can apply for financial assistance.
+60 C Nothing's urgent, you can call us back at the number on your statement.
+75 END
+
+## ev_recruiter_001 benign_recruiter hard
+in +14695550195 B first
+6 C Hi, it's Stephanie, a recruiter at Halcyon Staffing. I saw your profile.
+14 U Oh, hello.
+25 C We've got a role in Plano. Could you do a phone screen?
+40 U Yes, I could.
+52 C Great. I'll transfer you to the hiring manager right now, don't hang up. It should be quick.
+85 C Hi, this is Ben. Tell me about your last project.
+130 END
+
+## ev_recruiter_002 benign_recruiter hard
+in +12145550196 A first
+8 C Hello, I'm Ravi from Northwind Talent. We're making you an offer.
+15 U That's wonderful!
+31 C You'll get a link to the portal. Please enter your social security number and direct deposit there, not to me. Never share them over the phone.
+62 U Okay.
+70 C Congratulations!
+80 END
+
+## ev_recruiter_003 benign_recruiter hard
+in +18325550197 B first
+5 C It's Claire from Vantage Group, I'm calling about your interview on Tuesday.
+12 U Yes?
+25 C We're sending a code to your phone so you can log into the assessment.
+32 OTP other Vantage Group
+45 U Got it, thanks.
+55 C Good luck!
+65 END
+
+## ev_recruiter_004 benign_recruiter hard
+in +19725550198 C first
+6 C Hi, I work with the HR team at Summit Logistics. Calling to schedule your background check.
+13 U Okay.
+24 C It's free for you. Our vendor will email a secure link to you, and it'll ask for your documents.
+48 U Sounds good.
+55 END
+
+## ev_recruiter_005 benign_recruiter hard
+in +15125550199 B first
+8 C It's Luis, from the warehouse. We need someone for the Saturday shift, are you interested?
+15 U How much does it pay?
+26 C Twenty-one an hour, paid by direct deposit. You'd need to bring your ID.
+42 U Sure.
+50 END
+
+## ev_family_real_001 benign_family_emergency hard
+in +12145550100 B first
+6 C Hi, is this Rosa's daughter? I'm a nurse at Mercy General.
+13 U Yes. What's happened?
+24 C Your mother fell. She's stable, but you should come as soon as you can.
+45 U Oh no. I'll leave right now. What floor?
+53 C The fourth. Bring her insurance card and her medication list.
+70 END
+
+## ev_family_real_002 benign_family_emergency hard
+in +14695550161 A first
+5 C Dad, it's me. I lost my phone, and I'm using my roommate's.
+11 U What happened?
+22 C I'm at the urgent care with my ankle. Can you come get me? Don't tell Mom yet, she'll freak out.
+47 U On my way. Which one?
+55 C The one on Preston Road. I'll text the address from this phone.
+70 END
+
+## ev_family_real_003 benign_family_emergency hard
+in +18175550162 B first
+6 C Mrs. Patel? This is the school nurse at Oak Elementary. Your son has a fever.
+13 U I'll come and get him.
+25 C Thank you. Please come to the front office, and bring your ID.
+40 END
+
+## ev_family_real_004 benign_family_emergency hard
+out +18325550163 B first
+9 C Harris County jail information, how can I help?
+16 U My son was arrested last night, and I want to know how to post bail.
+30 C You can post bond at the county office or through a licensed bondsman. We never take payment over the phone.
+65 U Okay, thanks.
+72 END
+
+## ev_family_real_005 benign_family_emergency hard
+in +19035550164 B first
+5 C It's your sister's neighbor. Her house flooded, and she can't reach you.
+12 U Oh no, is she okay?
+24 C She's fine. She needs a place to stay tonight.
+40 C She said she'd call you back when she gets a charger.
+55 END
+
+## ev_merchant_001 benign_otp_coincidence hard
+in +12145550165 B first
+7 C Hi, it's Mike, the plumber. I'm running about twenty minutes late.
+13 U No problem. Hang on, I'm buying the part you said I needed.
+33 OTP bank Lone Star Bank
+45 U Sorry, I had to approve the charge for the part.
+54 C No problem. See you soon.
+70 END
+
+## ev_merchant_002 benign_otp_coincidence hard
+in +14695550166 B seen
+6 C Hey, it's Jess. Did you see the news?
+13 U Yeah, hold on, I'm trying to log into my bank at the same time.
+27 APP Red River Bank
+30 OTP bank Red River Bank
+50 U Sorry, okay I'm in. What were you saying?
+60 C Nothing big.
+85 END
+
+## ev_merchant_003 benign_otp_coincidence hard
+in +17135550167 B first
+6 C Hello, this is Hector with the moving company. What time works on Saturday?
+13 U Morning. Let me pay the deposit online while we talk.
+27 APP Trinity Valley Bank
+33 OTP bank Trinity Valley Bank
+50 U Okay, it's paid. Did it come through?
+56 C Yes, I can see it. Thanks.
+75 END
+
+## ev_ithelp_001 benign_it_helpdesk hard
+in +19725550168 B first
+6 C Hi, this is Sam from the IT help desk at your office. You opened a ticket about your VPN.
+15 U Yes, it keeps failing.
+26 C I can remote in and take a look if you have a minute.
+46 U Sure.
+55 C You'll see a pop up asking to allow remote access. Click accept.
+90 C Alright, that fixed it. I'll close the ticket.
+100 END
+
+## ev_ithelp_002 benign_it_helpdesk hard
+in +12145550169 A first
+5 C It's Priya with IT. We're rolling out the new laptop image and I need ten minutes.
+12 U Sure.
+24 C I'll share my screen first, then I'll take control of yours for a bit.
+62 U Okay.
+80 C All done.
+88 END
+
+## ev_ithelp_003 benign_it_helpdesk hard
+out +18885550170 B first
+8 C Thanks for calling the campus help desk.
+16 U I'm locked out of the student portal.
+28 C I'll trigger a reset code. It'll go to your phone.
+37 OTP other State University
+48 C Enter it on the login page. Don't read it to me.
+70 END
+
+## ev_easy_001 benign_personal easy
+in +12145550171 A seen
+5 C Hey, are we still on for dinner?
+12 U Yep, seven o'clock.
+18 C See you there.
+25 END
+
+## ev_easy_002 benign_personal easy
+in +14695550172 A seen
+6 C Hi Mom, I'm just checking in.
+14 U Hi honey! How was the trip?
+40 C It was great, I'll send you pictures.
+80 END
+
+## ev_easy_003 benign_service easy
+out +12145550173 A first
+8 C Tony's Pizza, what can I get you?
+13 U A large pepperoni for pickup.
+22 C Twenty minutes.
+28 END
+
+## ev_easy_004 benign_service easy
+in +18175550174 A first
+5 C Hello, your package is outside, but I need a signature.
+10 U Be right there.
+16 END
+
+## ev_easy_005 benign_personal easy
+in +19725550175 A seen
+6 C Hey man, can you cover my shift on Friday?
+15 U I think so.
+22 C You're the best.
+30 END
+
+## ev_easy_006 benign_service easy
+out +15125550176 B first
+7 C Hair Studio, how can I help?
+14 U Can I get a haircut on Thursday?
+22 C We have a two o'clock open.
+30 END
+
+## ev_easy_007 benign_service easy
+in +17135550177 A first
+6 C Hi, this is a reminder from Green Valley Vet. Biscuit is due for shots.
+13 U I'll book it this week.
+20 END
+
+## ev_easy_008 benign_personal easy
+in +18325550178 B first
+5 C Hi, I think I have the wrong number. Sorry.
+9 U No problem.
+12 END
+
+## ev_easy_009 benign_personal easy
+in +12815550179 A seen
+6 C Grandma, it's me, I got your birthday card! Thanks!
+14 U Oh, you're welcome, sweetie.
+40 END
+
+## ev_easy_010 benign_service easy
+out +14695550180 A first
+7 C Thanks for calling City Library. How can I help?
+13 U When do you close?
+18 C At eight tonight.
+24 END
+
+## ev_easy_011 benign_service easy
+in +12145550181 B first
+8 C Hi, I'm with the neighborhood association. Can we count on your vote on the new fence?
+16 U I'll think about it.
+24 END
+
+## ev_easy_012 benign_personal easy
+in +19405550182 A seen
+6 C Hey, did you feed the cat?
+12 U Yes.
+16 END
+
+## ev_easy_013 benign_service easy
+in +17375550183 B first
+6 C Hi, this is a short survey on local parks. Do you have one minute?
+13 U Not today, thanks.
+18 END
+
+## ev_easy_014 benign_service easy
+out +15125550184 A first
+9 C Thanks for calling Oakwood Auto, what's your car doing?
+16 U It's making a clicking noise.
+24 C Bring it by tomorrow morning.
+34 END
+
+## ev_easy_015 benign_personal easy
+in +12545550185 A seen
+6 C Hey, what's for dinner?
+12 U Tacos.
+15 END

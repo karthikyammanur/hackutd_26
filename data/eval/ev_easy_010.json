@@ -1,0 +1,53 @@
+{
+ "session_id": "ev_easy_010",
+ "label": {
+  "scam": false,
+  "type": "benign_service",
+  "hard_negative": false,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_easy_010",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "outbound",
+   "number": "+14695550180",
+   "carrier_label": "none",
+   "attestation": "A",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_easy_010",
+   "t": 7.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Thanks for calling City Library. How can I help?"
+  },
+  {
+   "session_id": "ev_easy_010",
+   "t": 13.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "When do you close?"
+  },
+  {
+   "session_id": "ev_easy_010",
+   "t": 18.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "At eight tonight."
+  },
+  {
+   "session_id": "ev_easy_010",
+   "t": 24.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

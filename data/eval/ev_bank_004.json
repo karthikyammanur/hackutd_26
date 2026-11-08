@@ -1,0 +1,85 @@
+{
+ "session_id": "ev_bank_004",
+ "label": {
+  "scam": true,
+  "type": "bank_safe_account",
+  "hard_negative": false,
+  "first_scam_t": 63.0
+ },
+ "events": [
+  {
+   "session_id": "ev_bank_004",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+15125550104",
+   "carrier_label": "none",
+   "attestation": "none",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_bank_004",
+   "t": 8.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Yes hello, I'm calling from the Mesquite Community Bank investigations department regarding suspicious withdrawals."
+  },
+  {
+   "session_id": "ev_bank_004",
+   "t": 15.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Which withdrawals?"
+  },
+  {
+   "session_id": "ev_bank_004",
+   "t": 29.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Two ATM withdrawals in Houston. We believe an employee is involved, so this conversation must stay confidential, tell nobody at your branch."
+  },
+  {
+   "session_id": "ev_bank_004",
+   "t": 47.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Okay."
+  },
+  {
+   "session_id": "ev_bank_004",
+   "t": 63.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "We need you to withdraw 4,000 in cash and deposit it at the crypto kiosk I direct you to, so we can trace the thief."
+  },
+  {
+   "session_id": "ev_bank_004",
+   "t": 82.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "A crypto kiosk?"
+  },
+  {
+   "session_id": "ev_bank_004",
+   "t": 90.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "It's how the federal trace works. Stay on the line with me while you drive."
+  },
+  {
+   "session_id": "ev_bank_004",
+   "t": 140.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

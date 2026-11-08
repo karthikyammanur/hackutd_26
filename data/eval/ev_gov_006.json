@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_gov_006",
+ "label": {
+  "scam": true,
+  "type": "gov_impersonation",
+  "hard_negative": false,
+  "first_scam_t": 41.0
+ },
+ "events": [
+  {
+   "session_id": "ev_gov_006",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+19035550139",
+   "carrier_label": "none",
+   "attestation": "C",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_gov_006",
+   "t": 7.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "This is immigration services. There is a problem with your documents, and you may be deported."
+  },
+  {
+   "session_id": "ev_gov_006",
+   "t": 15.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "What problem?"
+  },
+  {
+   "session_id": "ev_gov_006",
+   "t": 27.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "You have to pay a correction fee right now."
+  },
+  {
+   "session_id": "ev_gov_006",
+   "t": 41.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Send 1,800 by wire transfer through this agent. Do not talk to your attorney, it'll make it worse."
+  },
+  {
+   "session_id": "ev_gov_006",
+   "t": 65.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I need to check this."
+  },
+  {
+   "session_id": "ev_gov_006",
+   "t": 70.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "You have one hour. I'll stay on the line with you."
+  },
+  {
+   "session_id": "ev_gov_006",
+   "t": 105.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

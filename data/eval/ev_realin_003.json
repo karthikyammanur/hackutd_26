@@ -1,0 +1,61 @@
+{
+ "session_id": "ev_realin_003",
+ "label": {
+  "scam": false,
+  "type": "benign_bank_inbound",
+  "hard_negative": true,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_realin_003",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+18005550187",
+   "carrier_label": "none",
+   "attestation": "A",
+   "first_seen": false,
+   "verified_org": "Red River Bank"
+  },
+  {
+   "session_id": "ev_realin_003",
+   "t": 7.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hi, this is Red River Bank's card center. We've declined a charge at a gas station, and wanted to check in."
+  },
+  {
+   "session_id": "ev_realin_003",
+   "t": 16.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "That was me, I'm on a road trip."
+  },
+  {
+   "session_id": "ev_realin_003",
+   "t": 30.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Great, I'll remove the block. You don't have to do anything."
+  },
+  {
+   "session_id": "ev_realin_003",
+   "t": 45.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Thanks."
+  },
+  {
+   "session_id": "ev_realin_003",
+   "t": 52.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

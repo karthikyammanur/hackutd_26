@@ -1,0 +1,53 @@
+{
+ "session_id": "ev_easy_005",
+ "label": {
+  "scam": false,
+  "type": "benign_personal",
+  "hard_negative": false,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_easy_005",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+19725550175",
+   "carrier_label": "none",
+   "attestation": "A",
+   "first_seen": false,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_easy_005",
+   "t": 6.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hey man, can you cover my shift on Friday?"
+  },
+  {
+   "session_id": "ev_easy_005",
+   "t": 15.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I think so."
+  },
+  {
+   "session_id": "ev_easy_005",
+   "t": 22.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "You're the best."
+  },
+  {
+   "session_id": "ev_easy_005",
+   "t": 30.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

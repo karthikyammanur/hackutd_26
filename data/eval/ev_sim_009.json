@@ -1,0 +1,93 @@
+{
+ "session_id": "ev_sim_009",
+ "label": {
+  "scam": true,
+  "type": "carrier_sim_swap",
+  "hard_negative": false,
+  "first_scam_t": 63.0
+ },
+ "events": [
+  {
+   "session_id": "ev_sim_009",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+14305550151",
+   "carrier_label": "none",
+   "attestation": "C",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_sim_009",
+   "t": 8.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hello, it's T-Mobile's fraud department. Someone's trying to buy a phone on your account."
+  },
+  {
+   "session_id": "ev_sim_009",
+   "t": 16.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "What?"
+  },
+  {
+   "session_id": "ev_sim_009",
+   "t": 30.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "We'll stop it, but we need to move your service temporarily to a clean SIM."
+  },
+  {
+   "session_id": "ev_sim_009",
+   "t": 48.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "other_shortcode",
+   "org": "T-Mobile"
+  },
+  {
+   "session_id": "ev_sim_009",
+   "t": 63.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "I need the code from your phone to move you."
+  },
+  {
+   "session_id": "ev_sim_009",
+   "t": 75.0,
+   "source": "network",
+   "kind": "account_change",
+   "action": "sim_change",
+   "status": "attempted"
+  },
+  {
+   "session_id": "ev_sim_009",
+   "t": 77.0,
+   "source": "system",
+   "kind": "account_change",
+   "action": "sim_change",
+   "status": "held"
+  },
+  {
+   "session_id": "ev_sim_009",
+   "t": 85.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "And you may get a text saying your SIM changed. Ignore that."
+  },
+  {
+   "session_id": "ev_sim_009",
+   "t": 115.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

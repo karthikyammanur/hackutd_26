@@ -1,0 +1,76 @@
+{
+ "session_id": "ev_merchant_002",
+ "label": {
+  "scam": false,
+  "type": "benign_otp_coincidence",
+  "hard_negative": true,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_merchant_002",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+14695550166",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": false,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_merchant_002",
+   "t": 6.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hey, it's Jess. Did you see the news?"
+  },
+  {
+   "session_id": "ev_merchant_002",
+   "t": 13.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Yeah, hold on, I'm trying to log into my bank at the same time."
+  },
+  {
+   "session_id": "ev_merchant_002",
+   "t": 27.0,
+   "source": "network",
+   "kind": "bank_app_traffic",
+   "org": "Red River Bank"
+  },
+  {
+   "session_id": "ev_merchant_002",
+   "t": 30.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "bank_shortcode",
+   "org": "Red River Bank"
+  },
+  {
+   "session_id": "ev_merchant_002",
+   "t": 50.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Sorry, okay I'm in. What were you saying?"
+  },
+  {
+   "session_id": "ev_merchant_002",
+   "t": 60.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Nothing big."
+  },
+  {
+   "session_id": "ev_merchant_002",
+   "t": 85.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

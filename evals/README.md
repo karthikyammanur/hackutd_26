@@ -10,6 +10,10 @@ Detection quality is a judging criterion. These numbers go on the Devpost, so th
 | `example_preds.jsonl` | Example prediction format | Lane 2 |
 | `../data/eval/` | Frozen eval set, written by a different model or by hand (F12) | Lane 2 |
 | `redteam.md` | Each red-team break: transcript snippet, why it got through, fix commit | Lane 2 |
+| `replay.py` | Replays sessions through Caller Screen, Signal Watcher and `decide()`; writes predictions | Lane 2 |
+| `stand_in_guardian.py` | Keyword baseline in place of Call Guardian until the graph exists. Not Nemotron | Lane 2 |
+| `tune.py` | Threshold sweep on training data; refuses `data/eval` | Lane 2 |
+| `report.md` | Latest numbers and how far to trust them | Lane 2 |
 
 ## Session format
 One `contracts.events.EvalCase` per file: `session_id`, `label` (`scam`, `type`, `hard_negative`, `first_scam_t`), `events`.
@@ -34,5 +38,6 @@ One JSON line per session: `{"session_id", "alerts": [{"t", "level", "score"}], 
 
 ```
 python evals/run_eval.py --cases evals/fixtures --preds evals/example_preds.jsonl
+python evals/replay.py --cases data/eval --flags keyword --out out/preds.jsonl
 python evals/run_eval.py --cases data/eval --preds out/preds.jsonl --gate
 ```

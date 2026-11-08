@@ -1,0 +1,69 @@
+{
+ "session_id": "ev_family_real_001",
+ "label": {
+  "scam": false,
+  "type": "benign_family_emergency",
+  "hard_negative": true,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_family_real_001",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+12145550100",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_family_real_001",
+   "t": 6.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hi, is this Rosa's daughter? I'm a nurse at Mercy General."
+  },
+  {
+   "session_id": "ev_family_real_001",
+   "t": 13.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Yes. What's happened?"
+  },
+  {
+   "session_id": "ev_family_real_001",
+   "t": 24.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Your mother fell. She's stable, but you should come as soon as you can."
+  },
+  {
+   "session_id": "ev_family_real_001",
+   "t": 45.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Oh no. I'll leave right now. What floor?"
+  },
+  {
+   "session_id": "ev_family_real_001",
+   "t": 53.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "The fourth. Bring her insurance card and her medication list."
+  },
+  {
+   "session_id": "ev_family_real_001",
+   "t": 70.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

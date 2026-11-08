@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_gov_001",
+ "label": {
+  "scam": true,
+  "type": "gov_impersonation",
+  "hard_negative": false,
+  "first_scam_t": 46.0
+ },
+ "events": [
+  {
+   "session_id": "ev_gov_001",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+12025550134",
+   "carrier_label": "none",
+   "attestation": "C",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_gov_001",
+   "t": 6.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "This is Officer Reyes with the Internal Revenue Service. There's a warrant for your arrest over unpaid taxes."
+  },
+  {
+   "session_id": "ev_gov_001",
+   "t": 14.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "What? I paid my taxes."
+  },
+  {
+   "session_id": "ev_gov_001",
+   "t": 27.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "You owe 3,214 dollars. If you hang up, deputies will be sent to your home."
+  },
+  {
+   "session_id": "ev_gov_001",
+   "t": 46.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "You can settle this today only with gift cards from a nearby store. Stay on the line as you go."
+  },
+  {
+   "session_id": "ev_gov_001",
+   "t": 72.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I don't feel comfortable."
+  },
+  {
+   "session_id": "ev_gov_001",
+   "t": 78.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Then I'll transfer this to the sheriff."
+  },
+  {
+   "session_id": "ev_gov_001",
+   "t": 110.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

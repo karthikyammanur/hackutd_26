@@ -1,0 +1,85 @@
+{
+ "session_id": "ev_sim_004",
+ "label": {
+  "scam": true,
+  "type": "carrier_sim_swap",
+  "hard_negative": false,
+  "first_scam_t": 58.0
+ },
+ "events": [
+  {
+   "session_id": "ev_sim_004",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+18175550146",
+   "carrier_label": "none",
+   "attestation": "C",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_sim_004",
+   "t": 8.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "T-Mobile billing here. Your bill's past due and you'll be disconnected today."
+  },
+  {
+   "session_id": "ev_sim_004",
+   "t": 16.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I set up autopay though."
+  },
+  {
+   "session_id": "ev_sim_004",
+   "t": 31.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "The autopay failed. To keep service I can forward your calls to our payment desk while we fix it."
+  },
+  {
+   "session_id": "ev_sim_004",
+   "t": 58.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Dial star seven two and this number I give you. It's quick."
+  },
+  {
+   "session_id": "ev_sim_004",
+   "t": 62.0,
+   "source": "network",
+   "kind": "account_change",
+   "action": "call_forwarding_on",
+   "status": "attempted"
+  },
+  {
+   "session_id": "ev_sim_004",
+   "t": 64.0,
+   "source": "system",
+   "kind": "account_change",
+   "action": "call_forwarding_on",
+   "status": "held"
+  },
+  {
+   "session_id": "ev_sim_004",
+   "t": 80.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Good, and let's take a payment of 180 on a prepaid card."
+  },
+  {
+   "session_id": "ev_sim_004",
+   "t": 120.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

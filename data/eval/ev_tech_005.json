@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_tech_005",
+ "label": {
+  "scam": true,
+  "type": "tech_support_remote",
+  "hard_negative": false,
+  "first_scam_t": 66.0
+ },
+ "events": [
+  {
+   "session_id": "ev_tech_005",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+12815550129",
+   "carrier_label": "none",
+   "attestation": "C",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_tech_005",
+   "t": 6.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hi, this is antivirus renewal. Your subscription auto-renewed for 499 dollars."
+  },
+  {
+   "session_id": "ev_tech_005",
+   "t": 14.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I don't want that."
+  },
+  {
+   "session_id": "ev_tech_005",
+   "t": 29.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "I'll refund you. I need to get into your computer to enter the refund."
+  },
+  {
+   "session_id": "ev_tech_005",
+   "t": 66.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Open the Quick Assist tool and read me the security code. That lets me connect."
+  },
+  {
+   "session_id": "ev_tech_005",
+   "t": 88.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Okay, I see a code."
+  },
+  {
+   "session_id": "ev_tech_005",
+   "t": 93.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "What's the code?"
+  },
+  {
+   "session_id": "ev_tech_005",
+   "t": 132.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

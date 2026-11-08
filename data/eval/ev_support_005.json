@@ -1,0 +1,76 @@
+{
+ "session_id": "ev_support_005",
+ "label": {
+  "scam": true,
+  "type": "fake_support_outbound",
+  "hard_negative": false,
+  "first_scam_t": 55.0
+ },
+ "events": [
+  {
+   "session_id": "ev_support_005",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "outbound",
+   "number": "+18335550120",
+   "carrier_label": "none",
+   "attestation": "none",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_support_005",
+   "t": 6.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Streaming support. Your name please?"
+  },
+  {
+   "session_id": "ev_support_005",
+   "t": 12.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "My subscription keeps billing me after I cancelled."
+  },
+  {
+   "session_id": "ev_support_005",
+   "t": 27.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "I see an overcharge of 299. I can refund that to your bank."
+  },
+  {
+   "session_id": "ev_support_005",
+   "t": 55.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Log into your bank while we're on the phone so I can see the refund land."
+  },
+  {
+   "session_id": "ev_support_005",
+   "t": 58.0,
+   "source": "network",
+   "kind": "bank_app_traffic",
+   "org": "Lone Star Bank"
+  },
+  {
+   "session_id": "ev_support_005",
+   "t": 80.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Oh no, I accidentally refunded 2,990. You need to send back the difference with gift cards so I don't lose my job."
+  },
+  {
+   "session_id": "ev_support_005",
+   "t": 120.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

@@ -1,0 +1,45 @@
+{
+ "session_id": "ev_easy_015",
+ "label": {
+  "scam": false,
+  "type": "benign_personal",
+  "hard_negative": false,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_easy_015",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+12545550185",
+   "carrier_label": "none",
+   "attestation": "A",
+   "first_seen": false,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_easy_015",
+   "t": 6.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hey, what's for dinner?"
+  },
+  {
+   "session_id": "ev_easy_015",
+   "t": 12.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Tacos."
+  },
+  {
+   "session_id": "ev_easy_015",
+   "t": 15.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

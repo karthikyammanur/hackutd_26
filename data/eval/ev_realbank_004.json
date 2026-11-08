@@ -1,0 +1,76 @@
+{
+ "session_id": "ev_realbank_004",
+ "label": {
+  "scam": false,
+  "type": "benign_bank_callback",
+  "hard_negative": true,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_realbank_004",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "outbound",
+   "number": "+18005550174",
+   "carrier_label": "none",
+   "attestation": "A",
+   "first_seen": false,
+   "verified_org": "Bluebonnet Savings"
+  },
+  {
+   "session_id": "ev_realbank_004",
+   "t": 11.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Bluebonnet Savings. How can I help today?"
+  },
+  {
+   "session_id": "ev_realbank_004",
+   "t": 18.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I want to send a wire to my title company for closing on my house."
+  },
+  {
+   "session_id": "ev_realbank_004",
+   "t": 34.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Sure, we can do that. Wires over 10,000 need a verbal confirmation. You'll get a text code and an alert in the app."
+  },
+  {
+   "session_id": "ev_realbank_004",
+   "t": 47.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "bank_shortcode",
+   "org": "Bluebonnet Savings"
+  },
+  {
+   "session_id": "ev_realbank_004",
+   "t": 50.0,
+   "source": "network",
+   "kind": "bank_app_traffic",
+   "org": "Bluebonnet Savings"
+  },
+  {
+   "session_id": "ev_realbank_004",
+   "t": 66.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Your wire of 42,000 is sent to the title company. It's safe to close it out."
+  },
+  {
+   "session_id": "ev_realbank_004",
+   "t": 85.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

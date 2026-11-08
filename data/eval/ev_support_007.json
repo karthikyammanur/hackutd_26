@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_support_007",
+ "label": {
+  "scam": true,
+  "type": "fake_support_outbound",
+  "hard_negative": false,
+  "first_scam_t": 53.0
+ },
+ "events": [
+  {
+   "session_id": "ev_support_007",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "outbound",
+   "number": "+18775550122",
+   "carrier_label": "none",
+   "attestation": "C",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_support_007",
+   "t": 8.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "T-Mobile store line, this is Andre."
+  },
+  {
+   "session_id": "ev_support_007",
+   "t": 14.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I wanted to ask about the refund for my returned phone."
+  },
+  {
+   "session_id": "ev_support_007",
+   "t": 31.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "That refund is stuck. I can release it, but your account needs a verification."
+  },
+  {
+   "session_id": "ev_support_007",
+   "t": 53.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Buy a 100 dollar Apple card, and share the code on the back with me. It's refunded right away."
+  },
+  {
+   "session_id": "ev_support_007",
+   "t": 72.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Doesn't T-Mobile just credit my bill?"
+  },
+  {
+   "session_id": "ev_support_007",
+   "t": 78.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Not for returns."
+  },
+  {
+   "session_id": "ev_support_007",
+   "t": 108.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

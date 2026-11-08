@@ -1,0 +1,85 @@
+{
+ "session_id": "ev_sim_008",
+ "label": {
+  "scam": true,
+  "type": "carrier_sim_swap",
+  "hard_negative": false,
+  "first_scam_t": 50.0
+ },
+ "events": [
+  {
+   "session_id": "ev_sim_008",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+15125550150",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_sim_008",
+   "t": 5.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hi, I'm with T-Mobile's loyalty department. We owe you a 200 dollar credit."
+  },
+  {
+   "session_id": "ev_sim_008",
+   "t": 13.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Oh, great."
+  },
+  {
+   "session_id": "ev_sim_008",
+   "t": 28.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "I'll put that on your next bill. Logging in, there will be a code."
+  },
+  {
+   "session_id": "ev_sim_008",
+   "t": 41.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "other_shortcode",
+   "org": "T-Mobile"
+  },
+  {
+   "session_id": "ev_sim_008",
+   "t": 50.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Read it out so that I can post the credit."
+  },
+  {
+   "session_id": "ev_sim_008",
+   "t": 60.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Okay, 8 8 1..."
+  },
+  {
+   "session_id": "ev_sim_008",
+   "t": 70.0,
+   "source": "network",
+   "kind": "account_change",
+   "action": "sim_change",
+   "status": "attempted"
+  },
+  {
+   "session_id": "ev_sim_008",
+   "t": 95.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

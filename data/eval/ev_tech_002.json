@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_tech_002",
+ "label": {
+  "scam": true,
+  "type": "tech_support_remote",
+  "hard_negative": false,
+  "first_scam_t": 62.0
+ },
+ "events": [
+  {
+   "session_id": "ev_tech_002",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+14695550126",
+   "carrier_label": "none",
+   "attestation": "C",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_tech_002",
+   "t": 7.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hello, I'm calling from your internet provider's security team. Your router has been compromised."
+  },
+  {
+   "session_id": "ev_tech_002",
+   "t": 15.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Who is this?"
+  },
+  {
+   "session_id": "ev_tech_002",
+   "t": 33.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Your IP address is showing malware. I need access to your PC so I can clean it."
+  },
+  {
+   "session_id": "ev_tech_002",
+   "t": 62.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Please press the Windows key and R, and then type what I tell you. It lets my technician connect."
+  },
+  {
+   "session_id": "ev_tech_002",
+   "t": 85.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Are you sure?"
+  },
+  {
+   "session_id": "ev_tech_002",
+   "t": 90.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Your data's being uploaded right now, ma'am. Quickly."
+  },
+  {
+   "session_id": "ev_tech_002",
+   "t": 130.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

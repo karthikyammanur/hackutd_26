@@ -1,0 +1,85 @@
+{
+ "session_id": "ev_sim_007",
+ "label": {
+  "scam": true,
+  "type": "carrier_sim_swap",
+  "hard_negative": false,
+  "first_scam_t": 44.0
+ },
+ "events": [
+  {
+   "session_id": "ev_sim_007",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+19725550149",
+   "carrier_label": "none",
+   "attestation": "C",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_sim_007",
+   "t": 6.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "T-Mobile account team. There's a question on the account PIN."
+  },
+  {
+   "session_id": "ev_sim_007",
+   "t": 14.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "What about it?"
+  },
+  {
+   "session_id": "ev_sim_007",
+   "t": 27.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "We were told it was compromised, so what's the current one so that I can change it?"
+  },
+  {
+   "session_id": "ev_sim_007",
+   "t": 44.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Thanks. Next you'll get a transfer PIN, and that's what I'll need to protect you."
+  },
+  {
+   "session_id": "ev_sim_007",
+   "t": 48.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "other_shortcode",
+   "org": "T-Mobile"
+  },
+  {
+   "session_id": "ev_sim_007",
+   "t": 60.0,
+   "source": "network",
+   "kind": "account_change",
+   "action": "port_out",
+   "status": "attempted"
+  },
+  {
+   "session_id": "ev_sim_007",
+   "t": 62.0,
+   "source": "system",
+   "kind": "account_change",
+   "action": "port_out",
+   "status": "held"
+  },
+  {
+   "session_id": "ev_sim_007",
+   "t": 85.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

@@ -1,0 +1,85 @@
+{
+ "session_id": "ev_care_001",
+ "label": {
+  "scam": false,
+  "type": "benign_carrier_care",
+  "hard_negative": true,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_care_001",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "outbound",
+   "number": "+18005550179",
+   "carrier_label": "none",
+   "attestation": "A",
+   "first_seen": false,
+   "verified_org": "T-Mobile"
+  },
+  {
+   "session_id": "ev_care_001",
+   "t": 9.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "T-Mobile, this is Marisol, how can I help?"
+  },
+  {
+   "session_id": "ev_care_001",
+   "t": 16.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "My phone was stolen. I need to move my number to my new phone."
+  },
+  {
+   "session_id": "ev_care_001",
+   "t": 31.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "I'm sorry to hear that. I'll send a code to your backup email and to your T-Life app."
+  },
+  {
+   "session_id": "ev_care_001",
+   "t": 40.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "other_shortcode",
+   "org": "T-Mobile"
+  },
+  {
+   "session_id": "ev_care_001",
+   "t": 56.0,
+   "source": "network",
+   "kind": "account_change",
+   "action": "sim_change",
+   "status": "attempted"
+  },
+  {
+   "session_id": "ev_care_001",
+   "t": 62.0,
+   "source": "network",
+   "kind": "account_change",
+   "action": "sim_change",
+   "status": "completed"
+  },
+  {
+   "session_id": "ev_care_001",
+   "t": 78.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "You're all set. Your new SIM's active."
+  },
+  {
+   "session_id": "ev_care_001",
+   "t": 90.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

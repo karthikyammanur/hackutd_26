@@ -1,0 +1,85 @@
+{
+ "session_id": "ev_bank_008",
+ "label": {
+  "scam": true,
+  "type": "bank_safe_account",
+  "hard_negative": false,
+  "first_scam_t": 48.0
+ },
+ "events": [
+  {
+   "session_id": "ev_bank_008",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+14305550108",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_bank_008",
+   "t": 5.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hi, it's Jordan at the Trinity Valley Bank help desk. You called earlier about your card?"
+  },
+  {
+   "session_id": "ev_bank_008",
+   "t": 12.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Um, I don't think so."
+  },
+  {
+   "session_id": "ev_bank_008",
+   "t": 20.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Well there's a hold on it now. I can lift it but I have to verify you."
+  },
+  {
+   "session_id": "ev_bank_008",
+   "t": 38.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "bank_shortcode",
+   "org": "Trinity Valley Bank"
+  },
+  {
+   "session_id": "ev_bank_008",
+   "t": 48.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Great, I'm seeing that the text went out. What are the numbers?"
+  },
+  {
+   "session_id": "ev_bank_008",
+   "t": 65.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "7 2... wait why do you need it?"
+  },
+  {
+   "session_id": "ev_bank_008",
+   "t": 70.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "It's just to lift the hold, it takes a second."
+  },
+  {
+   "session_id": "ev_bank_008",
+   "t": 92.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

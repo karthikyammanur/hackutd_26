@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_care_002",
+ "label": {
+  "scam": false,
+  "type": "benign_carrier_care",
+  "hard_negative": true,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_care_002",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "outbound",
+   "number": "+18005550180",
+   "carrier_label": "none",
+   "attestation": "A",
+   "first_seen": false,
+   "verified_org": "T-Mobile"
+  },
+  {
+   "session_id": "ev_care_002",
+   "t": 12.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Thanks for calling T-Mobile. Who do I have the pleasure of speaking with?"
+  },
+  {
+   "session_id": "ev_care_002",
+   "t": 20.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I'm switching to another carrier, and I need my transfer PIN."
+  },
+  {
+   "session_id": "ev_care_002",
+   "t": 36.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Sorry to see you go. Your port-out PIN will be sent to you by text."
+  },
+  {
+   "session_id": "ev_care_002",
+   "t": 43.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "other_shortcode",
+   "org": "T-Mobile"
+  },
+  {
+   "session_id": "ev_care_002",
+   "t": 55.0,
+   "source": "network",
+   "kind": "account_change",
+   "action": "port_out",
+   "status": "attempted"
+  },
+  {
+   "session_id": "ev_care_002",
+   "t": 70.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Anything else?"
+  },
+  {
+   "session_id": "ev_care_002",
+   "t": 80.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

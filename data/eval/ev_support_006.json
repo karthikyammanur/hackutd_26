@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_support_006",
+ "label": {
+  "scam": true,
+  "type": "fake_support_outbound",
+  "hard_negative": false,
+  "first_scam_t": 66.0
+ },
+ "events": [
+  {
+   "session_id": "ev_support_006",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "outbound",
+   "number": "+18885550121",
+   "carrier_label": "none",
+   "attestation": "C",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_support_006",
+   "t": 5.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hello, thank you for calling crypto wallet support, how can I secure your wallet?"
+  },
+  {
+   "session_id": "ev_support_006",
+   "t": 12.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I can't log in, I think someone took it."
+  },
+  {
+   "session_id": "ev_support_006",
+   "t": 33.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "I can restore it. Our team just needs your recovery phrase to verify ownership."
+  },
+  {
+   "session_id": "ev_support_006",
+   "t": 66.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Type out all twelve words and read them to me slowly. That's standard."
+  },
+  {
+   "session_id": "ev_support_006",
+   "t": 85.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I thought I wasn't supposed to do that."
+  },
+  {
+   "session_id": "ev_support_006",
+   "t": 90.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Only if you're not speaking to official support."
+  },
+  {
+   "session_id": "ev_support_006",
+   "t": 120.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}
