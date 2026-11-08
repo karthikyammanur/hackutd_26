@@ -71,6 +71,23 @@ message text (R8).
 The callback refuses to run (`ToolConfigError`, nothing dialed) if `ELEVENLABS_BANK_AGENT_ID` is unset or
 equals `SCAMMER_AGENT_ID`. Nothing ever dials 911, 988 or 112 (R1).
 
+## Live Hero 1: real call in, real bank code in
+
+1. **Scammer call -> API.** `python -u spikes/live_bridge.py --yes` places the Scammer Simulator call
+   (`SCAMMER_AGENT_ID`, now the "Safe Signal Scammer Sim (Hero 1)" agent; the old agent refused scam asks) and
+   polls the ElevenLabs conversation every second, posting `call_start`, each line as a `turn`, and `call_end`.
+   It prints t, wall time and length per turn, never the text (R8).
+2. **Bank code -> API.** The call-screener app (`spikes/call-screener`) now listens for incoming texts. A text
+   with a 4-8 digit code and a code word is reported as `POST /live/sms {"sender_type", "org"}`: a 5-6 digit
+   sender is a short code, `bank_shortcode` when the text names a bank. The code and the text never leave the
+   phone. The API attaches it to the newest live call; no live call, it is ignored.
+3. **Trigger a real bank code** during the call (e.g. "forgot password" or sign-in on a real bank's site).
+   Only `bank_shortcode` counts, so a teammate texting a code from their own number will not trigger it.
+   **Never read the real code aloud**: ElevenLabs keeps the scammer call's transcript.
+4. The phone reaches the API through a tunnel (`ngrok http 8000`): set the URL in the app's
+   "API address" box, or `SAFE_SIGNAL_PHONE_API_URL` in `.env` before building. The tunnel also exposes
+   `WS /ws/{id}` (live turn text), so stop it after the demo.
+
 ## Spikes and checks
 
 | Command | Real send? |

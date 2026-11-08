@@ -22,7 +22,7 @@ from fastapi import Body, FastAPI, HTTPException, Query, WebSocket, WebSocketDis
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, ConfigDict, TypeAdapter, ValidationError
 
-from contracts.events import CallStart, EvalCase, Event
+from contracts.events import CallStart, EvalCase, Event, SmsOtp, Source
 from contracts.state import SessionState, UIMessage
 from services.agents.tools.errors import ToolConfigError
 from services.api.hub import Hub, LiveSession, parse_choice, tools_mode
@@ -119,6 +119,32 @@ async def post_choice(session_id: str, body: ChoiceIn) -> dict[str, Any]:
     if not live.submit(event):
         raise HTTPException(409, "call already ended; the choice came too late for aftercare")
     return {"session_id": session_id, "choice": choice, "t": event.t}
+
+
+class SmsIn(BaseModel):
+    """From the call-screener app on the customer's phone. Never the code or the message text: the phone only
+    says what kind of sender a one-time code came from, and which bank its text named."""
+
+    model_config = ConfigDict(extra="forbid")
+    sender_type: Literal["bank_shortcode", "other_shortcode", "longcode"]
+    org: str | None = None
+
+
+@app.post("/live/sms", status_code=202)
+async def post_live_sms(body: SmsIn) -> dict[str, Any]:
+    """A one-time code just arrived on the customer's phone: an sms_otp event on the live call, if there is one."""
+    live = hub.active()
+    if live is None:
+        return {"accepted": False, "reason": "no live call"}  # a code with no call running is not a signal
+    event = SmsOtp(
+        session_id=live.session_id,
+        t=live.last_t,
+        source=Source.phone,
+        sender_type=body.sender_type,
+        org=body.org,
+    )
+    live.submit(event)
+    return {"accepted": True, "session_id": live.session_id, "t": event.t}
 
 
 @app.get("/sessions/{session_id}")

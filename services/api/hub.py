@@ -140,6 +140,11 @@ class Hub:
     def get(self, session_id: str) -> LiveSession | None:
         return self.sessions.get(session_id)
 
+    def active(self) -> LiveSession | None:
+        """The newest session whose call has not ended (the phone's SMS listener does not know session ids)."""
+        live = [s for s in self.sessions.values() if not s.ended and s.replay_task is None]
+        return live[-1] if live else None
+
     async def start(self, session_id: str, offline: bool) -> LiveSession:
         """A fresh session (an old one with the same id is closed). Sockets already waiting are attached."""
         tools = session_tools()  # before touching the old session, so a config error leaves it running

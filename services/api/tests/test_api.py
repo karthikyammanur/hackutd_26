@@ -257,3 +257,37 @@ def test_tools_switch(client: TestClient, monkeypatch: pytest.MonkeyPatch) -> No
 def test_unknown_fixture_is_404(client: TestClient) -> None:
     assert client.post("/sessions/no_such_fixture/replay").status_code == 404
     assert client.post("/sessions/..%2Fsecrets/replay").status_code == 404
+
+
+def test_live_sms_reaches_the_live_call_without_the_code(client: TestClient) -> None:
+    sid = "live_sms"
+    start = {
+        "session_id": sid,
+        "t": 0,
+        "source": "network",
+        "kind": "call_start",
+        "direction": "inbound",
+        "number": "+15550100",
+        "first_seen": True,
+    }
+    assert client.post(f"/sessions/{sid}/events?offline=true", json=start).status_code == 202
+    turn = {
+        "session_id": sid,
+        "t": 30,
+        "source": "network",
+        "kind": "turn",
+        "speaker": "caller",
+        "text": "hi",
+    }
+    assert client.post(f"/sessions/{sid}/events", json=turn).status_code == 202
+    # the phone never sends the code or the text: extra fields are refused
+    leak = {"sender_type": "bank_shortcode", "org": "Chase", "body": "Your code is 123456"}
+    assert client.post("/live/sms", json=leak).status_code == 422
+    r = client.post("/live/sms", json={"sender_type": "bank_shortcode", "org": "Chase"})
+    assert r.status_code == 202 and r.json() == {"accepted": True, "session_id": sid, "t": 30.0}
+    state = _wait_state(client, sid, lambda s: any(x.kind == "otp_during_call" for x in s.signals))
+    assert [x.detail for x in state.signals if x.kind == "otp_during_call"] == ["Chase"]
+    end = {"session_id": sid, "t": 40, "source": "network", "kind": "call_end"}
+    assert client.post(f"/sessions/{sid}/events", json=end).status_code == 202
+    after = client.post("/live/sms", json={"sender_type": "bank_shortcode"}).json()
+    assert after.get("session_id") != sid  # an ended call never gets a late code

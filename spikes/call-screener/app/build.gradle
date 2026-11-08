@@ -1,0 +1,49 @@
+plugins {
+    id "com.android.application"
+}
+
+// The scam list is baked in at build time from DEMO_SCAM_NUMBER in the repo's .env
+// (comma-separated, E.164). Teammates' own numbers only (R10).
+def scamNumbers = System.getenv("DEMO_SCAM_NUMBER") ?: ""
+def envFile = rootProject.file("../../.env")
+if (!scamNumbers && envFile.exists()) {
+    envFile.eachLine { line ->
+        def m = line =~ /^\s*DEMO_SCAM_NUMBER\s*=\s*"?([^"#]*)"?/
+        if (m) scamNumbers = m[0][1].trim()
+    }
+}
+// Optional default for the app's API address box (the laptop running the API, reachable from the phone).
+def phoneApiUrl = System.getenv("SAFE_SIGNAL_PHONE_API_URL") ?: ""
+if (!phoneApiUrl && envFile.exists()) {
+    envFile.eachLine { line ->
+        def m = line =~ /^\s*SAFE_SIGNAL_PHONE_API_URL\s*=\s*"?([^"#]*)"?/
+        if (m) phoneApiUrl = m[0][1].trim()
+    }
+}
+if (!scamNumbers) {
+    throw new GradleException("DEMO_SCAM_NUMBER is not set in .env")
+}
+
+android {
+    namespace "com.safesignal.screener"
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "com.safesignal.screener"
+        minSdk 29
+        targetSdk 35
+        versionCode 1
+        versionName "0.1"
+        buildConfigField "String", "SCAM_NUMBERS", "\"${scamNumbers}\""
+        buildConfigField "String", "PHONE_API_URL", "\"${phoneApiUrl}\""
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
