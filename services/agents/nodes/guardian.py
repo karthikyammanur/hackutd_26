@@ -80,13 +80,23 @@ def match_turn(quote: str, state: GraphState) -> Turn | None:
 
 
 def to_flags(out: GuardianOutput, state: GraphState) -> tuple[list[Flag], int]:
-    """Attach t from the matched turn; drop customer quotes, unmatched quotes and repeats. Returns (flags, dropped)."""
+    """Attach t from the matched turn; drop customer quotes, unmatched quotes, repeats, and hindsight flags.
+
+    Hindsight: a turn already judged by an earlier successful check is not re-flagged because later turns make
+    the call look worse (a real fraud alert opens with the same story). Turns from a failed check stay open.
+    Returns (flags, dropped).
+    """
     seen = {(f.kind, f.t) for f in state.flags}
     flags: list[Flag] = []
     dropped = 0
     for g in out.flags:
         turn = match_turn(g.quote, state)
-        if turn is None or turn.speaker != "caller" or (g.kind, turn.t) in seen:
+        if (
+            turn is None
+            or turn.speaker != "caller"
+            or turn.t <= state.guardian_ok_t
+            or (g.kind, turn.t) in seen
+        ):
             dropped += 1
             continue
         seen.add((g.kind, turn.t))
@@ -129,6 +139,7 @@ def make_guardian(
         if state.guard_paused:
             update["guard_paused"] = False
         flags, dropped = to_flags(out, view)
+        update["guardian_ok_t"] = view.transcript_window[-1].t
         if flags:
             update["flags"] = flags
             note = f" (dropped {dropped})" if dropped else ""

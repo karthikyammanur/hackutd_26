@@ -21,6 +21,7 @@ class GraphState(SessionState):
     transcript_window: list[Turn] = Field(default_factory=list)  # last WINDOW_TURNS turns, memory only (R8)
     turns_seen: int = 0
     guardian_checked_t: float = -1.0  # turns up to this t have been checked
+    guardian_ok_t: float = -1.0  # turns up to this t were judged by a successful Nemotron check
     after_iterations: int = 0  # router visits in the after phase (hard cap in nodes/after.py)
 
 

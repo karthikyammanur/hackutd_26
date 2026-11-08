@@ -11,11 +11,11 @@ from typing import Any
 import pytest
 from dotenv import load_dotenv
 
-from contracts.events import Source, Turn
+from contracts.events import EvalCase, Source, Turn
 from contracts.state import CallerInfo, Flag, Level, SessionState
 from services.agents import llm
 from services.agents.graph import stubs
-from services.agents.graph.runner import replay
+from services.agents.graph.runner import replay, replay_case
 from services.agents.graph.state import GraphState
 from services.agents.nodes.guardian import make_guardian
 from services.agents.prompts import GuardianFlag, GuardianOutput, load_prompt
@@ -116,6 +116,35 @@ def test_keyword_fallback_is_off_by_default_and_works_when_on() -> None:
     assert [f.kind for f in on["flags"]] == ["read_code"] and on["guard_paused"] is True
 
 
+STORY = "We noticed a large transfer on your account this morning. Did you authorize it?"
+
+
+def test_hindsight_flag_on_an_already_judged_turn_is_dropped() -> None:
+    """t=20 was judged at t=20; a later check can't re-flag it because the call now looks worse."""
+    window = [_turn(20, "caller", STORY)]
+    fake = FakeLLM(
+        _out(
+            ("policy_contradiction", "Did you authorize it?", 0.95),
+            ("read_code", "Read the digits to me now", 0.9),
+        )
+    )
+    update = make_guardian(fake)(_state(_turn(60, "caller", ASK), window, guardian_ok_t=20))
+    assert [(f.kind, f.t) for f in update["flags"]] == [("read_code", 60)]
+    assert update["guardian_ok_t"] == 60
+
+
+def test_turns_from_a_failed_check_stay_open() -> None:
+    window = [_turn(20, "caller", STORY)]
+    fake = FakeLLM(_out(("policy_contradiction", "Did you authorize it?", 0.95)))
+    update = make_guardian(fake)(_state(_turn(60, "caller", ASK), window, guardian_ok_t=-1.0))
+    assert [(f.kind, f.t) for f in update["flags"]] == [("policy_contradiction", 20)]
+
+
+def test_failed_check_does_not_advance_ok_t() -> None:
+    update = make_guardian(FakeLLM(llm.LLMUnavailable("down")))(_state(_turn(60, "caller", ASK)))
+    assert "guardian_ok_t" not in update
+
+
 # --- live: replay each fixture with the Nemotron Guardian --------------------------------------------------
 
 LIVE = bool(os.environ.get("NEMOTRON_BASE_URL"))
@@ -169,3 +198,52 @@ def test_live_real_bank_callback_has_no_flag_above_half(live_runs: dict[str, Any
 
 def test_live_guard_never_paused(live_runs: dict[str, Any]) -> None:
     assert not any("guard paused" == x.action for s in live_runs["finals"].values() for x in s.trace)
+
+
+GENUINE_FRAUD_ALERT = {
+    "session_id": "inline_genuine_fraud_alert",
+    "label": {"scam": False, "type": "benign_bank_fraud_alert", "hard_negative": True},
+    "events": [
+        {
+            "t": 0,
+            "source": "network",
+            "kind": "call_start",
+            "direction": "inbound",
+            "number": "+15125550186",
+            "carrier_label": "none",
+            "attestation": "A",
+            "first_seen": True,
+        },
+        {
+            "t": 7,
+            "source": "network",
+            "kind": "turn",
+            "speaker": "caller",
+            "text": "This is the fraud prevention line at Cedar Ridge Bank. We saw a 74 dollar charge at a gas station about an hour ago. Did you make it?",
+        },
+        {"t": 15, "source": "network", "kind": "turn", "speaker": "customer", "text": "No, I didn't."},
+        {
+            "t": 22,
+            "source": "network",
+            "kind": "turn",
+            "speaker": "caller",
+            "text": "Okay, then we'll block the card right away and send a new one. You can also check your recent activity in your banking app.",
+        },
+        {"t": 30, "source": "network", "kind": "turn", "speaker": "customer", "text": "Great, thank you."},
+        {"t": 36, "source": "network", "kind": "call_end"},
+    ],
+}
+
+
+def test_live_genuine_bank_fraud_alert_gets_no_flag_above_half() -> None:
+    """A real fraud-alert call opens with a story and a question. That is not policy_contradiction."""
+    if not LIVE:
+        pytest.skip("needs NEMOTRON_BASE_URL in .env")
+    raw = {
+        **GENUINE_FRAUD_ALERT,
+        "events": [{"session_id": "inline_genuine_fraud_alert", **e} for e in GENUINE_FRAUD_ALERT["events"]],
+    }
+    final, _ = replay_case(EvalCase.model_validate(raw), stubs.fake_tools(), guardian=make_guardian())
+    print("\ngenuine fraud alert flags:", [(f.kind, f.t, f.confidence) for f in final.flags] or "none")
+    assert not [f for f in final.flags if f.confidence > 0.5], final.flags
+    assert not final.guard_paused
