@@ -1,0 +1,15 @@
+{
+  "session_id": "fx_real_tmobile_care",
+  "label": {"scam": false, "type": "benign_carrier_care", "hard_negative": true, "first_scam_t": null},
+  "events": [
+    {"session_id": "fx_real_tmobile_care", "t": 0, "source": "network", "kind": "call_start", "direction": "outbound", "number": "+18005550110", "carrier_label": "none", "attestation": "A", "first_seen": false, "verified_org": "T-Mobile"},
+    {"session_id": "fx_real_tmobile_care", "t": 9, "source": "network", "kind": "turn", "speaker": "caller", "text": "Thanks for calling T-Mobile, this is Priya. What can I do for you?"},
+    {"session_id": "fx_real_tmobile_care", "t": 17, "source": "network", "kind": "turn", "speaker": "customer", "text": "My phone cracked and I'm moving my line to my new phone. I need a new SIM activated."},
+    {"session_id": "fx_real_tmobile_care", "t": 29, "source": "network", "kind": "turn", "speaker": "caller", "text": "Sure. I'm texting a code to the number on your account. Enter it in the T-Life app, you don't need to tell it to me."},
+    {"session_id": "fx_real_tmobile_care", "t": 36, "source": "network", "kind": "sms_otp", "sender_type": "other_shortcode", "org": "T-Mobile"},
+    {"session_id": "fx_real_tmobile_care", "t": 52, "source": "network", "kind": "account_change", "action": "sim_change", "status": "attempted"},
+    {"session_id": "fx_real_tmobile_care", "t": 58, "source": "network", "kind": "account_change", "action": "sim_change", "status": "completed"},
+    {"session_id": "fx_real_tmobile_care", "t": 66, "source": "network", "kind": "turn", "speaker": "caller", "text": "All set, the new SIM is active. Anything else I can transfer you for today?"},
+    {"session_id": "fx_real_tmobile_care", "t": 74, "source": "network", "kind": "call_end"}
+  ]
+}
