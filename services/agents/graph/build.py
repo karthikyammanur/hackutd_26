@@ -24,6 +24,7 @@ from services.agents.graph import stubs
 from services.agents.graph.deps import Tools
 from services.agents.graph.state import GraphState
 from services.agents.nodes import after, during
+from services.agents.nodes.guardian import make_guardian
 
 EVENT_NODE = {
     "sms_otp": "signal_watcher",
@@ -65,14 +66,17 @@ def new_checkpointer() -> InMemorySaver:
     return InMemorySaver(serde=JsonPlusSerializer(allowed_msgpack_modules=_contract_types()))
 
 
-def build_graph(tools: Tools, checkpointer: InMemorySaver | None = None) -> CompiledStateGraph:
+def build_graph(
+    tools: Tools, checkpointer: InMemorySaver | None = None, guardian: during.Node | None = None
+) -> CompiledStateGraph:
+    """guardian defaults to the Nemotron Guardian; pass during.keyword_guardian to run offline."""
     g = StateGraph(GraphState)
 
     # during
     g.add_node("emergency", during.emergency)
     g.add_node("caller_screen", during.make_caller_screen(tools))
     g.add_node("signal_watcher", during.signal_watcher)
-    g.add_node("guardian", during.guardian)
+    g.add_node("guardian", guardian or make_guardian())
     g.add_node("decide", during.make_decide(tools))
     g.add_node("alert", during.make_alert(tools))
     g.add_node("record_choice", during.record_choice)

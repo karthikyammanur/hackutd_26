@@ -12,6 +12,7 @@ from services.agents.graph.deps import Tools
 from services.agents.graph.runner import replay
 from services.agents.graph.state import GraphState
 from services.agents.nodes import during
+from services.agents.nodes.during import keyword_guardian
 
 FIX = Path(__file__).resolve().parents[3] / "evals" / "fixtures"
 BUTTONS = ["call_bank", "ask_trusted_contact", "continue"]
@@ -84,7 +85,7 @@ def test_failed_delivery_keeps_alert_in_state() -> None:
 
 def test_hero1_delivers_one_whisper_and_one_notify() -> None:
     f = Fakes()
-    replay(FIX / "hero1_fake_bank.json", tools=f.tools)
+    replay(FIX / "hero1_fake_bank.json", tools=f.tools, guardian=keyword_guardian)
     assert len(f.voice.calls) == 1
     notifies = [c for c in f.comms.calls if c[0] == "notify"]
     assert len(notifies) == 1 and notifies[0][3] == ",".join(BUTTONS)
@@ -92,7 +93,7 @@ def test_hero1_delivers_one_whisper_and_one_notify() -> None:
 
 def test_real_bank_delivers_nothing() -> None:
     f = Fakes()
-    replay(FIX / "real_bank_callback.json", tools=f.tools)
+    replay(FIX / "real_bank_callback.json", tools=f.tools, guardian=keyword_guardian)
     assert f.comms.calls == [] and f.voice.calls == []
 
 

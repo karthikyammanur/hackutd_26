@@ -1,6 +1,6 @@
 """Replay fixture sessions through the graph, as if live.
 
-    python -m services.agents.graph.runner evals/fixtures --preds preds.jsonl --show
+    python -m services.agents.graph.runner evals/fixtures --preds preds.jsonl --show [--offline]
 
 Each event is sent as {"event": e}; the in-memory checkpointer (thread_id = session_id) holds the rest.
 `on_update(node, update)` gets each node's update with graph-only fields removed (no transcript, R8).
@@ -23,15 +23,21 @@ from services.agents.graph.build import build_graph
 from services.agents.graph.deps import Tools
 from services.agents.graph.state import public_state, public_update
 from services.agents.graph.stubs import fake_tools
+from services.agents.nodes.during import Node, keyword_guardian
 
 OnUpdate = Callable[[str, dict[str, Any]], None]
 
 
 def replay_case(
-    case: EvalCase, tools: Tools | None = None, on_update: OnUpdate | None = None
+    case: EvalCase,
+    tools: Tools | None = None,
+    on_update: OnUpdate | None = None,
+    guardian: Node | None = None,
 ) -> tuple[SessionState, dict[str, Any]]:
     """Returns the final state and the prediction row for evals/run_eval.py."""
-    graph = build_graph(tools or fake_tools())  # swap fake_tools() for lane 4's adapters here
+    graph = build_graph(
+        tools or fake_tools(), guardian=guardian
+    )  # swap fake_tools() for lane 4's adapters here
     config: RunnableConfig = {"configurable": {"thread_id": case.session_id}}
     risk = Risk(score=0.0)
     pred_alerts: list[dict[str, Any]] = []
@@ -62,9 +68,10 @@ def replay(
     on_update: OnUpdate | None = None,
     preds_path: str | Path | None = None,
     tools: Tools | None = None,
+    guardian: Node | None = None,
 ) -> SessionState:
     case = EvalCase.model_validate_json(Path(fixture_path).read_text())
-    final, pred = replay_case(case, tools, on_update)
+    final, pred = replay_case(case, tools, on_update, guardian)
     if preds_path:
         with Path(preds_path).open("a") as f:
             f.write(json.dumps(pred) + "\n")
@@ -98,11 +105,12 @@ def main() -> None:
     ap.add_argument("fixtures", nargs="+")
     ap.add_argument("--preds", type=Path)
     ap.add_argument("--show", action="store_true")
+    ap.add_argument("--offline", action="store_true", help="keyword Guardian instead of Nemotron")
     args = ap.parse_args()
     if args.preds:
         args.preds.write_text("")
     for path in _fixture_paths(args.fixtures):
-        final = replay(path, preds_path=args.preds)
+        final = replay(path, preds_path=args.preds, guardian=keyword_guardian if args.offline else None)
         if args.show:
             print(show(final) + "\n")
 

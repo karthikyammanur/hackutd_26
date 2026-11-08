@@ -60,16 +60,26 @@ def signal_watcher(state: GraphState) -> Update:
     }
 
 
-def guardian(state: GraphState) -> Update:
-    """Keeps the in-memory window; checks on every caller turn and every 3rd turn."""
+def ingest_turn(state: GraphState) -> tuple[Update, bool]:
+    """Add the turn to the in-memory window. Check on every caller turn and every 3rd turn."""
     e = state.event
     assert isinstance(e, Turn)
-    window = (state.transcript_window + [e])[-WINDOW_TURNS:]
     seen = state.turns_seen + 1
-    update: Update = {"transcript_window": window, "turns_seen": seen}
-    if e.speaker == "caller" or seen % 3 == 0:
-        flags = stubs.guardian_check(window, since_t=state.guardian_checked_t)
+    update: Update = {
+        "transcript_window": (state.transcript_window + [e])[-WINDOW_TURNS:],
+        "turns_seen": seen,
+    }
+    check = e.speaker == "caller" or seen % 3 == 0
+    if check:
         update["guardian_checked_t"] = e.t
+    return update, check
+
+
+def keyword_guardian(state: GraphState) -> Update:
+    """Offline stand-in for the Nemotron Guardian (nodes/guardian.py). Used by tests and --offline replay."""
+    update, check = ingest_turn(state)
+    if check:
+        flags = stubs.guardian_check(update["transcript_window"], since_t=state.guardian_checked_t)
         if flags:
             update["flags"] = flags
             update["trace"] = trace(state, "guardian", "check window", ", ".join(f.kind for f in flags))
