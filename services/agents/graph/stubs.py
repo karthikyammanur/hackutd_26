@@ -9,7 +9,7 @@ from __future__ import annotations
 import re
 
 from contracts.events import EMERGENCY_NUMBERS, CallStart, Event, Turn
-from contracts.interfaces import Comms, Decider, Store, Voice
+from contracts.interfaces import Account, Comms, Decider, Store, Voice
 from contracts.state import CallerInfo, Flag, FlagKind, Level, Risk, SessionState, Signal
 from services.agents.graph.deps import Tools
 
@@ -207,8 +207,20 @@ class FakeStore:
     def lookup_verified(self, number: str) -> str | None:
         return VERIFIED_NUMBERS.get(number)
 
+    def official_number(self, org: str) -> str | None:
+        return ORG_NUMBERS.get(org)
+
     def search_policy(self, query: str, k: int = 3) -> list[str]:
         return []
+
+
+class FakeAccount:
+    def __init__(self) -> None:
+        self.holds: list[tuple[str, tuple[str, ...], int]] = []
+
+    def hold_changes(self, session_id: str, actions: list[str], minutes: int) -> str:
+        self.holds.append((session_id, tuple(actions), minutes))
+        return f"fake-hold-{len(self.holds)}"
 
 
 # pyright checks these against the protocols, so a drifted fake fails the type check.
@@ -216,6 +228,7 @@ _decider: Decider = decide
 _comms: Comms = FakeComms()
 _voice: Voice = FakeVoice()
 _store: Store = FakeStore()
+_account: Account = FakeAccount()
 
 
 def fake_tools() -> Tools:

@@ -37,5 +37,19 @@ def test_levels_are_ordered():
     assert Level.none < Level.nudge < Level.whisper < Level.alert
 
 
+def test_tool_protocols_expose_agreed_methods():
+    from contracts.interfaces import Account, Comms, Store, Voice
+
+    expected = {
+        Comms: {"notify", "call", "transfer", "message"},
+        Voice: {"whisper"},
+        Store: {"append_event", "save_evidence", "lookup_verified", "official_number", "search_policy"},
+        Account: {"hold_changes"},
+    }
+    for proto, methods in expected.items():
+        assert methods <= set(vars(proto)), proto.__name__
+    assert "hang_up" not in vars(Comms)  # R2
+
+
 def test_emergency_numbers_listed():
     assert {"911", "988"} <= EMERGENCY_NUMBERS
