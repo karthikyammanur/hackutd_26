@@ -1,0 +1,128 @@
+--- a/sandbox/worker/src/classify.py
++++ b/sandbox/worker/src/classify.py
+@@ -419,3 +419,31 @@
+ 
+ def safe_json(value) -> str:
+     return json.dumps(value, separators=(",", ":"))
++
++
++EXPORT_ROW_KEYS = (
++    "outcome",
++    "tier",
++    "max_p_dangerous",
++    "first_dangerous_t",
++    "money_moment_t",
++    "caught_before_money",
++    "frames",
++    "frames_answered",
++    "peak_flags",
++)
++
++
++def export_result(stored: dict) -> dict:
++    """One per-case result for the evidence backfill. An allow-list, so no call text can leave this way."""
++    row = json.loads(stored["row"])
++    return {
++        "case_id": stored["case_id"],
++        "model": stored["model"],
++        "method": stored["method"],
++        "family": stored["family"],
++        "channel": stored["channel"],
++        "weak": bool(stored["weak"]),
++        "predicted_method": stored["predicted_method"] or None,
++        "row": {key: row.get(key) for key in EXPORT_ROW_KEYS},
++    }
+--- a/sandbox/worker/src/entry.py
++++ b/sandbox/worker/src/entry.py
+@@ -14,9 +14,10 @@
+ import re
+ import time
+ from datetime import UTC, datetime
+-from urllib.parse import urlparse
++from urllib.parse import parse_qs, urlparse
+ 
+ from classify import (
++    export_result,
+     ALL_MODELS,
+     BASELINE,
+     BREV_MODELS,
+@@ -630,7 +631,7 @@
+         if path == "/runs" and method == "POST":
+             return await self.start(request)
+ 
+-        match = re.fullmatch(r"/runs/([\w-]+)(/live|/rescore|/markers\.json|/markers\.csv|/cancel|/resume)?", path)
++        match = re.fullmatch(r"/runs/([\w-]+)(/live|/rescore|/markers\.json|/markers\.csv|/cancel|/resume|/results)?", path)
+         if not match:
+             return json_response({"error": "Not found"}, 404)
+         run_id, action = match.group(1), match.group(2)
+@@ -654,6 +655,8 @@
+                 markers_csv(self.markers(run_id)),
+                 headers={"content-type": "text/csv", "content-disposition": f'attachment; filename="{run_id}-markers.csv"'},
+             )
++        if action == "/results" and method == "GET":
++            return json_response(self.export_results(run_id, parse_qs(urlparse(str(request.url)).query)))
+         if action == "/cancel" and method == "POST":
+             cancelled = run["status"] in ("running", "checking")
+             if cancelled:
+@@ -665,6 +668,28 @@
+         if action == "/resume" and method == "POST":
+             return await self.resume(run)
+         return json_response({"error": "Not found"}, 404)
++
++    def export_results(self, run_id: str, params: dict) -> dict:
++        """Keyset-paged per-case results: scores, tiers and flag names only."""
++        limit = max(1, min(int(params.get("limit", ["1000"])[0]), 1000))
++        after_case = params.get("after_case", [""])[0]
++        after_model = params.get("after_model", [""])[0]
++        model = params.get("model", [""])[0]
++        rows = self.query(
++            "SELECT case_id, model, method, family, channel, weak, predicted_method, row FROM results"
++            " WHERE run_id=? AND (case_id, model) > (?, ?) AND (?='' OR model=?) ORDER BY case_id, model LIMIT ?",
++            run_id,
++            after_case,
++            after_model,
++            model,
++            model,
++            limit,
++        )
++        last = rows[-1] if len(rows) == limit else None
++        return {
++            "items": [export_result(row) for row in rows],
++            "next": {"after_case": last["case_id"], "after_model": last["model"]} if last else None,
++        }
+ 
+     def markers(self, run_id: str) -> list[dict]:
+         return [json.loads(r["data"]) for r in self.query("SELECT data FROM markers WHERE run_id=? ORDER BY seq", run_id)]
+--- a/sandbox/worker/tests/test_classify.py
++++ b/sandbox/worker/tests/test_classify.py
+@@ -2,6 +2,8 @@
+ 
+ import sys
+ from pathlib import Path
++
++import json
+ 
+ import pytest
+ 
+@@ -142,3 +144,21 @@
+     live = c.new_live()
+     c.absorb_report(live, report(), 2.0)
+     assert c.decisions_rate(live, 100.0, finished=True) == 0.5
++
++
++def test_export_result_is_an_allow_list():
++    row = {"outcome": "caught", "tier": "dangerous", "max_p_dangerous": 0.9, "peak_flags": {"asks_for_code": 0.9}, "text": "SECRET"}
++    stored = {
++        "case_id": "c1",
++        "model": "jev-latest",
++        "method": "tech_support",
++        "family": "impersonation",
++        "channel": "call",
++        "weak": 0,
++        "predicted_method": "",
++        "row": json.dumps(row),
++    }
++    exported = c.export_result(stored)
++    assert "SECRET" not in json.dumps(exported)
++    assert exported["predicted_method"] is None and exported["weak"] is False
++    assert exported["row"]["tier"] == "dangerous"

@@ -1,0 +1,143 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+
+  --color-magenta: #e20074;
+  --color-plum: #8a2056;
+  --color-pink: #ff78b0;
+  --color-berry: #33091f;
+  --color-ink: #161616;
+  --color-tile: #222222;
+  --color-page: #f5f5f5;
+  --color-line: #e3e3e3;
+  --color-muted: #5a5a5a;
+  --color-ok: #007700;
+  --color-ok-soft: #e6f4e6;
+  --color-caution: #8a4b00;
+  --color-caution-soft: #fff1dc;
+  --color-danger: #c62828;
+}
+
+:root {
+  --top-clear: calc(env(safe-area-inset-top) + 40px);
+  --focus: #0b57d0;
+  color: var(--color-ink);
+}
+
+html,
+body {
+  margin: 0;
+  background: #e6e6e6;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#root {
+  position: relative;
+  width: 100%;
+  max-width: 430px;
+  min-height: 100dvh;
+  margin-inline: auto;
+  background: var(--color-page);
+}
+
+button {
+  cursor: pointer;
+}
+
+@layer base {
+  :focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+  }
+}
+
+.on-dark {
+  --focus: #ffffff;
+}
+
+/* Horizontal scrollers keep native swipe without a scrollbar. */
+.scroller {
+  scrollbar-width: none;
+}
+.scroller::-webkit-scrollbar {
+  display: none;
+}
+
+/* Anything pinned to the viewport stays inside the phone-width column. */
+@utility column-fixed {
+  position: fixed;
+  left: 50%;
+  width: 100%;
+  max-width: 430px;
+  translate: -50% 0;
+}
+
+@keyframes banner-in {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+}
+
+@keyframes screen-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.banner-in {
+  animation: banner-in 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes banner-spring {
+  from {
+    opacity: 0;
+    translate: 0 -36px;
+    scale: 0.9;
+  }
+}
+
+.banner-spring {
+  animation: banner-spring 460ms cubic-bezier(0.2, 1.25, 0.35, 1);
+}
+
+@keyframes banner-timer {
+  to {
+    scale: 0 1;
+  }
+}
+
+.banner-timer {
+  transform-origin: left;
+  animation: banner-timer linear forwards;
+}
+
+@keyframes sheet-in {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+.sheet-in {
+  animation: sheet-in 320ms cubic-bezier(0.2, 0.9, 0.25, 1);
+}
+
+.screen-in {
+  animation: screen-in 180ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .banner-in,
+  .banner-spring,
+  .banner-timer,
+  .sheet-in,
+  .screen-in {
+    animation: none;
+  }
+  * {
+    scroll-behavior: auto !important;
+  }
+}

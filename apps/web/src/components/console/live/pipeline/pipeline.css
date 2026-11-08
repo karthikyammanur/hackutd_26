@@ -1,0 +1,370 @@
+.ss-pipe {
+  position: relative;
+  width: 100%;
+  container-type: inline-size;
+  --packet-speed: 0.95s;
+  --packet-width: 3.4;
+  --halo-width: 0;
+  --halo-opacity: 0;
+}
+
+.ss-pipe[data-tier="1"] {
+  --packet-speed: 0.8s;
+  --packet-width: 3.8;
+  --halo-width: 7;
+  --halo-opacity: 0.1;
+}
+
+.ss-pipe[data-tier="2"] {
+  --packet-speed: 0.62s;
+  --packet-width: 4.3;
+  --halo-width: 9;
+  --halo-opacity: 0.16;
+}
+
+.ss-pipe[data-tier="3"] {
+  --packet-speed: 0.46s;
+  --packet-width: 4.8;
+  --halo-width: 11;
+  --halo-opacity: 0.24;
+}
+
+.ss-pipe svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Bench tiles */
+.ss-plate .s {
+  stroke: #d9d9d9;
+  stroke-width: 0.7;
+  stroke-linejoin: round;
+}
+.ss-plate .s1 { fill: #ededed; }
+.ss-plate .s2 { fill: #e4e4e4; }
+.ss-plate .s3 { fill: #dadada; }
+.ss-plate .top {
+  fill: var(--color-card);
+  stroke: #dcdcdc;
+  stroke-width: 1;
+  stroke-linejoin: round;
+  transition: fill 0.35s ease, stroke 0.35s ease;
+}
+.ss-plate[data-now="true"] .top {
+  fill: #fff;
+  stroke: #efa3ca;
+  stroke-width: 1.2;
+}
+
+/* Parts share one ramp, set per state. */
+.ss-node {
+  --t: #fff;
+  --s1: #ededed;
+  --s2: #e0e0e0;
+  --s3: #cfcfcf;
+  --e: #bdbdbd;
+  --seam: #d9d9d9;
+  --acc: #dedede;
+  --scr: #f0f0f0;
+  --scr-line: #cdcdcd;
+  --tile: #d8d8d8;
+  --tray: #efefef;
+  --msg: #d8d8d8;
+  --beacon: #e8e8e8;
+  transition: opacity 0.3s ease;
+}
+.ss-node[data-state="idle"] {
+  opacity: 0.62;
+}
+.ss-node[data-state="done"] {
+  --s1: #e2e2e2;
+  --s2: #d3d3d3;
+  --s3: #bcbcbc;
+  --e: #8f8f8f;
+  --seam: #cbcbcb;
+  --acc: #a9a9a9;
+  --scr: #e9e9e9;
+  --scr-line: #bcbcbc;
+  --msg: #9f9f9f;
+  --beacon: #c9c9c9;
+}
+.ss-node[data-state="active"] {
+  --t: #fff;
+  --s1: #f7cfe2;
+  --s2: #efacce;
+  --s3: #e585b6;
+  --e: var(--color-mag-deep);
+  --seam: #f1bcd8;
+  --acc: var(--color-mag);
+  --scr: var(--color-mag-wash);
+  --scr-line: #e88fc0;
+  --msg: var(--color-mag);
+  --beacon: var(--color-mag);
+}
+.ss-pipe[data-tier="3"] .ss-node[data-state="active"] {
+  --t: #fff4fa;
+  --s1: #f4b6d6;
+  --s2: #e98dbd;
+  --s3: #d7619f;
+}
+
+.ss-node .dark {
+  --t: #3a3a3a;
+  --s1: #2e2e2e;
+  --s2: #242424;
+  --s3: #191919;
+  --e: #151515;
+  --scr: #565656;
+  --seam: #6d6d6d;
+  --scr-line: #8d8d8d;
+}
+.ss-node[data-state="active"] .dark {
+  --scr: var(--color-mag-deep);
+  --scr-line: #f6bcd8;
+  --seam: #8a8a8a;
+}
+
+.ss-node .s,
+.ss-node .top,
+.ss-node .foot,
+.ss-node .acc,
+.ss-node .tile-top {
+  stroke: var(--e);
+  stroke-width: 0.8;
+  stroke-linejoin: round;
+  transition: fill 0.25s ease, stroke 0.25s ease;
+}
+.ss-node .s1 { fill: var(--s1); }
+.ss-node .s2 { fill: var(--s2); }
+.ss-node .s3 { fill: var(--s3); }
+.ss-node .top { fill: var(--t); }
+.ss-node .foot { fill: var(--s1); }
+.ss-node .acc { fill: var(--acc); }
+.ss-node .acc-rim { fill: none; stroke: #ffffffaa; stroke-width: 1; }
+.ss-node .seam { fill: none; stroke: var(--seam); stroke-width: 0.8; }
+.ss-node .seam-fill { fill: var(--seam); }
+.ss-node .screw { fill: var(--e); }
+.ss-node .rule { fill: none; stroke: var(--e); stroke-width: 0.8; stroke-linecap: round; opacity: 0.7; }
+.ss-node .scr { fill: var(--scr); stroke: var(--e); stroke-width: 0.6; }
+.ss-node .scr-line { fill: none; stroke: var(--scr-line); stroke-width: 1.6; stroke-linecap: round; }
+.ss-node .msg { fill: var(--msg); }
+.ss-node .tray { fill: var(--tray); stroke: var(--e); stroke-width: 0.6; }
+.ss-node .slot { fill: #2b2b2b; }
+.ss-node[data-state="active"] .slot { fill: var(--color-mag); }
+.ss-node .lens { fill: #fff; stroke: var(--e); stroke-width: 0.9; }
+.ss-node .tick { fill: none; stroke: transparent; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.ss-node[data-state="active"] .tick,
+.ss-node[data-state="done"] .tick { stroke: var(--color-mag-deep); }
+.ss-node .beacon { fill: var(--beacon); stroke: var(--e); stroke-width: 0.8; }
+.ss-node .beacon-core { fill: #ffffff99; }
+.ss-node .hatch { opacity: 0.55; stroke: none; }
+.ss-node .press { transition: transform 0.2s ease; }
+.ss-node[data-state="active"] .press,
+.ss-node[data-state="done"] .press { transform: translateY(4px); }
+
+/* Danger scale on Jev. */
+.ss-node .gauge {
+  fill: var(--seam);
+  stroke: var(--e);
+  stroke-width: 0.6;
+  transition: fill 0.25s ease;
+}
+.ss-node .gauge[data-on="true"][data-level="0"] { fill: #f3b8d6; }
+.ss-node .gauge[data-on="true"][data-level="1"] { fill: #ea7fb7; }
+.ss-node .gauge[data-on="true"][data-level="2"] { fill: var(--color-mag); }
+.ss-node .gauge[data-on="true"][data-level="3"] { fill: var(--color-mag-deep); }
+
+/* Conversation tiles leave for Delete when the window is erased. */
+.ss-tile {
+  transition: transform 0.7s var(--ease-slide), opacity 0.5s ease;
+  transition-delay: calc(var(--i) * 45ms);
+}
+.ss-tile .tile-top { fill: #fff; stroke: var(--color-mag-deep); }
+.ss-tile .s1 { fill: #f4bcd9; stroke: var(--color-mag-deep); }
+.ss-tile .s2 { fill: #ea92c2; stroke: var(--color-mag-deep); }
+.ss-tile .s3 { fill: #da6aa8; stroke: var(--color-mag-deep); }
+.ss-tile[data-held="false"] {
+  transform: translate(-64px, 82px);
+  opacity: 0;
+}
+
+.ss-foot {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 1.6;
+  transition: stroke 0.15s ease;
+}
+.ss-node[data-hot="true"] .ss-foot {
+  stroke: #b9b9b9;
+}
+.ss-node[data-selected="true"] .ss-foot {
+  stroke: var(--color-mag);
+  stroke-width: 2.2;
+}
+
+/* Traces */
+.ss-wire .bed {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 6;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.ss-wire .trace {
+  fill: none;
+  stroke: var(--color-wire);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  transition: stroke 0.3s ease;
+}
+.ss-wire .head { fill: var(--color-wire); transition: fill 0.3s ease; }
+.ss-wire .tail { fill: var(--color-card); stroke: var(--color-wire); stroke-width: 1.4; transition: stroke 0.3s ease; }
+
+.ss-wire[data-state="done"] .trace { stroke: var(--color-wire-used); }
+.ss-wire[data-state="done"] .head { fill: var(--color-wire-used); }
+.ss-wire[data-state="done"] .tail { stroke: var(--color-wire-used); }
+
+.ss-wire[data-state="active"] .trace { stroke: #f0a4cb; }
+.ss-wire[data-state="active"] .head { fill: var(--color-mag); }
+.ss-wire[data-state="active"] .tail { stroke: var(--color-mag); }
+
+.ss-wire .halo {
+  fill: none;
+  stroke: var(--color-mag);
+  stroke-width: var(--halo-width);
+  opacity: var(--halo-opacity);
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.ss-wire .packet,
+.ss-wire .packet-drop {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 10 38;
+  animation: ss-travel var(--packet-speed) linear infinite;
+}
+.ss-wire .packet {
+  stroke: var(--color-mag);
+  stroke-width: var(--packet-width);
+}
+.ss-wire .packet-drop {
+  stroke: #7a0040;
+  stroke-width: var(--packet-width);
+  opacity: 0.18;
+  transform: translateY(3px);
+}
+
+@keyframes ss-travel {
+  to {
+    stroke-dashoffset: -48;
+  }
+}
+
+/* Captions and controls, in HTML so they stay legible at every width. */
+.ss-hit {
+  position: absolute;
+  display: block;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  border-radius: 10px;
+  text-align: left;
+  color: var(--color-ink);
+}
+.ss-hit:hover .ss-name {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+
+.ss-cap {
+  position: absolute;
+  display: block;
+  line-height: 1.2;
+  pointer-events: none;
+}
+.ss-name {
+  display: block;
+  font-size: clamp(11.5px, 1.32cqw, 13px);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+.ss-status {
+  display: block;
+  margin-top: 1px;
+  font-size: clamp(11px, 1.2cqw, 12px);
+  color: var(--color-ink-2);
+}
+.ss-hit[data-erased="true"] .ss-status { color: var(--color-ink); font-weight: 600; }
+.ss-hit[data-state="idle"] .ss-name { color: var(--color-ink-2); }
+.ss-hit[data-state="idle"] .ss-status { color: var(--color-ink-3); }
+.ss-hit[data-state="active"] .ss-status { color: var(--color-mag-deep); font-weight: 500; }
+.ss-stage {
+  position: absolute;
+  font-size: clamp(12px, 1.5cqw, 15px);
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  color: var(--color-ink-3);
+  line-height: 1.15;
+  transition: color 0.3s ease;
+  pointer-events: none;
+}
+.ss-stage[data-now="true"] { color: var(--color-mag-deep); }
+.ss-stage small {
+  display: block;
+  font-size: clamp(10.5px, 1.1cqw, 11.5px);
+  font-weight: 400;
+  color: var(--color-ink-3);
+}
+
+.ss-now {
+  position: absolute;
+  line-height: 1.25;
+}
+.ss-now-mark {
+  font-size: clamp(12.5px, 1.65cqw, 17px);
+  font-weight: 600;
+  letter-spacing: -0.016em;
+  color: var(--color-ink);
+}
+.ss-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15em 1em;
+  margin-top: 0.45em;
+  font-size: clamp(10.5px, 1.15cqw, 12px);
+  color: var(--color-ink-2);
+}
+.ss-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  white-space: nowrap;
+}
+.ss-key {
+  display: inline-block;
+  width: 1.5em;
+  height: 0.28em;
+  border-radius: 2px;
+  background: var(--color-wire-used);
+}
+.ss-key[data-kind="now"] {
+  background: repeating-linear-gradient(90deg, var(--color-mag) 0 0.5em, transparent 0.5em 0.85em);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ss-wire .packet,
+  .ss-wire .packet-drop {
+    animation: none;
+  }
+  .ss-tile,
+  .ss-node,
+  .ss-node .press {
+    transition: none;
+  }
+}

@@ -1,0 +1,23 @@
+/* One square per conversation, in the same key as the Simulate decision log. */
+.hm-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 13px);
+  gap: 3px;
+}
+.hm-tile {
+  display: block;
+  width: 13px;
+  height: 13px;
+  border-radius: 3px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.hm-tile[data-result="right"] { background-color: #1b1b1b; }
+.hm-tile[data-result="soft"] {
+  background-color: #a8a8a8;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13'%3E%3Ccircle cx='6.5' cy='6.5' r='2.6' fill='none' stroke='%23333' stroke-width='1.2'/%3E%3C/svg%3E");
+}
+.hm-tile[data-result="wrong"] {
+  background-color: var(--color-mag);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13'%3E%3Cpath d='M4 4l5 5M9 4l-5 5' stroke='%23fff' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+}

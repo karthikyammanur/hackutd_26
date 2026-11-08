@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Safe Signal Sandbox</title>
+<style>
+:root { color-scheme: light dark; --bg:#f6f6f3; --panel:#fff; --ink:#1b1c1e; --muted:#62666d; --line:#dedfdb; --accent:#c2185b; --good:#1a7f4b; --mid:#a86a00; --bad:#c62828; }
+@media (prefers-color-scheme: dark) { :root { --bg:#121315; --panel:#1b1d20; --ink:#ececea; --muted:#a0a4aa; --line:#2e3135; --accent:#f06292; --good:#4cc38a; --mid:#e2a336; --bad:#ff7369; } }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif; }
+main { max-width:1040px; margin:0 auto; padding:32px 16px 64px; }
+h1 { font-size:24px; margin:0; } h2 { font-size:16px; margin:32px 0 10px; }
+.sub { color:var(--muted); margin:4px 0 22px; }
+.bar { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+input,select,button { font:inherit; padding:8px 12px; border-radius:7px; border:1px solid var(--line); background:var(--panel); color:var(--ink); }
+input { flex:1 1 220px; min-width:0; }
+button { cursor:pointer; } button.primary { background:var(--accent); border-color:var(--accent); color:#fff; font-weight:600; }
+button:disabled { opacity:.5; cursor:default; }
+.stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; }
+.stat,.card { background:var(--panel); border:1px solid var(--line); border-radius:9px; padding:14px; }
+.stat b { display:block; font-size:24px; font-variant-numeric:tabular-nums; } .stat span { color:var(--muted); font-size:13px; }
+.scroll { overflow-x:auto; background:var(--panel); border:1px solid var(--line); border-radius:9px; }
+table { border-collapse:collapse; width:100%; min-width:640px; font-size:14px; }
+th,td { text-align:left; padding:8px 12px; border-bottom:1px solid var(--line); } th { color:var(--muted); font-weight:500; font-size:13px; }
+tr:last-child td { border-bottom:0; } td.n { font-variant-numeric:tabular-nums; }
+.good{color:var(--good);} .mid{color:var(--mid);} .bad{color:var(--bad);}
+.progress { height:8px; background:var(--line); border-radius:5px; overflow:hidden; margin-top:10px; } .progress i { display:block; height:100%; background:var(--accent); width:0; transition:width .4s; }
+.card { margin-bottom:10px; } .card h3 { font-size:15px; margin:0 0 6px; } .card p { margin:4px 0; }
+.tag { font-size:12px; border:1px solid var(--line); border-radius:20px; padding:1px 8px; color:var(--muted); margin-right:6px; }
+.muted { color:var(--muted); } .err { color:var(--bad); margin-top:10px; } [hidden] { display:none !important; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Safe Signal Sandbox</h1>
+  <p class="sub">Replays labeled fake calls through Nemotron and Jev, then scores every call against its label.</p>
+
+  <form class="bar" id="login">
+    <input id="token" type="password" placeholder="Access token" autocomplete="off" aria-label="Access token">
+    <button>Connect</button>
+  </form>
+  <div class="err" id="error" role="alert" hidden></div>
+
+  <section id="app" hidden>
+    <div class="bar" style="margin-top:14px">
+      <button class="primary" id="pilot">Run pilot (48 calls)</button>
+      <button id="full">Run full sample (320 calls)</button>
+      <button id="cancel" hidden>Cancel run</button>
+      <select id="runs" aria-label="Past runs"></select>
+    </div>
+    <div id="status" class="card" style="margin-top:14px" hidden>
+      <div id="statusText"></div>
+      <div class="progress"><i id="bar"></i></div>
+    </div>
+    <div id="result" hidden>
+      <h2>Scoreboard</h2><div class="stats" id="stats"></div>
+      <h2>By call type</h2><div class="scroll"><table id="types"></table></div>
+      <h2>What to improve</h2><p id="overall"></p><div id="recs"></div>
+      <h2>Pipeline health</h2><div class="stats" id="health"></div>
+    </div>
+    <h2>Failing consistently</h2><div id="consistent" class="muted"></div>
+  </section>
+</main>
+<script src="config.js"></script>
+<script>
+const $ = (id) => document.getElementById(id);
+const API = window.SANDBOX_API;
+let token = ""; let poll = null;
+try { token = sessionStorage.getItem("sandbox_token") || ""; } catch {}
+
+const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
+const pct = (v) => v == null ? "n/a" : (v * 100).toFixed(1) + "%";
+function showError(message) { $("error").textContent = message || ""; $("error").hidden = !message; }
+
+async function api(path, options = {}) {
+  const res = await fetch(API + path, { ...options, headers: { authorization: "Bearer " + token, "content-type": "application/json" } });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok) { const e = new Error(body.error || "Request failed (" + res.status + ")"); e.status = res.status; e.body = body; throw e; }
+  return body;
+}
+
+function stat(parent, value, label) { const s = el("div", "stat"); s.append(el("b", "", value), el("span", "", label)); parent.append(s); }
+
+function row(table, cells, head) {
+  const tr = el("tr");
+  for (const c of cells) { const td = el(head ? "th" : "td", c.cls || "", c.text ?? c); tr.append(td); }
+  table.append(tr);
+}
+
+function renderRun(run) {
+  const live = run.status === "running" || run.status === "reviewing";
+  $("status").hidden = !live && run.status !== "failed" && run.status !== "cancelled";
+  $("cancel").hidden = !live; $("cancel").dataset.id = run.id;
+  $("pilot").disabled = $("full").disabled = live;
+  const done = Number(run.cursor) || 0;
+  $("bar").style.width = run.total ? (100 * done / run.total) + "%" : "0";
+  $("statusText").textContent = run.status === "running" ? `Replaying calls: ${done} of ${run.total}`
+    : run.status === "reviewing" ? "Calls finished. The review agent is reading the failures."
+    : run.status === "failed" ? "Run failed: " + run.error : "Run cancelled.";
+  $("result").hidden = !run.board;
+  if (!run.board) return;
+  const b = run.board, d = b.delivery;
+  $("stats").replaceChildren(); $("health").replaceChildren();
+  stat($("stats"), pct(b.overall_points_pct), `Overall score (${b.sessions} calls)`);
+  stat($("stats"), pct(b.catch_rate), `Scams reaching dangerous (${b.scams})`);
+  stat($("stats"), pct(b.false_alarm_rate), `Benign reaching dangerous (${b.benign})`);
+  stat($("stats"), pct(b.hard_negative_false_alarm_rate), `Hard negatives reaching dangerous (${b.hard_negatives})`);
+  stat($("stats"), pct(b.caught_before_money), `Flagged before money moved (${b.caught_before_money_n})`);
+
+  const t = $("types"); t.replaceChildren();
+  row(t, ["Type", "Kind", "Calls", "Score", "Outcomes", "Peak P(danger)", "First flag"], true);
+  for (const x of [...b.by_type].sort((a, c) => a.points_pct - c.points_pct)) {
+    const cls = x.points_pct >= .9 ? "n good" : x.points_pct >= .7 ? "n mid" : "n bad";
+    row(t, [x.type, x.scam ? "scam" : x.hard_negative ? "hard negative" : "benign", { text: String(x.n), cls: "n" }, { text: pct(x.points_pct), cls },
+      Object.entries(x.outcomes).map(([k, v]) => `${k.replaceAll("_", " ")} ${v}`).join(", "),
+      { text: x.mean_max_p_dangerous.toFixed(2), cls: "n" }, { text: x.median_first_dangerous_t == null ? "-" : x.median_first_dangerous_t + "s", cls: "n" }]);
+  }
+
+  $("overall").textContent = run.review?.overall || "";
+  $("recs").replaceChildren();
+  for (const r of run.review?.recommendations || []) {
+    const c = el("div", "card");
+    c.append(el("h3", "", r.pattern));
+    const tags = el("p"); for (const s of [r.priority, r.failure_kind.replaceAll("_", " "), ...r.scam_types]) tags.append(el("span", "tag", s));
+    c.append(tags, el("p", "", "Likely cause: " + r.likely_cause), el("p", "", "Fix (" + r.fix_target.replaceAll("_", " ") + "): " + r.fix), el("p", "muted", "Evidence: " + r.evidence_session_ids.slice(0, 6).join(", ")));
+    $("recs").append(c);
+  }
+  stat($("health"), `${d.delivered}/${d.frames}`, "Frames delivered to Jev");
+  stat($("health"), String(d.jev_failures), "Jev failures");
+  stat($("health"), `${d.agent_failures}/${d.agent_called}`, "Nemotron failures / calls");
+  stat($("health"), `${d.jev_ms_p50 ?? "-"} / ${d.jev_ms_p95 ?? "-"} ms`, "Jev latency p50 / p95");
+}
+
+async function loadInsights() {
+  const i = await api("/api/insights");
+  const c = $("consistent"); c.replaceChildren();
+  if (!i.consistent_failures.length) { c.textContent = `Nothing yet. This needs a call type failing in at least 2 runs (logged so far: ${i.runs_logged}).`; return; }
+  const box = el("div", "scroll"), t = el("table"); box.append(t); c.append(box);
+  row(t, ["Type", "Runs failing", "Mean error"], true);
+  for (const x of i.consistent_failures) row(t, [x.type, `${x.runs_failing}/${x.runs_seen}`, pct(x.mean_error_rate)]);
+}
+
+async function showRun(id) {
+  if (poll) { clearTimeout(poll); poll = null; }
+  if (!id) return;
+  const run = await api("/api/runs/" + id);
+  renderRun(run);
+  if (run.status === "running" || run.status === "reviewing") {
+    poll = setTimeout(() => showRun(id).catch((e) => showError(e.message)), 3000);
+  } else { await refresh(id, false); }
+}
+
+async function refresh(select, follow = true) {
+  const runs = await api("/api/runs");
+  const s = $("runs"); s.replaceChildren();
+  for (const r of runs) { const o = el("option", "", `${r.created_at.slice(0, 16).replace("T", " ")} UTC · ${r.total} calls · ${r.status}`); o.value = r.id; s.append(o); }
+  s.hidden = !runs.length;
+  if (select) s.value = select;
+  await loadInsights();
+  if (follow && s.value) await showRun(s.value);
+}
+
+async function start(perType) {
+  showError("");
+  try { const r = await api("/api/runs", { method: "POST", body: JSON.stringify({ perType }) }); await refresh(r.id); }
+  catch (e) { if (e.body?.id) await refresh(e.body.id); showError(e.message); }
+}
+
+async function connect() {
+  showError("");
+  try {
+    await refresh();
+    $("app").hidden = false; $("login").hidden = true;
+    try { sessionStorage.setItem("sandbox_token", token); } catch {}
+  } catch (e) { showError(e.status === 401 ? "That token wasn't accepted." : "Couldn't reach the sandbox: " + e.message); }
+}
+
+$("login").addEventListener("submit", (e) => { e.preventDefault(); token = $("token").value.trim(); connect(); });
+$("pilot").addEventListener("click", () => start(3));
+$("full").addEventListener("click", () => start(20));
+$("runs").addEventListener("change", (e) => showRun(e.target.value).catch((x) => showError(x.message)));
+$("cancel").addEventListener("click", async (e) => { await api(`/api/runs/${e.target.dataset.id}/cancel`, { method: "POST" }); await refresh(e.target.dataset.id); });
+if (token) connect();
+</script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+{
+ "robocall_excluded": {
+  "no_rule_matched": 59,
+  "duplicate_text": 622,
+  "not_fraud_or_test": 11
+ },
+ "sms_excluded": {
+  "imc_not_english": 11791,
+  "imc_label_others": 4586,
+  "imc_label_spam": 1387,
+  "duplicate_text": 10504,
+  "imc_label_blank": 1,
+  "spam_without_scam_method": 873
+ },
+ "robocall_id_tag_agreement": {
+  "agree": 77,
+  "disagree": 4
+ },
+ "robocall_valid_lines": 686,
+ "sms_valid_lines": 16272,
+ "robocall_by_method": {
+  "government_impersonation": 251,
+  "brand_order_impersonation": 153,
+  "utility_shutoff": 77,
+  "deceptive_telemarketing": 53,
+  "credit_debt_relief": 44,
+  "auto_warranty": 40,
+  "student_loan_relief": 34,
+  "bank_fraud_department": 16,
+  "tech_support": 13,
+  "healthcare_benefits": 3,
+  "prize_lottery": 2
+ },
+ "sms_by_method": {
+  "bank_fraud_department": 6202,
+  "legitimate": 5182,
+  "carrier_impersonation": 1372,
+  "government_impersonation": 1304,
+  "delivery_fee": 1256,
+  "prize_lottery": 392,
+  "generic_smishing": 228,
+  "wrong_number_romance": 220,
+  "family_emergency_text": 54,
+  "account_verification_phish": 27,
+  "romance": 23,
+  "subscription_callback": 8,
+  "investment_crypto": 2,
+  "job_task_scam": 2
+ },
+ "sms_by_quality_and_scam": {
+  "weak_scam": 11090,
+  "exact_legit": 5182
+ },
+ "sms_by_origin": {
+  "imc": 10331,
+  "mendeley": 5463,
+  "uci": 478
+ }
+}

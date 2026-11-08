@@ -1,0 +1,261 @@
+.sa-fig {
+  position: relative;
+  width: 100%;
+  container-type: inline-size;
+}
+.sa-fig svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Bench plates */
+.sa-plate .s { stroke: #d9d9d9; stroke-width: 0.7; stroke-linejoin: round; }
+.sa-plate .s1 { fill: #ededed; }
+.sa-plate .s2 { fill: #e4e4e4; }
+.sa-plate .s3 { fill: #dadada; }
+.sa-plate .top {
+  fill: var(--color-card);
+  stroke: #dcdcdc;
+  stroke-width: 1;
+  stroke-linejoin: round;
+  transition: fill 0.35s ease, stroke 0.35s ease;
+}
+.sa-plate[data-now="true"] .top { fill: #fff; stroke: #efa3ca; stroke-width: 1.2; }
+
+/* Parts share one ramp, set per state. */
+.sa-node {
+  --t: #fff;
+  --s1: #ededed;
+  --s2: #e0e0e0;
+  --s3: #cfcfcf;
+  --e: #bdbdbd;
+  --seam: #d9d9d9;
+  --acc: #dedede;
+  --scr: #f0f0f0;
+  --scr-line: #cdcdcd;
+  --tray: #efefef;
+  transition: opacity 0.3s ease;
+}
+.sa-node[data-state="done"] {
+  --s1: #e2e2e2;
+  --s2: #d3d3d3;
+  --s3: #bcbcbc;
+  --e: #8f8f8f;
+  --seam: #cbcbcb;
+  --acc: #a9a9a9;
+  --scr: #e9e9e9;
+  --scr-line: #bcbcbc;
+}
+.sa-node[data-state="active"] {
+  --s1: #f7cfe2;
+  --s2: #efacce;
+  --s3: #e585b6;
+  --e: var(--color-mag-deep);
+  --seam: #f1bcd8;
+  --acc: var(--color-mag);
+  --scr: var(--color-mag-wash);
+  --scr-line: #e88fc0;
+}
+.sa-fig[data-phase="idle"] .sa-node { opacity: 0.82; }
+.sa-fig[data-phase="idle"] .sa-lane { opacity: 0.82; }
+
+.sa-node .s,
+.sa-node .top,
+.sa-node .foot,
+.sa-node .acc,
+.sa-lane .s,
+.sa-lane .rail-top,
+.sa-lane .chip-top {
+  stroke: var(--e, #bdbdbd);
+  stroke-width: 0.8;
+  stroke-linejoin: round;
+  transition: fill 0.25s ease, stroke 0.25s ease;
+}
+.sa-node .s1 { fill: var(--s1); }
+.sa-node .s2 { fill: var(--s2); }
+.sa-node .s3 { fill: var(--s3); }
+.sa-node .top { fill: var(--t); }
+.sa-node .foot { fill: var(--s1); }
+.sa-node .acc { fill: var(--acc); }
+.sa-node .seam { fill: none; stroke: var(--seam); stroke-width: 0.8; }
+.sa-node .seam-fill { fill: var(--seam); }
+.sa-node .screw { fill: var(--e); }
+.sa-node .rule { fill: none; stroke: var(--e); stroke-width: 0.8; stroke-linecap: round; opacity: 0.7; }
+.sa-node .scr { fill: var(--scr); stroke: var(--e); stroke-width: 0.6; }
+.sa-node .scr-line { fill: none; stroke: var(--scr-line); stroke-width: 1.5; stroke-linecap: round; }
+.sa-node .tray { fill: var(--tray); stroke: var(--e); stroke-width: 0.6; }
+.sa-node .slot { fill: #2b2b2b; }
+.sa-node[data-state="active"] .slot { fill: var(--color-mag); }
+.sa-node .lens { fill: #fff; stroke: var(--e); stroke-width: 0.9; }
+.sa-node .tick { fill: none; stroke: transparent; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.sa-node[data-state="active"] .tick,
+.sa-node[data-state="done"] .tick { stroke: var(--color-mag-deep); }
+.sa-node .hatch { opacity: 0.55; stroke: none; }
+.sa-node .slot-bed { fill: #e6e6e6; stroke: #d9d9d9; stroke-width: 0.5; }
+.sa-node .tick-minor { fill: none; stroke: var(--seam); stroke-width: 0.7; }
+.sa-node .tick-major { fill: none; stroke: var(--e); stroke-width: 0.9; }
+.sa-progress { fill: var(--color-mag); }
+
+/* Gauges */
+.sa-node .gauge { fill: var(--seam); stroke: var(--e); stroke-width: 0.6; transition: fill 0.25s ease; }
+.sa-node .gauge[data-on="true"][data-level="0"] { fill: #f3b8d6; }
+.sa-node .gauge[data-on="true"][data-level="1"] { fill: #ea7fb7; }
+.sa-node .gauge[data-on="true"][data-level="2"] { fill: var(--color-mag-deep); }
+.sa-node .stair[data-on="true"] { --t: #fff; --s1: #f4bcd9; --s2: #ea92c2; --s3: #da6aa8; --e: var(--color-mag-deep); }
+
+/* Lanes */
+.sa-lane { --e: #b9b9b9; --s1: #ececec; --s2: #e0e0e0; --s3: #d0d0d0; }
+.sa-lane .s1 { fill: var(--s1); }
+.sa-lane .s2 { fill: var(--s2); }
+.sa-lane .s3 { fill: var(--s3); }
+.sa-lane .rail-top { fill: #f7f7f7; }
+.sa-lane .rail-mark { fill: none; stroke: #e0e0e0; stroke-width: 0.6; stroke-dasharray: 2 6; }
+.sa-lamp { fill: #d8d8d8; stroke: #b0b0b0; stroke-width: 0.5; transition: fill 0.25s ease; }
+
+.sa-lane[data-state="done"] { --e: #9b9b9b; --s1: #e0e0e0; --s2: #d0d0d0; --s3: #bcbcbc; }
+.sa-lane[data-state="done"] .rail-top { fill: #dcdcdc; }
+.sa-lane[data-state="done"] .sa-lamp { fill: #9b9b9b; stroke: #7d7d7d; }
+.sa-lane[data-state="run"] {
+  --e: var(--color-mag-deep);
+  --s1: #f7cfe2;
+  --s2: #efacce;
+  --s3: #e585b6;
+}
+.sa-lane[data-state="run"] .rail-top { fill: var(--color-mag-wash); }
+.sa-lane[data-state="run"] .rail-mark { stroke: #e88fc0; }
+.sa-lane[data-state="run"] .sa-lamp { fill: var(--color-mag); stroke: var(--color-mag-deep); }
+
+.sa-lane .chip-top { fill: #fff; stroke: var(--color-mag-deep); }
+.sa-shuttle { animation: sa-shuttle 2.8s var(--ease-slide) infinite; animation-delay: var(--delay, 0s); }
+.sa-fig[data-moving="false"] .sa-shuttle { animation-play-state: paused; }
+@keyframes sa-shuttle {
+  0%, 18% { transform: translate(0, 0); }
+  42%, 58% { transform: translate(calc(var(--dx) * 0.52), calc(var(--dy) * 0.52)); }
+  82%, 100% { transform: translate(var(--dx), var(--dy)); }
+}
+
+/* Traces */
+.sa-wire .bed { fill: none; stroke: #fff; stroke-width: 6; stroke-linejoin: round; stroke-linecap: round; }
+.sa-wire .trace { fill: none; stroke: var(--color-wire); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; transition: stroke 0.3s ease; }
+.sa-wire .head { fill: var(--color-wire); transition: fill 0.3s ease; }
+.sa-wire .tail { fill: var(--color-card); stroke: var(--color-wire); stroke-width: 1.4; }
+.sa-wire[data-kind="planned"] .trace { stroke-dasharray: 2 6; }
+.sa-wire[data-state="done"] .trace { stroke: var(--color-wire-used); }
+.sa-wire[data-state="done"] .head { fill: var(--color-wire-used); }
+.sa-wire[data-state="done"] .tail { stroke: var(--color-wire-used); }
+.sa-wire[data-state="active"] .trace { stroke: #f0a4cb; }
+.sa-wire[data-state="active"] .head { fill: var(--color-mag); }
+.sa-wire[data-state="active"] .tail { stroke: var(--color-mag); }
+.sa-wire[data-kind="labels"] .packet { display: none; }
+.sa-wire .packet {
+  fill: none;
+  stroke: var(--color-mag);
+  stroke-width: 3.6;
+  stroke-linecap: round;
+  stroke-dasharray: 10 38;
+  animation: sa-travel 0.95s linear infinite;
+}
+@keyframes sa-travel { to { stroke-dashoffset: -48; } }
+
+/* Ledger tiles: height is the tier, the top face and mark are the result. */
+.sa-tile { --t: #fff; --e: #111; --s1: #333; --s2: #2a2a2a; --s3: #1b1b1b; }
+.sa-tile .s,
+.sa-tile .tile-top { stroke: var(--e); stroke-width: 0.6; stroke-linejoin: round; }
+.sa-tile .s1 { fill: var(--s1); }
+.sa-tile .s2 { fill: var(--s2); }
+.sa-tile .s3 { fill: var(--s3); }
+.sa-tile .tile-top { fill: var(--top); --top: #3a3a3a; }
+.sa-tile[data-result="right"] .tile-top { --top: #2b2b2b; }
+.sa-tile[data-result="soft"] { --e: #6b6b6b; --s1: #9a9a9a; --s2: #8e8e8e; --s3: #7a7a7a; }
+.sa-tile[data-result="soft"] .tile-top { --top: #b5b5b5; }
+.sa-tile[data-result="wrong"] { --e: var(--color-mag-deep); --s1: #d7308a; --s2: #c4137a; --s3: #a00052; }
+.sa-tile[data-result="wrong"] .tile-top { --top: var(--color-mag); }
+.sa-tile[data-result="none"] { --e: #b9b9b9; --s1: #f3f3f3; --s2: #ebebeb; --s3: #e0e0e0; }
+.sa-tile[data-result="none"] .tile-top { --top: #fbfbfb; }
+.sa-tile .tile-mark { fill: none; stroke: #fff; stroke-width: 1.8; stroke-linecap: round; }
+.sa-tile .tile-ring { fill: none; stroke: #4a4a4a; stroke-width: 1.2; }
+.sa-tile[data-drop="true"] { animation: sa-drop 0.42s var(--ease-slide) both; animation-delay: var(--d, 0ms); }
+@keyframes sa-drop {
+  from { opacity: 0; transform: translateY(-42px); }
+  70% { opacity: 1; }
+}
+
+/* Scoreboard */
+.sa-node .board-face { fill: #1b1b1b; stroke: #111; stroke-width: 0.6; }
+.sa-node .scr-line { stroke: #4a4a4a; stroke-width: 0.8; }
+.sa-node .seg-right { fill: #fafafa; }
+.sa-node .seg-soft { fill: #8e8e8e; }
+.sa-node .seg-wrong { fill: var(--color-mag); }
+.sa-node .seg-none { fill: #4a4a4a; }
+.sa-node .seg-empty { fill: none; stroke: #4a4a4a; stroke-width: 0.7; stroke-dasharray: 2 3; }
+.sa-score {
+  position: absolute;
+  transform: translate(-50%, -50%) skewY(11.9deg);
+  font-size: clamp(14px, 2.5cqw, 24px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #fff;
+  pointer-events: none;
+}
+
+/* Captions, in HTML so they stay legible at every width. */
+.sa-cap {
+  position: absolute;
+  line-height: 1.2;
+  pointer-events: none;
+  text-align: center;
+  transform: translateX(-50%);
+}
+.sa-cap[data-place="above"] { transform: translate(-50%, -100%); }
+.sa-cap[data-place="left"] { transform: translate(-100%, -50%); text-align: right; }
+.sa-name { display: block; font-size: clamp(11.5px, 1.32cqw, 13px); font-weight: 600; letter-spacing: -0.01em; }
+.sa-status { display: block; margin-top: 1px; font-size: clamp(11px, 1.2cqw, 12px); color: var(--color-ink-2); }
+.sa-cap[data-state="idle"] .sa-name { color: var(--color-ink-2); }
+.sa-cap[data-state="idle"] .sa-status { color: var(--color-ink-3); }
+.sa-cap[data-state="active"] .sa-status { color: var(--color-mag-deep); font-weight: 500; }
+
+.sa-stage {
+  position: absolute;
+  font-size: clamp(12px, 1.5cqw, 15px);
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  color: var(--color-ink-3);
+  line-height: 1.15;
+  pointer-events: none;
+  transition: color 0.3s ease;
+}
+.sa-stage[data-now="true"] { color: var(--color-mag-deep); }
+
+.sa-rack-cap { position: absolute; transform: translateY(-100%); line-height: 1.2; white-space: nowrap; pointer-events: none; }
+.sa-rack-cap b { display: block; font-size: clamp(12px, 1.4cqw, 14px); font-weight: 600; letter-spacing: -0.012em; color: var(--color-ink-2); }
+.sa-rack-cap small { display: block; font-size: clamp(11px, 1.15cqw, 12px); color: var(--color-ink-3); }
+.sa-rack-cap[data-phase="replay"] b,
+.sa-rack-cap[data-phase="starting"] b { color: var(--color-mag-deep); }
+
+.sa-loop-cap,
+.sa-label-cap,
+.sa-prog-cap {
+  position: absolute;
+  font-size: clamp(10.5px, 1.1cqw, 11.5px);
+  color: var(--color-ink-3);
+  white-space: nowrap;
+  pointer-events: none;
+}
+.sa-prog-cap { transform: translateX(-100%); }
+.sa-loop-cap { transform: translate(-50%, -120%); }
+.sa-label-cap { transform: translate(-50%, -115%); }
+
+.sa-now { position: absolute; top: 0; right: 0; width: 38%; text-align: right; line-height: 1.22; }
+.sa-now-head { font-size: clamp(17px, 2.8cqw, 28px); font-weight: 600; letter-spacing: -0.024em; color: var(--color-ink); }
+.sa-now-sub { margin-top: 0.3em; font-size: clamp(11.5px, 1.3cqw, 13.5px); color: var(--color-ink-2); }
+
+@media (prefers-reduced-motion: reduce) {
+  .sa-wire .packet,
+  .sa-shuttle,
+  .sa-tile[data-drop="true"] { animation: none; }
+  .sa-node,
+  .sa-lane * { transition: none; }
+}
