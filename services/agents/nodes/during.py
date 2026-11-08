@@ -1,0 +1,121 @@
+"""During-call nodes. Each returns only NEW items for list fields (they merge through operator.add)."""
+
+from __future__ import annotations
+
+import logging
+from typing import Any, Protocol
+
+from contracts.events import CallStart, Turn, UserChoice
+from contracts.state import Alert, CallerInfo, Level, TraceItem, merge_risk
+from services.agents.graph import stubs
+from services.agents.graph.deps import Tools
+from services.agents.graph.state import WINDOW_TURNS, GraphState
+
+log = logging.getLogger(__name__)
+
+Update = dict[str, Any]
+
+
+class Node(Protocol):
+    def __call__(self, state: GraphState) -> Update: ...
+
+
+def trace(state: GraphState, node: str, action: str, result: str = "") -> list[TraceItem]:
+    return [TraceItem(t=state.event.t if state.event else 0.0, node=node, action=action, result=result)]
+
+
+def emergency(state: GraphState) -> Update:
+    """R1: record who the call is with so later events skip the guard, and do nothing else."""
+    e = state.event
+    assert isinstance(e, CallStart)
+    return {
+        "caller": CallerInfo(number=e.number, direction=e.direction),
+        "trace": trace(state, "emergency", "guard off for emergency number", "no action (R1)"),
+    }
+
+
+def make_caller_screen(tools: Tools) -> Node:
+    def caller_screen(state: GraphState) -> Update:
+        e = state.event
+        assert isinstance(e, CallStart)
+        caller, prior, signals = stubs.caller_screen(e, tools.store)
+        return {
+            "caller": caller,
+            "prior_risk": prior,
+            "signals": signals,
+            "trace": trace(state, "caller_screen", "screen caller", ", ".join(x.kind for x in signals)),
+        }
+
+    return caller_screen
+
+
+def signal_watcher(state: GraphState) -> Update:
+    assert state.event is not None
+    signals = stubs.signal_watcher(state.event, state)
+    if not signals:
+        return {}
+    return {
+        "signals": signals,
+        "trace": trace(state, "signal_watcher", state.event.kind, ", ".join(x.kind for x in signals)),
+    }
+
+
+def guardian(state: GraphState) -> Update:
+    """Keeps the in-memory window; checks on every caller turn and every 3rd turn."""
+    e = state.event
+    assert isinstance(e, Turn)
+    window = (state.transcript_window + [e])[-WINDOW_TURNS:]
+    seen = state.turns_seen + 1
+    update: Update = {"transcript_window": window, "turns_seen": seen}
+    if e.speaker == "caller" or seen % 3 == 0:
+        flags = stubs.guardian_check(window, since_t=state.guardian_checked_t)
+        update["guardian_checked_t"] = e.t
+        if flags:
+            update["flags"] = flags
+            update["trace"] = trace(state, "guardian", "check window", ", ".join(f.kind for f in flags))
+    return update
+
+
+def make_decide(tools: Tools) -> Node:
+    def decide(state: GraphState) -> Update:
+        try:
+            new = tools.decider(state)
+        except Exception:
+            log.exception("decider failed")
+            return {
+                "guard_paused": True,
+                "trace": trace(state, "decide", "decider failed", "guard paused (R4)"),
+            }
+        merged = merge_risk(state.risk, new)  # R5: never goes down
+        update: Update = {"risk": merged}
+        if state.risk is None or (merged.score, merged.level) != (state.risk.score, state.risk.level):
+            update["trace"] = trace(state, "decide", "score", f"{merged.score:.2f} {merged.level.name}")
+        return update
+
+    return decide
+
+
+def alert(state: GraphState) -> Update:
+    """New Alert only when the level goes up. Buttons only at alert level. No hang-up, ever (R2)."""
+    r = state.risk
+    prev = max((a.level for a in state.alerts), default=Level.none)
+    if r is None or r.level <= prev or r.level < Level.nudge:
+        return {}
+    reason = stubs.alert_reason(r)
+    buttons: list[Any] = ["call_bank", "ask_trusted_contact", "continue"] if r.level >= Level.alert else []
+    return {
+        "alerts": [
+            Alert(t=state.event.t if state.event else 0.0, level=r.level, reason=reason, buttons=buttons)
+        ],
+        "trace": trace(state, "alert", r.level.name, reason),
+    }
+
+
+def record_choice(state: GraphState) -> Update:
+    e = state.event
+    assert isinstance(e, UserChoice)
+    return {"user_choice": e.choice, "trace": trace(state, "user_choice", "customer chose", e.choice)}
+
+
+def end_call(state: GraphState) -> Update:
+    return {"ended": True, "trace": trace(state, "call_end", "call ended")}

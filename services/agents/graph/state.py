@@ -1,0 +1,36 @@
+"""Graph state: the shared SessionState plus fields only the graph sees.
+
+`event` and `transcript_window` hold transcript text. They live in the in-memory checkpointer only and are never
+streamed or persisted (R8). `public_state()` is the only view that leaves the graph.
+"""
+
+from __future__ import annotations
+
+from typing import Any
+
+from pydantic import Field
+
+from contracts.events import Event, Turn
+from contracts.state import SessionState
+
+WINDOW_TURNS = 8  # turns kept for Call Guardian
+
+
+class GraphState(SessionState):
+    event: Event | None = None  # the event being processed in this invocation
+    transcript_window: list[Turn] = Field(default_factory=list)  # last WINDOW_TURNS turns, memory only (R8)
+    turns_seen: int = 0
+    guardian_checked_t: float = -1.0  # turns up to this t have been checked
+    after_iterations: int = 0  # router visits in the after phase (hard cap in nodes/after.py)
+
+
+PUBLIC_FIELDS = frozenset(SessionState.model_fields)
+
+
+def public_update(update: dict[str, Any]) -> dict[str, Any]:
+    """Drop graph-only fields from a node's update before it leaves the graph."""
+    return {k: v for k, v in update.items() if k in PUBLIC_FIELDS}
+
+
+def public_state(values: dict[str, Any]) -> SessionState:
+    return SessionState.model_validate(public_update(values))
