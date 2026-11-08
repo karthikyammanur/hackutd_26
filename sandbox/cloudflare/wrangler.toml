@@ -1,0 +1,17 @@
+name = "safe-signal-sandbox"
+main = "src/index.ts"
+compatibility_date = "2026-10-01"
+
+[vars]
+NEMOTRON_BASE_URL = "https://integrate.api.nvidia.com/v1"
+NEMOTRON_FAST_MODEL = "nvidia/nemotron-3.5-bolt-e4b"
+NEMOTRON_DEEP_MODEL = "nvidia/nemotron-3.5-lightning-30b-a3b"
+JEV_MODEL = "jev-latest"
+
+[[durable_objects.bindings]]
+name = "RUNNER"
+class_name = "Runner"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Runner"]

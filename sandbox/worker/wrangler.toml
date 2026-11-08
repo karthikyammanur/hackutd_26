@@ -1,0 +1,32 @@
+name = "safe-signal-sandbox"
+main = "src/entry.py"
+compatibility_date = "2026-10-01"
+compatibility_flags = ["python_workers", "disable_python_external_sdk"]
+
+[vars]
+BREV_INSTANCES_REPORTED = "1"
+BREV_MAX_RPS = "32"
+SUBREQUEST_BUDGET = "45"
+NEMOTRON_FAST_MODEL = "nemotron-fast"
+NEMOTRON_DEEP_MODEL = "nemotron-deep"
+
+[[durable_objects.bindings]]
+name = "RUNNER"
+class_name = "Runner"
+
+[[durable_objects.bindings]]
+name = "LANE"
+class_name = "Lane"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Runner"]
+
+[[migrations]]
+tag = "v2"
+new_sqlite_classes = ["Lane"]
+
+[[d1_databases]]
+binding = "CORPUS"
+database_name = "safe-signal-corpus"
+database_id = "00eed41c-0ae9-4f1a-80bd-5897a50aecb1"

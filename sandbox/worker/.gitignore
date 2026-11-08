@@ -1,0 +1,5 @@
+.env
+.wrangler/
+python_modules/
+src/sample_data.py
+__pycache__/

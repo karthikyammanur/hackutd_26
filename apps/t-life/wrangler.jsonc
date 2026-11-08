@@ -1,0 +1,27 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "safe-signal-tlife-demo",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-11-01",
+  // The push services are public, and this keeps calls to them off the private routing path.
+  "compatibility_flags": ["global_fetch_strictly_public"],
+  "vars": {
+    "VAPID_PUBLIC_KEY": "BGB__Pct91DH_s6OI1qOrvm7D8BsHsxANEEVpZ0QwYsgHbwhytgzW5UkhlYuGj-6NUU0TlkwmEuePCAxCVJNPzQ",
+    "REALTIME_TOPIC": "ss-tlife-790b250754983806089194c843716637",
+    "REALTIME_PUBLIC_KEY": "BOPzH0OxJrT-YHWa5GiNDjfXeQMJSfyitUz23FhQof8XXXroZZqEjGtsNF7Ks2zYtK-F6sMgwfEJdSDu4YYmqEc",
+    "VAPID_SUBJECT": "https://safe-signal-tlife-demo.berenis-fopa.workers.dev"
+  },
+  "kv_namespaces": [{ "binding": "STORE", "id": "e03a168676524104bbbe32fed913c866" }],
+  // v1 created a Durable Object that never held data. The account's free allowance for those ran out.
+  "migrations": [
+    { "tag": "v1", "new_sqlite_classes": ["NoticeHub"] },
+    { "tag": "v2", "deleted_classes": ["NoticeHub"] }
+  ],
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"],
+    // Any other path without a file serves index.html.
+    "not_found_handling": "single-page-application"
+  }
+}

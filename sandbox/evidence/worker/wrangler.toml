@@ -1,0 +1,17 @@
+name = "safe-signal-evidence"
+main = "src/entry.py"
+compatibility_date = "2026-10-01"
+compatibility_flags = ["python_workers", "disable_python_external_sdk"]
+
+[vars]
+DAILY_WRITE_LIMIT = "20000"
+MAX_DB_BYTES = "200000000"
+
+[triggers]
+crons = ["17 9 * * *"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "safe-signal-evidence"
+database_id = "e1eeefe8-22a4-4db7-a811-e0c0e6a99fc1"
+migrations_dir = "migrations"
