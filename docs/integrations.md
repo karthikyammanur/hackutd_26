@@ -71,12 +71,34 @@ message text (R8).
 The callback refuses to run (`ToolConfigError`, nothing dialed) if `ELEVENLABS_BANK_AGENT_ID` is unset or
 equals `SCAMMER_AGENT_ID`. Nothing ever dials 911, 988 or 112 (R1).
 
-## Live Hero 1: real call in, real bank code in
+## Live demo: the card-fraud call, cut at three points
 
-1. **Scammer call -> API.** `python -u spikes/live_bridge.py --yes` places the Scammer Simulator call
-   (`SCAMMER_AGENT_ID`, now the "Safe Signal Scammer Sim (Hero 1)" agent; the old agent refused scam asks) and
-   polls the ElevenLabs conversation every second, posting `call_start`, each line as a `turn`, and `call_end`.
-   It prints t, wall time and length per turn, never the text (R8).
+One script (agent "Safe Signal Scammer Sim (Hero 1)", `SCAMMER_AGENT_ID`): Lone Star Bank fraud desk, flagged
+charge, "don't hang up", then asks for the card number, expiry and security code. The run ends where you cut it:
+
+| Run | Customer | What happens |
+| --- | --- | --- |
+| S1 | Sees the APK's scam-call warning and declines | Nothing else runs (no turns, no alerts) |
+| S2 | Answers, hears the card ask, gets the alert, hangs up | `alert` the moment the card is asked for -> APK `urgent`. After the call: lock account, recovery, evidence. **No callback** |
+| S3 | Answers and reads out a card (use a fake one: 4242 4242 4242 4242, 12/28, 123) | Same alert, then the **callback** call offering the bank (follow-up agent, `transfer_to_number` to `DEMO_BANK_NUMBER`) |
+
+- **Start a call:** the console calls `POST /calls/start` (no body; it always dials `DEMO_CUSTOMER_NUMBER`, R10)
+  and opens `WS /ws/{session_id}` from the reply. `GET /calls/current` gives the live session id. From a terminal:
+  `python spikes/live_bridge.py --yes`. The API follows the call itself (`services/api/live_call.py`), one at a
+  time. The hosted console is an allowed CORS origin; add others with `CORS_ORIGINS`.
+- **Alerts to the Intercept APK** (`services/agents/tools/fcm.py`): with `FCM_SERVICE_ACCOUNT_FILE` (or a short-lived
+  `FCM_ACCESS_TOKEN`) set, every customer alert also goes by FCM to topic `tlife`: whisper -> `warning`, alert ->
+  `urgent`, recovery text -> `summary`, callback -> `callback`. iMessage still goes out too; either route failing
+  never blocks the other. `/health` shows `"fcm": true` when it is on. Restart the API after changing `.env`.
+- **S1 needs the APK's scam number** set to the ElevenLabs caller ID (the number on `ELEVENLABS_PHONE_NUMBER_ID`).
+- **Did they hand it over?** The after-call planner reads the full transcript (memory only) and the code counts the
+  digits the customer said. Callback only when the customer read out digits, or pressed "call my bank". The
+  planner's own "yes" needs at least a few customer digits (it once claimed a disclosure that never happened).
+  The transcript is erased when the after-call work ends, or at call end when none runs. Never written to disk (R8).
+
+## Hero 1 with a real bank code
+
+1. **Scammer call -> API.** `python spikes/live_bridge.py --yes` (or the console button, above).
 2. **Bank code -> API.** The call-screener app (`spikes/call-screener`) now listens for incoming texts. A text
    with a 4-8 digit code and a code word is reported as `POST /live/sms {"sender_type", "org"}`: a 5-6 digit
    sender is a short code, `bank_shortcode` when the text names a bank. The code and the text never leave the

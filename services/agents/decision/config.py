@@ -19,13 +19,16 @@ ALERT: Final = 0.75
 TRUSTED_CAP: Final = 0.49
 
 # Flags that lift the R7 cap: no real bank or carrier asks for these. A weak LLM guess is not enough.
-UNCAP_FLAGS: Final[frozenset[FlagKind]] = frozenset({"gift_cards", "safe_account", "remote_access"})
+UNCAP_FLAGS: Final[frozenset[FlagKind]] = frozenset(
+    {"gift_cards", "safe_account", "remote_access", "card_details"}
+)
 UNCAP_MIN_CONFIDENCE: Final = 0.8
 
 # Call Guardian flags: contribution = weight x flag.confidence.
 FLAG_WEIGHTS: Final[dict[FlagKind, float]] = {
     "gift_cards": 0.90,
     "read_code": 0.90,
+    "card_details": 0.90,
     "safe_account": 0.90,
     "remote_access": 0.85,
     "policy_contradiction": 0.60,
@@ -67,6 +70,7 @@ SIGNAL_REASONS: Final[dict[str, str]] = {
 FLAG_REASONS: Final[dict[FlagKind, str]] = {
     "gift_cards": "The caller asked for gift cards or prepaid cards",
     "read_code": "The caller asked for a one-time code",
+    "card_details": "The caller asked for your card number or security code",
     "safe_account": "The caller asked you to move money to a 'safe' account",
     "remote_access": "The caller asked for access to your device",
     "policy_contradiction": "The caller said something that contradicts official policy",

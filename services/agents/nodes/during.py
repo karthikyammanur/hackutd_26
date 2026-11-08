@@ -73,6 +73,7 @@ def ingest_turn(state: GraphState) -> tuple[Update, bool]:
     seen = state.turns_seen + 1
     update: Update = {
         "transcript_window": (state.transcript_window + [e])[-WINDOW_TURNS:],
+        "transcript_full": state.transcript_full + [e],
         "turns_seen": seen,
     }
     check = e.speaker == "caller" or seen % 3 == 0
@@ -195,4 +196,10 @@ def record_choice(state: GraphState) -> Update:
 
 
 def end_call(state: GraphState) -> Update:
-    return {"ended": True, "trace": trace(state, "call_end", "call ended")}
+    update: Update = {"ended": True, "trace": trace(state, "call_end", "call ended")}
+    if max((a.level for a in state.alerts), default=Level.none) < Level.whisper:
+        update |= ERASE_TRANSCRIPT  # no after-call work will read it
+    return update
+
+
+ERASE_TRANSCRIPT: Update = {"transcript_window": [], "transcript_full": []}

@@ -44,6 +44,7 @@ SIGNAL_REASON: dict[str, str] = {
 }
 FLAG_REASON: dict[str, str] = {
     "read_code": "the caller asked you to read back a code",
+    "card_details": "the caller asked for your card number or security code",
     "safe_account": "the caller asked you to move money to a 'safe' account",
     "gift_cards": "the caller asked for gift cards",
     "remote_access": "the caller asked for remote access to a device",
@@ -53,6 +54,7 @@ FLAG_REASON: dict[str, str] = {
 }
 FLAG_WEIGHT: dict[str, float] = {
     "read_code": 0.4,
+    "card_details": 0.8,  # alone it reaches alert: 0.15 unknown caller + 0.8 x 0.8 confidence
     "safe_account": 0.4,
     "gift_cards": 0.4,
     "remote_access": 0.4,
@@ -125,6 +127,7 @@ _RULES: list[tuple[FlagKind, re.Pattern[str]]] = [
     ("read_code", re.compile(r"\bread\b.*\b(code|number|digits)\b|\b(code|number|digits)\b.*\bread\b")),
     ("safe_account", re.compile(r"safe account|protected account|move your (money|balance)")),
     ("gift_cards", re.compile(r"gift card")),
+    ("card_details", re.compile(r"card number|security code|\bcvv\b|expiration date|expiry date")),
     ("remote_access", re.compile(r"anydesk|teamviewer|remote access|share your screen")),
     ("urgency_secrecy", re.compile(r"(don't|do not) (hang up|call|tell)|keep this between")),
     ("policy_contradiction", re.compile(r"refund.*gift card|gift card.*refund")),

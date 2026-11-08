@@ -42,6 +42,7 @@ def merge_risk(old: Risk | None, new: Risk) -> Risk:
 FlagKind = Literal[
     "gift_cards",
     "read_code",
+    "card_details",
     "safe_account",
     "remote_access",
     "policy_contradiction",

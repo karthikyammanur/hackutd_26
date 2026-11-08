@@ -24,6 +24,12 @@ log = logging.getLogger(__name__)
 TIMEOUT_S = 3.0
 KEYWORD_FALLBACK = False  # Lead decision: keyword flags while paused stay off unless switched on
 MIN_OVERLAP = 0.6  # share of quote words that must appear in a turn when there is no exact match
+# A card_details flag needs the caller's turn to name what they want read out.
+CARD_ASK = re.compile(
+    r"card number|number on (the |your )?(front|card)|\b(16|sixteen)[- ]digit|expir|security code|\bcvv|\bcvc"
+    r"|\b(3|three)[- ]digit|digits on the back|code on the back",
+    re.IGNORECASE,
+)
 
 Structured = Callable[..., Any]  # llm.structured, or a fake in tests
 
@@ -96,6 +102,9 @@ def to_flags(out: GuardianOutput, state: GraphState) -> tuple[list[Flag], int]:
             or turn.speaker != "caller"
             or turn.t <= state.guardian_ok_t
             or (g.kind, turn.t) in seen
+            or (
+                g.kind == "card_details" and not CARD_ASK.search(turn.text)
+            )  # "I'll block your card" is no ask
         ):
             dropped += 1
             continue

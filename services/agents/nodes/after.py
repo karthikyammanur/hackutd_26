@@ -19,7 +19,7 @@ from services.agents import llm
 from services.agents.graph.deps import Tools
 from services.agents.graph.state import GraphState
 from services.agents.nodes.blocks import blocks, context_line, flags_lines, signals_line, top_level
-from services.agents.nodes.during import CUSTOMER, Node, Update, trace
+from services.agents.nodes.during import CUSTOMER, ERASE_TRANSCRIPT, Node, Update, trace
 from services.agents.prompts import (
     CallbackScript,
     EvidenceSummary,
@@ -60,8 +60,35 @@ def fallback_steps(state: GraphState) -> list[StepName]:
     return steps
 
 
-def enforce_plan(steps: list[StepName], state: GraphState) -> list[PlanStep]:
-    """Rules the planner cannot break. Steps added by a rule say so in their detail."""
+_NUMBER_WORDS = frozenset(
+    {"zero", "oh", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"}
+)
+DISCLOSED_MIN_DIGITS = 6  # a card number, security code + expiry, or a one-time code read out loud
+LLM_DISCLOSED_MIN_DIGITS = 3  # the planner's "yes" counts only if the customer said at least a few digits
+
+
+def customer_digits(state: GraphState) -> int:
+    """The most digits (numerals or spoken words) in any one customer turn. Code only, no LLM."""
+    best = 0
+    for turn in state.transcript_full:
+        if turn.speaker != "customer":
+            continue
+        digits = sum(c.isdigit() for c in turn.text)
+        words = sum(w in _NUMBER_WORDS for w in re.findall(r"[a-z]+", turn.text.lower()))
+        best = max(best, digits + words)
+    return best
+
+
+def customer_read_out_digits(state: GraphState) -> bool:
+    return customer_digits(state) >= DISCLOSED_MIN_DIGITS
+
+
+def enforce_plan(steps: list[StepName], state: GraphState, disclosed: bool | None = None) -> list[PlanStep]:
+    """Rules the planner cannot break. Steps added by a rule say so in their detail.
+
+    disclosed: whether the customer handed over details. True requires callback + recovery; False drops the
+    callback unless the customer asked for it (they kept their details, nothing to recover from the bank).
+    """
     chosen = dict.fromkeys(steps)
     required: dict[StepName, str] = {}
     choice = state.user_choice
@@ -69,6 +96,11 @@ def enforce_plan(steps: list[StepName], state: GraphState) -> list[PlanStep]:
         required["notify_trusted_contact"] = "customer chose ask_trusted_contact"
     else:
         chosen.pop("notify_trusted_contact", None)  # only on the customer's choice
+    if disclosed:
+        required["callback"] = "customer handed over details"
+        required["recovery"] = "customer handed over details"
+    elif disclosed is False and choice != "call_bank":
+        chosen.pop("callback", None)
     if choice == "call_bank":
         required["callback"] = "customer chose call_bank"
     if top_level(state) >= Level.alert and choice != "continue":
@@ -85,12 +117,20 @@ def enforce_plan(steps: list[StepName], state: GraphState) -> list[PlanStep]:
     return plan
 
 
+PLANNER_MAX_TURNS = 80  # the whole demo call fits; a very long call keeps its newest turns
+
+
 def planner_user(state: GraphState) -> str:
+    """The full transcript goes in its own data block (R12). It is erased when the after-call work ends."""
     risk = state.risk
+    transcript = "\n".join(
+        f"[t={x.t:.0f}] {x.speaker}: {x.text}" for x in state.transcript_full[-PLANNER_MAX_TURNS:]
+    )
     return blocks(
         ("call_context", context_line(state)),
         ("flags", flags_lines(state, quotes=False)),
         ("signals", signals_line(state)),
+        ("transcript", transcript or "(no turns)"),
         tail=[
             f"risk: {risk.score:.2f}, level: {top_level(state).name}" if risk else "risk: none",
             f"user_choice: {state.user_choice or 'none'}",
@@ -103,7 +143,13 @@ def make_planner(structured: Structured) -> Node:
     def planner(state: GraphState) -> Update:
         out = _ask(structured, "planner", planner_user(state), PlannerOutput)
         steps = list(out.steps) if out else fallback_steps(state)
-        plan = enforce_plan(steps, state)
+        n = customer_digits(state)
+        digits = n >= DISCLOSED_MIN_DIGITS
+        # The planner can invent a disclosure from the caller's ask alone; its "yes" needs the customer to have
+        # said some digits. Its "no" never overrides digits the customer actually read out.
+        llm_yes = bool(out and out.customer_disclosed)
+        disclosed = digits or (llm_yes and n >= LLM_DISCLOSED_MIN_DIGITS)
+        plan = enforce_plan(steps, state, disclosed)
 
         def tag(p: PlanStep) -> str:
             if p.status == "skipped":
@@ -112,10 +158,14 @@ def make_planner(structured: Structured) -> Node:
 
         summary = ", ".join(tag(p) for p in plan)
         why = out.rationale if out else "planner fallback (LLM unavailable)"
+        if llm_yes and not disclosed:
+            why = "planner said yes, but the customer gave no digits, so it was ignored"
+        how = " (customer read out digits)" if digits else " (from the transcript)" if disclosed else ""
+        gave = f"customer handed over details: {'yes' if disclosed else 'no'}{how}"
         return {
             "plan": plan,
             "after_iterations": 0,
-            "trace": trace(state, "planner", "plan", f"{summary} | {why}"),
+            "trace": trace(state, "planner", "plan", f"{summary} | {gave} | {why}"),
         }
 
     return planner
@@ -131,8 +181,9 @@ def _next_pending(state: GraphState) -> StepName | None:
 def router(state: GraphState) -> Update:
     n = state.after_iterations + 1
     nxt = _next_pending(state)
-    if nxt is None:
-        return {"after_iterations": n, "trace": trace(state, "router", "all steps finished")}
+    if nxt is None:  # after-call work is over: erase the transcript from memory
+        done = trace(state, "router", "all steps finished", "transcript erased")
+        return {"after_iterations": n, "trace": done} | ERASE_TRANSCRIPT
     if n > MAX_ITERATIONS:
         plan = [
             p.model_copy(update={"status": "skipped", "detail": "iteration cap"})
@@ -140,7 +191,8 @@ def router(state: GraphState) -> Update:
             else p
             for p in state.plan
         ]
-        return {"after_iterations": n, "plan": plan, "trace": trace(state, "router", "iteration cap reached")}
+        capped = trace(state, "router", "iteration cap reached", "transcript erased")
+        return {"after_iterations": n, "plan": plan, "trace": capped} | ERASE_TRANSCRIPT
     return {"after_iterations": n, "trace": trace(state, "router", "next", nxt)}
 
 
@@ -284,6 +336,8 @@ def what_moved(state: GraphState) -> str:
     parts: list[str] = []
     if "read_code" in kinds:
         parts.append("a one-time code was requested")
+    if "card_details" in kinds:
+        parts.append("the caller asked for card details")
     if "safe_account" in kinds:
         parts.append("the caller asked to move money to another account")
     if "gift_cards" in kinds:
@@ -299,6 +353,7 @@ def what_moved(state: GraphState) -> str:
 
 _RECOVERY_TEMPLATE: dict[str, str] = {
     "read_code": "Change your online banking password and tell your bank a code was requested.",
+    "card_details": "Call the number on the back of your card to block it and order a new one.",
     "safe_account": "Don't move money to any account a caller gave you.",
     "gift_cards": "Keep any gift card receipts and contact the card's seller.",
     "remote_access": "Uninstall any remote access app the caller asked for.",

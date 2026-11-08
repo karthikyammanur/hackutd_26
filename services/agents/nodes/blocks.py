@@ -1,7 +1,8 @@
 """User-message blocks for the Alert and aftercare prompts. Data only, always in the user message (R12).
 
-Built from state (flags with their short quotes, signals, risk, plan), never from the transcript window: the
-aftercare and alert prompts see signals, not conversations (R9).
+Built from state (flags with their short quotes, signals, risk, plan). The alert, callback, recovery and evidence
+prompts see signals, not conversations. Only the after-call planner also gets the full transcript (after.py),
+to judge whether the customer handed anything over; it is erased from memory when the after-call work ends.
 """
 
 from __future__ import annotations

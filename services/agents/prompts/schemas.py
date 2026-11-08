@@ -132,6 +132,8 @@ def _unique_steps(steps: list[StepName]) -> list[StepName]:
 class PlannerOutput(_Out):
     steps: Annotated[list[StepName], Field(min_length=1, max_length=5), AfterValidator(_unique_steps)]
     rationale: Annotated[Plain, Field(min_length=1, max_length=200)]
+    # True when the transcript shows the customer handed the caller card details, a code, a password or money.
+    customer_disclosed: bool = False
 
 
 # --- callback (deep) ---------------------------------------------------------------------------

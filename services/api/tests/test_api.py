@@ -291,3 +291,54 @@ def test_live_sms_reaches_the_live_call_without_the_code(client: TestClient) -> 
     assert client.post(f"/sessions/{sid}/events", json=end).status_code == 202
     after = client.post("/live/sms", json={"sender_type": "bank_shortcode"}).json()
     assert after.get("session_id") != sid  # an ended call never gets a late code
+
+
+def test_calls_start_follows_a_live_call_to_the_end(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The console button: place the call, feed turns as ElevenLabs reports them, then call_end. Fake ElevenLabs."""
+    from services.api import live_call
+
+    lines = [
+        {
+            "role": "agent",
+            "message": "Lone Star Bank fraud department, am I speaking with the cardholder?",
+            "time_in_call_secs": 2,
+        },
+        {"role": "user", "message": "Yes.", "time_in_call_secs": 6},
+        {
+            "role": "agent",
+            "message": "Please read me the 16-digit card number on the front.",
+            "time_in_call_secs": 20,
+        },
+    ]
+    polls = iter([(lines[:2], "in-progress"), (lines, "in-progress"), (lines, "done")])
+    dialed: list[str] = []
+
+    async def fake_number(el: Any, env: dict[str, str]) -> str:
+        return "+15550142"
+
+    async def fake_place(el: Any, env: dict[str, str]) -> str:
+        dialed.append(env["DEMO_CUSTOMER_NUMBER"])
+        return "conv_test"
+
+    async def fake_fetch(el: Any, conv: str) -> dict[str, Any]:
+        entries, status = next(polls, (lines, "done"))
+        return {"status": status, "transcript": entries, "metadata": {"call_duration_secs": 25}}
+
+    env = {k: "x" for k in live_call.NEED} | {"DEMO_CUSTOMER_NUMBER": "+15550100"}
+    monkeypatch.setattr(live_call, "config", lambda: env)
+    monkeypatch.setattr(live_call, "caller_number", fake_number)
+    monkeypatch.setattr(live_call, "place_call", fake_place)
+    monkeypatch.setattr(live_call, "fetch", fake_fetch)
+    monkeypatch.setattr(live_call, "POLL_S", 0.01)
+    monkeypatch.setenv("SAFE_SIGNAL_OFFLINE", "1")
+
+    r = client.post("/calls/start", json={"to": "+19998887777"})  # a number in the body is ignored (R10)
+    assert r.status_code == 202, r.text
+    sid = r.json()["session_id"]
+    assert dialed == ["+15550100"]
+    final = _wait_state(client, sid, lambda s: s.ended and any(x.node == "evidence" for x in s.trace))
+    assert any(f.kind == "card_details" and f.t == 20 for f in final.flags)
+    assert max(a.level for a in final.alerts) == Level.alert
+    assert client.get("/calls/current").json()["session_id"] != sid  # ended calls are not current

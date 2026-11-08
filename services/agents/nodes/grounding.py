@@ -16,6 +16,7 @@ FLAG_MIN_CONFIDENCE = 0.5
 
 FLAG_SENTENCE: dict[FlagKind, str] = {
     "read_code": "The caller asked you to read back a code, and real bank or carrier staff never ask for that.",
+    "card_details": "The caller asked for your card number or security code, and real bank staff never ask for that.",
     "safe_account": "The caller wants your money moved to a 'safe' account, and real banks never ask for that.",
     "gift_cards": "The caller asked for payment by gift card, and real companies never ask for that.",
     "remote_access": "The caller asked for remote access to your device.",
@@ -40,20 +41,24 @@ def _signal_sentence(kind: str, verified: bool) -> str | None:
 def draft_reason(state: SessionState) -> str:
     """One sentence from the newest evidence: a flag (confidence >= 0.5) or a signal with weight > 0.
 
-    Ties at the same t go to the flag, since the caller's ask is the stronger evidence.
+    Ties at the same t go to the flag, since the caller's ask is the stronger evidence, and between flags to the
+    more specific one (a card-number ask also reads as "read back a number").
     """
     verified = bool(state.caller and state.caller.verified_org)
-    items: list[tuple[float, int, str]] = []
+    items: list[tuple[float, int, int, str]] = []
     for f in state.flags:
         if f.confidence >= FLAG_MIN_CONFIDENCE:
-            items.append((f.t, 1, FLAG_SENTENCE[f.kind]))
+            items.append((f.t, 1, FLAG_SPECIFIC.get(f.kind, 0), FLAG_SENTENCE[f.kind]))
     for s in state.signals:
         sentence = _signal_sentence(s.kind, verified)
         if s.weight > 0 and sentence:
-            items.append((s.t, 0, sentence))
+            items.append((s.t, 0, 0, sentence))
     if not items:
         return "Something about this call looks unusual."
-    return max(items)[2]
+    return max(items)[3]
+
+
+FLAG_SPECIFIC: dict[str, int] = {"card_details": 1}
 
 
 # Claim keyword -> the flag kinds or signal kinds that support it. Checked in order; one match is enough.
@@ -62,11 +67,16 @@ _ASK_CODE = re.compile(
     re.IGNORECASE,
 )
 CLAIMS: list[tuple[str, re.Pattern[str], frozenset[str]]] = [
-    ("asks for a code", _ASK_CODE, frozenset({"read_code"})),
+    ("asks for a code", _ASK_CODE, frozenset({"read_code", "card_details"})),
     (
         "code",
         re.compile(r"\b(code|digits|one-time|pin|password)\b", re.IGNORECASE),
-        frozenset({"read_code", "otp_during_call"}),
+        frozenset({"read_code", "otp_during_call", "card_details"}),
+    ),
+    (
+        "card details",
+        re.compile(r"\bcard (number|details)\b|\bcvv\b|\bsecurity code\b|\bexpir\w*", re.IGNORECASE),
+        frozenset({"card_details"}),
     ),
     ("read back", re.compile(r"\bread (it |them |that )?back\b", re.IGNORECASE), frozenset({"read_code"})),
     ("gift card", re.compile(r"\b(gift|prepaid) ?cards?\b", re.IGNORECASE), frozenset({"gift_cards"})),

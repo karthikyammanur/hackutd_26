@@ -1,7 +1,7 @@
 """Graph state: the shared SessionState plus fields only the graph sees.
 
-`event` and `transcript_window` hold transcript text. They live in the in-memory checkpointer only and are never
-streamed or persisted (R8). `public_state()` is the only view that leaves the graph.
+`event`, `transcript_window` and `transcript_full` hold transcript text. They live in the in-memory checkpointer
+only and are never streamed or persisted (R8). `public_state()` is the only view that leaves the graph.
 """
 
 from __future__ import annotations
@@ -19,6 +19,9 @@ WINDOW_TURNS = 8  # turns kept for Call Guardian
 class GraphState(SessionState):
     event: Event | None = None  # the event being processed in this invocation
     transcript_window: list[Turn] = Field(default_factory=list)  # last WINDOW_TURNS turns, memory only (R8)
+    # Every turn of the call, memory only (R8). The after-call planner reads it to judge whether the customer
+    # handed over details; it is erased as soon as the after-call work ends (or at call_end if none runs).
+    transcript_full: list[Turn] = Field(default_factory=list)
     turns_seen: int = 0
     guardian_checked_t: float = -1.0  # turns up to this t have been checked
     guardian_ok_t: float = -1.0  # turns up to this t were judged by a successful Nemotron check

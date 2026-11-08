@@ -2,7 +2,8 @@
 
     uvicorn services.api.main:app --reload --port 8000
 
-Live (the demo): the bridge POSTs each Event to /sessions/{id}/events; the phone reply goes to /sessions/{id}/choice.
+Live (the demo): POST /calls/start places the Scammer Simulator call and feeds it in as it happens (live_call.py).
+Other sources POST each Event to /sessions/{id}/events; the phone reply goes to /sessions/{id}/choice.
 Replay (lane 3 dev): POST /sessions/{fixture}/replay?speed=4. Either way, the console listens on WS /ws/{id}.
 Offline (no Brev): ?offline=true on call_start or replay, or SAFE_SIGNAL_OFFLINE=1.
 """
@@ -13,6 +14,7 @@ import asyncio
 import contextlib
 import os
 import re
+import time
 from collections.abc import AsyncIterator
 from pathlib import Path
 from typing import Annotated, Any, Literal
@@ -25,12 +27,19 @@ from pydantic import BaseModel, ConfigDict, TypeAdapter, ValidationError
 from contracts.events import CallStart, EvalCase, Event, SmsOtp, Source
 from contracts.state import SessionState, UIMessage
 from services.agents.tools.errors import ToolConfigError
+from services.api import live_call
 from services.api.hub import Hub, LiveSession, parse_choice, tools_mode
 
 load_dotenv()  # so /health and offline defaults see .env before the first LLM call
 
 FIXTURES = Path(__file__).resolve().parents[2] / "evals" / "fixtures"
-CORS_ORIGINS = ["http://localhost:5173", "http://localhost:3000"]  # Vite dev server, Next.js
+# Vite dev server, Next.js, the hosted console on Cloudflare, plus any extra origins in CORS_ORIGINS (comma-separated).
+CORS_ORIGINS = [
+    "http://localhost:5173",
+    "http://localhost:3000",
+    "https://safe-signal.berenis-fopa.workers.dev",
+    *[o.strip() for o in os.environ.get("CORS_ORIGINS", "").split(",") if o.strip()],
+]
 
 
 def _env_offline() -> bool:
@@ -66,8 +75,46 @@ def health() -> dict[str, Any]:
         "tools": tools_mode(),
         "nemotron_fast": bool(os.environ.get("NEMOTRON_BASE_URL")),
         "nemotron_deep": bool(os.environ.get("NEMOTRON_DEEP_BASE_URL")),
+        "fcm": bool(os.environ.get("FCM_SERVICE_ACCOUNT_FILE") or os.environ.get("FCM_ACCESS_TOKEN")),
         "sessions": len(hub.sessions),
     }
+
+
+# ---- a real call: the console's "start call" button ---------------------------------------------------------
+
+
+@app.post("/calls/start", status_code=202)
+async def start_call() -> dict[str, Any]:
+    """Place one Scammer Simulator call to DEMO_CUSTOMER_NUMBER and follow it live. Takes no body: the number
+    always comes from .env, so this route can never dial anyone else (R10). One call at a time."""
+    current = hub.active()
+    if current and current.call_task and not current.call_task.done():
+        raise HTTPException(409, f"a call is already running: {current.session_id}")
+    try:
+        env = live_call.config()
+    except ToolConfigError as e:
+        raise HTTPException(503, str(e)) from e
+    session_id = f"live-{int(time.time())}"
+    live = await _start(session_id, None)  # checks the adapters before anything is dialed
+    el = live_call.client(env)
+    try:
+        number = await live_call.caller_number(el, env)
+        conv = await live_call.place_call(el, env)
+    except Exception as e:
+        await el.aclose()
+        hub.sessions.pop(session_id, None)
+        await live.close()
+        raise HTTPException(502, f"ElevenLabs could not place the call: {type(e).__name__}") from e
+    live.submit(live_call.call_start(session_id, number))
+    live.call_task = asyncio.create_task(live_call.follow(live.submit, session_id, el, conv))
+    return {"session_id": session_id, "conversation_id": conv, "ws": f"/ws/{session_id}"}
+
+
+@app.get("/calls/current")
+def current_call() -> dict[str, Any]:
+    """The live call's session id, so a console that did not start it can still open /ws/{id}."""
+    live = hub.active()
+    return {"session_id": live.session_id if live else None}
 
 
 # ---- live: one Event at a time -----------------------------------------------------------------------------

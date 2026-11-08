@@ -65,6 +65,7 @@ class LiveSession:
         self.after_done = asyncio.Event()  # set once call_end has been fully processed
         self.worker = asyncio.create_task(self._work(), name=f"session-{session_id}")
         self.replay_task: asyncio.Task[None] | None = None
+        self.call_task: asyncio.Task[None] | None = None  # following a real ElevenLabs call (live_call.py)
 
     # ---- input --------------------------------------------------------------------------------------------
 
@@ -125,7 +126,7 @@ class LiveSession:
         self.subscribers.discard(q)
 
     async def close(self) -> None:
-        for task in (self.replay_task, self.worker):
+        for task in (self.call_task, self.replay_task, self.worker):
             if task:
                 task.cancel()
                 with contextlib.suppress(asyncio.CancelledError):
