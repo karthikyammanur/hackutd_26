@@ -63,9 +63,9 @@ message text (R8).
 | `comms.notify` | Alert text + "Reply 1 to ..." menu, via sidecar `/notify` |
 | `comms.message` | Text via sidecar `/message` |
 | `voice.whisper` | Sent as a text via sidecar `/message`: we cannot inject audio into a live call (F8) |
-| `comms.call` | ElevenLabs outbound call from the **bank** agent to `DEMO_CUSTOMER_NUMBER`. The script is passed as dynamic variable `{{callback_script}}`, so the bank agent's prompt should use it |
-| `comms.transfer` | Not supported (F8): raises, the step is marked failed, the call is untouched (R4) |
-| `store.*` | `DemoStore`, in memory; drops `turn` events (R8). `DEMO_BANK_NUMBER` is Lone Star Bank's verified number |
+| `comms.call` | ElevenLabs outbound call from the **Safe Signal Follow-up** agent to `DEMO_CUSTOMER_NUMBER`. The script is passed as dynamic variable `{{callback_script}}`; the agent's first message is `{{callback_script}}`, so it opens with our script word for word |
+| `comms.transfer` | Our code still cannot transfer a live call (F8). The follow-up agent does it: its `transfer_to_number` tool (conference) calls `DEMO_BANK_NUMBER` only when the customer clearly says yes. `PhotonComms.transfer` just records `agent-transfer-on-yes:<call id>` for that number; any other number raises `ToolUnsupported` (step failed, call untouched, R4). Untested on a live call; on our SIP number the customer may hear silence while the bank phone rings (ElevenLabs plays a hold message only on Twilio numbers) |
+| `store.*` | `DemoStore`, in memory; drops `turn` events (R8). `DEMO_BANK_NUMBER` is Lone Star Bank's verified number (spoken in the script and used as the transfer destination) |
 | `account.hold_changes` | `SimAccount`: logs a simulated hold |
 
 The callback refuses to run (`ToolConfigError`, nothing dialed) if `ELEVENLABS_BANK_AGENT_ID` is unset or
@@ -94,11 +94,11 @@ equals `SCAMMER_AGENT_ID`. Nothing ever dials 911, 988 or 112 (R1).
 | `API_URL` | sidecar | Where `/sessions/{id}/choice` lives |
 | `ELEVENLABS_API_KEY` | voice, spikes | |
 | `SCAMMER_AGENT_ID` | `elevenlabs_call.py` | Scammer Simulator agent |
-| `ELEVENLABS_BANK_AGENT_ID` | callback | Bank agent ("Lone Star Bank Fraud Team"). Its prompt does not use `{{callback_script}}` yet, so it ignores our script |
+| `ELEVENLABS_BANK_AGENT_ID` | callback | The "Safe Signal Follow-up" agent (renamed from "Lone Star Bank Fraud Team"; same ID). Persona is Safe Signal, never the bank; never asks for personal or account info or verifies identity; `transfer_to_number` set to `DEMO_BANK_NUMBER`. If `DEMO_BANK_NUMBER` changes, update the agent's transfer destination too |
 | `ELEVENLABS_AGENT_ID` | teammate's reference code | Currently the same agent as `SCAMMER_AGENT_ID`; our code doesn't use it |
 | `ELEVENLABS_PHONE_NUMBER_ID` | calls | The SIP-trunk number, `phnum_...` (see `elevenlabs_check.py`) |
 | `DEMO_CUSTOMER_NUMBER` | everything | The phone every message and call goes to |
-| `DEMO_BANK_NUMBER` | `DemoStore` | Lone Star Bank's verified number in the demo |
+| `DEMO_BANK_NUMBER` | `DemoStore`, `PhotonComms.transfer`, follow-up agent | Lone Star Bank's verified number in the demo (a teammate's phone, R10). Must be E.164 (`+1...`); a placeholder like `+1XXXXXXXXXX` makes `real_tools()` fail with the variable's name |
 | `DEMO_TRUSTED_CONTACT_NUMBER` | not used live | Trusted-contact messages also go to the customer number |
 
 Photon has no SMS line on this project, so it cannot start an SMS by itself. SMS/RCS only happens through
