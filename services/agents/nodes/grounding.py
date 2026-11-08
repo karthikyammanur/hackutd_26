@@ -10,11 +10,11 @@ from __future__ import annotations
 
 import re
 
-from contracts.state import SessionState
+from contracts.state import FlagKind, SessionState
 
 FLAG_MIN_CONFIDENCE = 0.5
 
-FLAG_SENTENCE: dict[str, str] = {
+FLAG_SENTENCE: dict[FlagKind, str] = {
     "read_code": "The caller asked you to read back a code, and real bank or carrier staff never ask for that.",
     "safe_account": "The caller wants your money moved to a 'safe' account, and real banks never ask for that.",
     "gift_cards": "The caller asked for payment by gift card, and real companies never ask for that.",
