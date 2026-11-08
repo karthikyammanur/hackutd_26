@@ -7,11 +7,13 @@ All numbers and names are synthetic (R10).
 from __future__ import annotations
 
 import re
+from typing import NoReturn
 
 from contracts.events import EMERGENCY_NUMBERS, CallStart, Event, Turn
 from contracts.interfaces import Account, Comms, Decider, Store, Voice
 from contracts.state import CallerInfo, Flag, FlagKind, Level, Risk, SessionState, Signal
 from services.agents.graph.deps import Tools
+from services.agents.llm import LLMUnavailable
 
 # Synthetic verified list: number -> org (the real one lives in Store / Tiger Data).
 VERIFIED_NUMBERS: dict[str, str] = {"+18005550199": "Lone Star Bank"}
@@ -224,6 +226,11 @@ _comms: Comms = FakeComms()
 _voice: Voice = FakeVoice()
 _store: Store = FakeStore()
 _account: Account = FakeAccount()
+
+
+def offline_structured(*args: object, **kwargs: object) -> NoReturn:
+    """Stand-in for llm.structured when offline: every LLM node falls back to its template."""
+    raise LLMUnavailable("offline")
 
 
 def fake_tools() -> Tools:

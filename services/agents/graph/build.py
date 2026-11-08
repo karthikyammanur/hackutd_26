@@ -20,6 +20,7 @@ from pydantic import BaseModel
 import contracts.events
 import contracts.state
 from contracts.state import Level
+from services.agents import llm
 from services.agents.graph import stubs
 from services.agents.graph.deps import Tools
 from services.agents.graph.state import GraphState
@@ -67,9 +68,12 @@ def new_checkpointer() -> InMemorySaver:
 
 
 def build_graph(
-    tools: Tools, checkpointer: InMemorySaver | None = None, guardian: during.Node | None = None
+    tools: Tools,
+    checkpointer: InMemorySaver | None = None,
+    guardian: during.Node | None = None,
+    structured: during.Structured = llm.structured,
 ) -> CompiledStateGraph:
-    """guardian defaults to the Nemotron Guardian; pass during.keyword_guardian to run offline."""
+    """Defaults are live Nemotron. Offline: guardian=during.keyword_guardian, structured=stubs.offline_structured."""
     g = StateGraph(GraphState)
 
     # during
@@ -78,7 +82,7 @@ def build_graph(
     g.add_node("signal_watcher", during.signal_watcher)
     g.add_node("guardian", guardian or make_guardian())
     g.add_node("decide", during.make_decide(tools))
-    g.add_node("alert", during.make_alert(tools))
+    g.add_node("alert", during.make_alert(tools, structured))
     g.add_node("record_choice", during.record_choice)
     g.add_node("end_call", during.end_call)
 
@@ -93,12 +97,12 @@ def build_graph(
     g.add_conditional_edges("end_call", needs_aftercare, ["planner", END])
 
     # after
-    g.add_node("planner", after.planner)
+    g.add_node("planner", after.make_planner(structured))
     g.add_node("router", after.router)
-    for name in after.STEPS:
-        g.add_node(name, after.make_step(name, tools))
+    for name in after.STEP_NAMES:
+        g.add_node(name, after.make_step(name, tools, structured))
         g.add_edge(name, "router")
     g.add_edge("planner", "router")
-    g.add_conditional_edges("router", after.route_after, [*after.STEPS, END])
+    g.add_conditional_edges("router", after.route_after, [*after.STEP_NAMES, END])
 
     return g.compile(checkpointer=checkpointer or new_checkpointer())

@@ -6,12 +6,13 @@ Update on every merge: newest at the top, one line each. Anyone (or a fresh Clau
 | Lane | Working on | Blocked by |
 | --- | --- | --- |
 | Lead | Contracts freeze, repo setup | |
-| 1 Agents | L1-4 Aftercare Planner + step LLMs (plan) | |
+| 1 Agents | L1-5 swap mocks for lane 4 adapters | lane 4 real adapters (L4-4) |
 | 2 Decision + data | L2-1 fixtures, L2-2 decide() | |
 | 3 Web | L3-1 replay | |
 | 4 Platform + demo | L4-1 spikes | |
 
 ## Log
+- 2026-11-08 L1-4 done: Nemotron planner (deep) with rules in code (lock_account kept at alert unless continue; notify only on choice; call_bank forces callback; evidence last), Callback/Recovery (deep, 25 s) and Evidence summary (fast) with template fallbacks, AlertCopy wording (fast, 1.5 s). Live hero1: every step ran on Nemotron, in order, with results. Guardian: no hindsight flags; hero1 alert at t=101.
 - 2026-11-08 L1-2 done: Nemotron Guardian (fast, 3 s timeout), quote->turn t matching, caller-only, dedupe, guard_paused on failure (keyword fallback off). Live: hero1 read_code@101, real bank no flags, 12 checks p50 546 / p95 1137 ms. Runner --offline keeps the keyword stand-in.
 - 2026-11-08 LEAD contracts: Store.official_number + Account.hold_changes. L1: Alert node delivers (whisper -> Voice.whisper, alert -> Comms.notify + 3 buttons, template wording); lock_account uses Account; callback uses Store.official_number. pyright now runs in check.sh. Guardian LLM waits on l1-prompts merge.
 - 2026-11-08 L1-3 done: walking skeleton. One graph (during + after phases), in-memory checkpointer per session, deterministic stand-ins in graph/stubs.py (decide, caller screen, signal watcher, keyword guardian, fake Comms/Voice/Store). hero1 -> alert at t=101 with 3 buttons, plan + trace; real_bank_callback -> none; eval gate passes on fixtures. Next: L1-2 Guardian.

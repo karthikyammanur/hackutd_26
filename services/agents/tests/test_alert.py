@@ -41,15 +41,15 @@ def _state(level: Level, prev: list[Alert] | None = None) -> GraphState:
 
 def test_whisper_level_calls_voice_whisper_only() -> None:
     f = Fakes()
-    update = during.make_alert(f.tools)(_state(Level.whisper))
-    assert f.voice.calls == [("whisper", update["alerts"][0].reason)]
+    update = during.make_alert(f.tools, stubs.offline_structured)(_state(Level.whisper))
+    assert f.voice.calls == [("whisper", during.WHISPER_TEMPLATE)]  # offline: template whisper
     assert f.comms.calls == []
     assert update["alerts"][0].buttons == []
 
 
 def test_alert_level_notifies_customer_with_three_buttons() -> None:
     f = Fakes()
-    update = during.make_alert(f.tools)(_state(Level.alert))
+    update = during.make_alert(f.tools, stubs.offline_structured)(_state(Level.alert))
     (kind, to, text, buttons), *rest = f.comms.calls
     assert (kind, to, buttons) == ("notify", "customer", ",".join(BUTTONS)) and rest == []
     assert text == update["alerts"][0].reason
@@ -59,7 +59,7 @@ def test_alert_level_notifies_customer_with_three_buttons() -> None:
 
 def test_nudge_delivers_nothing() -> None:
     f = Fakes()
-    update = during.make_alert(f.tools)(_state(Level.nudge))
+    update = during.make_alert(f.tools, stubs.offline_structured)(_state(Level.nudge))
     assert update["alerts"][0].level == Level.nudge
     assert f.comms.calls == [] and f.voice.calls == []
 
@@ -67,7 +67,7 @@ def test_nudge_delivers_nothing() -> None:
 def test_same_level_does_not_deliver_again() -> None:
     f = Fakes()
     prev = [Alert(t=40, level=Level.alert, reason="r")]
-    assert during.make_alert(f.tools)(_state(Level.alert, prev)) == {}
+    assert during.make_alert(f.tools, stubs.offline_structured)(_state(Level.alert, prev)) == {}
     assert f.comms.calls == []
 
 
@@ -78,14 +78,19 @@ def test_failed_delivery_keeps_alert_in_state() -> None:
         raise TimeoutError
 
     f.comms.notify = boom  # type: ignore[method-assign]
-    update = during.make_alert(f.tools)(_state(Level.alert))
+    update = during.make_alert(f.tools, stubs.offline_structured)(_state(Level.alert))
     assert update["alerts"][0].level == Level.alert
-    assert update["trace"][0].action == "alert: delivery failed"
+    assert update["trace"][0].action == "alert: template + delivery failed"
 
 
 def test_hero1_delivers_one_whisper_and_one_notify() -> None:
     f = Fakes()
-    replay(FIX / "hero1_fake_bank.json", tools=f.tools, guardian=keyword_guardian)
+    replay(
+        FIX / "hero1_fake_bank.json",
+        tools=f.tools,
+        guardian=keyword_guardian,
+        structured=stubs.offline_structured,
+    )
     assert len(f.voice.calls) == 1
     notifies = [c for c in f.comms.calls if c[0] == "notify"]
     assert len(notifies) == 1 and notifies[0][3] == ",".join(BUTTONS)
@@ -93,7 +98,12 @@ def test_hero1_delivers_one_whisper_and_one_notify() -> None:
 
 def test_real_bank_delivers_nothing() -> None:
     f = Fakes()
-    replay(FIX / "real_bank_callback.json", tools=f.tools, guardian=keyword_guardian)
+    replay(
+        FIX / "real_bank_callback.json",
+        tools=f.tools,
+        guardian=keyword_guardian,
+        structured=stubs.offline_structured,
+    )
     assert f.comms.calls == [] and f.voice.calls == []
 
 

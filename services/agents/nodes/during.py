@@ -3,17 +3,22 @@
 from __future__ import annotations
 
 import logging
+from collections.abc import Callable
 from typing import Any, Protocol
 
 from contracts.events import CallStart, Turn, UserChoice
 from contracts.state import Alert, CallerInfo, Level, TraceItem, merge_risk
+from services.agents import llm
 from services.agents.graph import stubs
 from services.agents.graph.deps import Tools
 from services.agents.graph.state import WINDOW_TURNS, GraphState
+from services.agents.nodes.blocks import blocks, context_line, flags_lines, signals_line
+from services.agents.prompts import AlertCopy, load_prompt
 
 log = logging.getLogger(__name__)
 
 Update = dict[str, Any]
+Structured = Callable[..., Any]  # llm.structured, or a fake / offline stand-in
 
 
 class Node(Protocol):
@@ -109,11 +114,35 @@ CUSTOMER = "customer"  # logical recipient; lane 4's adapter maps it to the real
 BUTTONS: list[Any] = ["call_bank", "ask_trusted_contact", "continue"]
 
 
-def make_alert(tools: Tools) -> Node:
+ALERT_TIMEOUT_S = 1.5  # budget: alert delivered < 2 s after the decision
+WHISPER_TEMPLATE = "Take a moment before you share anything on this call."
+
+
+def alert_copy(state: GraphState, structured: Structured) -> tuple[str, str, str]:
+    """(reason, whisper, source). Nemotron fast writes it; the template is the fallback."""
+    r = state.risk
+    assert r is not None
+    user = blocks(
+        ("call_context", context_line(state)),
+        ("flags", flags_lines(state)),
+        ("signals", signals_line(state)),
+        tail=[f"level: {r.level.name}"],
+    )
+    try:
+        out = structured(
+            load_prompt("alert"), user, AlertCopy, llm.NODE_TIER["alert"], timeout=ALERT_TIMEOUT_S
+        )
+        return out.reason, out.whisper, "nemotron"
+    except Exception as exc:
+        log.warning("alert copy failed: %s", type(exc).__name__)
+        return stubs.alert_reason(r), WHISPER_TEMPLATE, "template"
+
+
+def make_alert(tools: Tools, structured: Structured) -> Node:
     """New Alert only when the level goes up. There is no hang-up tool here, by design (R2).
 
-    nudge: state only (UI shows it). whisper: Voice.whisper. alert: Comms.notify with the 3 buttons.
-    A failed tool call is traced and the alert stays in state; the call itself is never touched (R4).
+    nudge: template wording, state only (UI shows it). whisper: Voice.whisper. alert: Comms.notify with the
+    3 buttons. A failed tool call is traced and the alert stays in state; the call itself is never touched (R4).
     """
 
     def alert(state: GraphState) -> Update:
@@ -121,14 +150,17 @@ def make_alert(tools: Tools) -> Node:
         prev = max((a.level for a in state.alerts), default=Level.none)
         if r is None or r.level <= prev or r.level < Level.nudge:
             return {}
-        reason = stubs.alert_reason(r)  # template until AlertCopy (step 4 LLM part) lands
+        if r.level >= Level.whisper:
+            reason, whisper, source = alert_copy(state, structured)
+        else:
+            reason, whisper, source = stubs.alert_reason(r), "", "template"
         buttons = list(BUTTONS) if r.level >= Level.alert else []
         sid = state.session_id
         try:
             if r.level >= Level.alert:
                 action, result = "comms.notify", tools.comms.notify(sid, CUSTOMER, reason, buttons)
             elif r.level == Level.whisper:
-                action, result = "voice.whisper", tools.voice.whisper(sid, reason)
+                action, result = "voice.whisper", tools.voice.whisper(sid, whisper)
             else:
                 action, result = "show nudge", ""
         except Exception as exc:
@@ -138,7 +170,9 @@ def make_alert(tools: Tools) -> Node:
             "alerts": [
                 Alert(t=state.event.t if state.event else 0.0, level=r.level, reason=reason, buttons=buttons)
             ],
-            "trace": trace(state, "alert", f"{r.level.name}: {action}", f"{reason} {result}".strip()),
+            "trace": trace(
+                state, "alert", f"{r.level.name}: {source} + {action}", f"{reason} {result}".strip()
+            ),
         }
 
     return alert

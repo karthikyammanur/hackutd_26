@@ -25,7 +25,11 @@ def _run(name: str) -> tuple[SessionState, Any, list[tuple[str, dict[str, Any]]]
     tools = stubs.fake_tools()
     updates: list[tuple[str, dict[str, Any]]] = []
     final = replay(
-        FIX / name, on_update=lambda n, u: updates.append((n, u)), tools=tools, guardian=keyword_guardian
+        FIX / name,
+        on_update=lambda n, u: updates.append((n, u)),
+        tools=tools,
+        guardian=keyword_guardian,
+        structured=stubs.offline_structured,
     )
     return final, tools, updates
 
@@ -106,7 +110,9 @@ def test_emergency_number_does_nothing() -> None:
     tools = Tools(
         decider=stubs.decide, comms=comms, voice=voice, store=stubs.FakeStore(), account=stubs.FakeAccount()
     )
-    final, pred = replay_case(EvalCase.model_validate(case), tools, guardian=keyword_guardian)
+    final, pred = replay_case(
+        EvalCase.model_validate(case), tools, guardian=keyword_guardian, structured=stubs.offline_structured
+    )
     assert final.alerts == [] and final.signals == [] and final.flags == [] and final.plan == []
     assert comms.calls == [] and voice.calls == []
     assert [x.node for x in final.trace] == ["emergency"]
@@ -130,7 +136,7 @@ def test_router_hard_cap() -> None:
 def test_predictions_pass_the_eval_gate(tmp_path: Path) -> None:
     preds = tmp_path / "preds.jsonl"
     for f in sorted(FIX.glob("*.json")):
-        replay(f, preds_path=preds, guardian=keyword_guardian)
+        replay(f, preds_path=preds, guardian=keyword_guardian, structured=stubs.offline_structured)
     rows = [json.loads(line) for line in preds.read_text().splitlines()]
     assert {r["session_id"] for r in rows} == {
         "fx_hero1_fake_bank",

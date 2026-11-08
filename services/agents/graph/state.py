@@ -23,6 +23,7 @@ class GraphState(SessionState):
     guardian_checked_t: float = -1.0  # turns up to this t have been checked
     guardian_ok_t: float = -1.0  # turns up to this t were judged by a successful Nemotron check
     after_iterations: int = 0  # router visits in the after phase (hard cap in nodes/after.py)
+    cancel_request: str = ""  # Recovery's message to the bank, carried into the evidence packet
 
 
 PUBLIC_FIELDS = frozenset(SessionState.model_fields)
