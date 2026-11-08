@@ -162,7 +162,9 @@ def _ordered(steps: list[RecoveryStep]) -> list[RecoveryStep]:
 
 class RecoveryPlan(_Out):
     steps: Annotated[list[RecoveryStep], Field(min_length=1, max_length=6), AfterValidator(_ordered)]
-    cancel_request: Annotated[CardSafe, Field(min_length=1, max_length=320)]  # short message to the bank
+    # Cap is generous on purpose: guided decoding enforces maxLength by slicing mid-word, so the
+    # prompt asks for ~250 characters and the schema leaves room for the sentence to finish.
+    cancel_request: Annotated[CardSafe, Field(min_length=1, max_length=400)]  # message to the bank
 
 
 # --- evidence (fast) ---------------------------------------------------------------------------

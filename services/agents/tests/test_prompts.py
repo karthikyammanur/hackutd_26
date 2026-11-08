@@ -82,8 +82,8 @@ def test_prompt_examples_validate_against_the_schema(name: str) -> None:
 def test_guardian_prompt_carries_the_cases_that_matter() -> None:
     text = load_prompt("guardian")
     assert '{"flags": []}' in text, "needs the real-bank hard negative, which flags nothing"
-    assert "verified organization: Lone Star Bank" in text
-    assert "gift card credit" in text and "policy_contradiction" in text, "needs the fake-support case"
+    assert "verified organization: Prairie Mutual Savings" in text
+    assert "prepaid gift card" in text and "policy_contradiction" in text, "needs the fake-support case"
     assert "ignore previous instructions" in text.lower(), "needs the spoken-injection case"
     assert "enters in their own app" in text, "needs the code-aloud vs code-in-app rule"
 
@@ -268,6 +268,36 @@ def test_evidence_summary_caps_the_paragraph() -> None:
         EvidenceSummary.model_validate({"summary": "The bank will refund the transfer."})
 
 
+# --- examples must not leak the eval set -------------------------------------------------------
+
+
+def _shingles(text: str, n: int = 6) -> set[str]:
+    words = re.findall(r"[a-z0-9]+", text.lower())
+    return {" ".join(words[i : i + n]) for i in range(len(words) - n + 1)}
+
+
+def test_no_example_reuses_fixture_wording() -> None:
+    """An example drawn from a fixture turns the live test into replay. Keep the two sets disjoint."""
+    banned: set[str] = set()
+    fixture_shingles: set[str] = set()
+    for path in sorted(FIXTURES.glob("*.json")):
+        case = EvalCase.model_validate_json(path.read_text(encoding="utf-8"))
+        for e in case.events:
+            if isinstance(e, Turn):
+                fixture_shingles |= _shingles(e.text)
+            elif isinstance(e, CallStart):
+                banned.add(e.number)
+                if e.verified_org:
+                    banned.add(e.verified_org)
+    assert fixture_shingles, "no fixture turns found"
+    for name in PROMPT_NAMES:
+        text = load_prompt(name)
+        for value in sorted(banned):
+            assert value not in text, f"{name} reuses the fixture value {value!r}"
+        overlap = fixture_shingles & _shingles(text)
+        assert not overlap, f"{name} echoes fixture wording: {sorted(overlap)[:3]}"
+
+
 # --- live: guardian against the fixtures -------------------------------------------------------
 
 
@@ -343,36 +373,38 @@ def test_live_guardian_stays_quiet_on_the_real_bank_callback() -> None:
 
 # --- live: every other prompt returns a valid object -------------------------------------------
 
+# A payment-app "dispute team" call: in no fixture and in no prompt example, so these runs test the
+# prompts rather than replay them.
 _LIVE_USER: dict[str, str] = {
     "alert": """<call_context>
 direction: inbound, number not on the verified-organization list, first time seen
 </call_context>
 <flags>
-read_code (0.95): "You just got a six digit code. Read it back to me so I can verify it's you"
-safe_account (0.9): "we'll move your balance to a protected safe account"
+read_code (0.95): "Say the code from that text out loud so I can confirm the dispute is really you"
+safe_account (0.9): "I'll park your balance in a verification wallet until the claim clears"
 </flags>
 <signals>
-unknown_caller, otp_during_call from a bank short code
+unknown_caller, otp_during_call from a bank_shortcode
 </signals>
 level: alert""",
     "planner": """<call_context>
 direction: inbound, number not on the verified-organization list, first time seen
 </call_context>
 <flags>
-read_code (0.95), safe_account (0.9), urgency_secrecy (0.8)
+read_code (0.95), safe_account (0.9)
 </flags>
 <signals>
-unknown_caller, otp_during_call from a bank short code
+unknown_caller, otp_during_call from a bank_shortcode
 </signals>
-risk: 0.88, level: alert
+risk: 0.81, level: alert
 user_choice: call_bank
 trusted_contact_on_file: true""",
     "callback": """<call_context>
-direction: inbound, number not on the verified-organization list, call ended at t=131
+direction: inbound, number not on the verified-organization list, call ended at t=152
 </call_context>
 <flags>
-read_code (0.95): "Read it back to me so I can verify it's you"
-safe_account (0.9): "we'll move your balance to a protected safe account"
+read_code (0.95): "Say the code from that text out loud so I can confirm the dispute"
+safe_account (0.9): "I'll park your balance in a verification wallet until the claim clears"
 </flags>
 <callback_target>
 organisation: the customer's bank
@@ -382,27 +414,27 @@ verified_number: the number printed on the back of the customer's card
 direction: inbound, number not on the verified-organization list
 </call_context>
 <flags>
-read_code (0.95): "Read it back to me so I can verify it's you"
-safe_account (0.9): "we'll move your balance to a protected safe account"
+read_code (0.95): "Say the code from that text out loud so I can confirm the dispute"
+safe_account (0.9): "I'll park your balance in a verification wallet until the claim clears"
 </flags>
 <signals>
-unknown_caller, otp_during_call from a bank short code
+unknown_caller, otp_during_call from a bank_shortcode
 </signals>
 <what_moved>
-a one-time bank code was requested; the caller described a 1,240 dollar transfer the customer did not
-authorise; no payment was made by the customer
+a six digit code was read aloud to the caller; the caller said a 310 dollar payment-app charge would be
+reviewed; no transfer was made by the customer
 </what_moved>""",
     "evidence": """<call_context>
-direction: inbound, number not on the verified-organization list, first time seen, ended at t=131
+direction: inbound, number not on the verified-organization list, first time seen, ended at t=152
 </call_context>
 <flags>
-read_code (0.95): "Read it back to me so I can verify it's you"
-safe_account (0.9): "we'll move your balance to a protected safe account"
+read_code (0.95): "Say the code from that text out loud so I can confirm the dispute"
+safe_account (0.9): "I'll park your balance in a verification wallet until the claim clears"
 </flags>
 <signals>
-unknown_caller, otp_during_call from a bank short code at t=92
+unknown_caller, otp_during_call from a bank_shortcode at t=104
 </signals>
-risk: 0.88, level: alert
+risk: 0.81, level: alert
 alerts: 1 at level alert
 user_choice: call_bank
 plan: callback (done), recovery (done), evidence (running)""",
@@ -432,12 +464,12 @@ recent signals: none
 <transcript>
 [t=18] caller: This is the federal benefits fraud unit. Your number was used to open accounts in two states.
 [t=33] caller: To let me check your balance safely, download AnyDesk and give me the nine digit session code.
-[t=52] caller: Do not mention this to the teller or your family while the case is open.
+[t=52] caller: Say nothing to the teller or to your family until I clear the case.
 </transcript>"""
 
 _UNSEEN_BENIGN = """<call_context>
 direction: outbound (the customer dialed this number)
-number: +18005550199 (seen before, verified organization: Lone Star Bank)
+number: +18335550143 (seen before, verified organization: Cedar Trust Bank)
 carrier_label: none
 attestation: A
 recent signals: none
