@@ -28,7 +28,7 @@ export function LiveAgents() {
 
   return (
     <div>
-      <CommandBar count={calls.sessions.length} tlife={calls.tlife} live={calls.live} onSearch={calls.openByNumber} onPlace={calls.placeTestCall} onPlaceLive={calls.placeLiveCall} />
+      <CommandBar count={calls.sessions.length} tlife={calls.tlife} live={calls.live} onSearch={calls.openByNumber} onPlace={calls.placeTestCall} onPlaceLive={calls.placeLiveCall} onSimulateScam={calls.simulateScam} />
       <SessionRoster sessions={calls.sessions} openId={calls.openId} erased={calls.receipt} onOpen={calls.openTestSession} />
       <CallWorkspace
         key={viewKey}

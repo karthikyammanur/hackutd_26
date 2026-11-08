@@ -12,6 +12,7 @@ interface CommandBarProps {
   onSearch: (raw: string) => SearchResult;
   onPlace: (scenarioId: string) => void;
   onPlaceLive: () => void;
+  onSimulateScam: () => void;
 }
 
 function liveNote(live: LiveLink): string {
@@ -22,7 +23,7 @@ function liveNote(live: LiveLink): string {
   return "Checking the live API…";
 }
 
-export function CommandBar({ count, tlife, live, onSearch, onPlace, onPlaceLive }: CommandBarProps) {
+export function CommandBar({ count, tlife, live, onSearch, onPlace, onPlaceLive, onSimulateScam }: CommandBarProps) {
   const [number, setNumber] = useState("");
   const [note, setNote] = useState(HINT);
   const [scenarioId, setScenarioId] = useState(SCENARIOS[0].id);
@@ -107,6 +108,14 @@ export function CommandBar({ count, tlife, live, onSearch, onPlace, onPlaceLive 
           className="h-11 w-full rounded-full border-2 border-mag px-5 font-semibold whitespace-nowrap text-mag transition-colors hover:bg-mag hover:text-white disabled:cursor-not-allowed disabled:opacity-45 disabled:hover:bg-transparent disabled:hover:text-mag"
         >
           {live.placing ? "Placing real call…" : "Place real call"}
+        </button>
+        <button
+          type="button"
+          onClick={onSimulateScam}
+          disabled={live.api !== "ready"}
+          className="mt-2 h-11 w-full rounded-full bg-mag px-5 font-semibold whitespace-nowrap text-white transition-colors hover:bg-mag-deep disabled:cursor-not-allowed disabled:opacity-45"
+        >
+          Simulate scam
         </button>
         <p role="status" className="mt-1 pl-4 text-[12.5px] text-ink-2">
           {liveNote(live)}

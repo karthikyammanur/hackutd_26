@@ -9,7 +9,7 @@
     "SANDBOX_API_URL": "https://taste-difficulties-reference-ancient.trycloudflare.com",
     "EVIDENCE_API_URL": "https://taste-difficulties-reference-ancient.trycloudflare.com/evidence",
     // The Safe Signal API's tunnel, for real calls. Its token is a secret: wrangler secret put LIVE_API_TOKEN
-    "LIVE_API_URL": ""
+    "LIVE_API_URL": "https://handcraft-nuptials-shindig.ngrok-free.dev"
   },
   "durable_objects": {
     "bindings": [{ "name": "LEDGER", "class_name": "ProxyLedger" }]

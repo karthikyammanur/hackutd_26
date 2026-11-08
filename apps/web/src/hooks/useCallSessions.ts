@@ -367,6 +367,16 @@ function placeLiveCall() {
     .catch((error: unknown) => setLive({ placing: false, note: error instanceof Error ? error.message : "Couldn't place the call" }));
 }
 
+/** Demo button: makes the running real call behave like a scam. The API refuses when no real call is running. */
+function simulateScam() {
+  fetch("/live-api/calls/current/simulate-scam", { method: "POST" })
+    .then(async (response) => {
+      if (!response.ok) throw new Error(await errorText(response));
+      setLive({ note: "Simulated scam signals sent to this call." });
+    })
+    .catch((error: unknown) => setLive({ note: error instanceof Error ? error.message : "Couldn't simulate the scam" }));
+}
+
 /** Leaving the Live window counts as moving on, so the review goes with it. */
 function dropReviewOnLeave() {
   const onLive = window.location.hash === "" || window.location.hash === "#live";
@@ -493,7 +503,7 @@ function skipToAfterCall(id: string) {
   });
 }
 
-const actions = { placeTestCall, placeLiveCall, openByNumber, openTestSession, closeView, togglePlaying, setSpeed, seek, seekReview, skipToAfterCall };
+const actions = { placeTestCall, placeLiveCall, simulateScam, openByNumber, openTestSession, closeView, togglePlaying, setSpeed, seek, seekReview, skipToAfterCall };
 
 export function useCallSessions() {
   const snapshot = useSyncExternalStore(subscribe, getSnapshot);

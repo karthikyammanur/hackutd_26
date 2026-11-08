@@ -1,6 +1,6 @@
 /**
  * Same-origin proxy to the Safe Signal API (services/api), which runs on the demo laptop behind a tunnel.
- * The token stays here. Four routes only: place the one demo call, find the live call, read its markers, health.
+ * The token stays here. Five routes only: place the one demo call, simulate a scam on it, find it, read its markers, health.
  * No route takes a phone number: the API always dials its own demo number (rule R10).
  */
 
@@ -17,6 +17,7 @@ const READ_TIMEOUT_MS = 8000;
 
 const ROUTES: { method: "GET" | "POST"; route: RegExp }[] = [
   { method: "POST", route: /^\/calls\/start$/ },
+  { method: "POST", route: /^\/calls\/current\/simulate-scam$/ },
   { method: "GET", route: /^\/calls\/current$/ },
   { method: "GET", route: /^\/sessions\/[\w-]{1,64}\/view$/ },
   { method: "GET", route: /^\/health$/ },

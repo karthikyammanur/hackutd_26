@@ -27,7 +27,7 @@ from fastapi import Body, Depends, FastAPI, Header, HTTPException, Query, WebSoc
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, ConfigDict, TypeAdapter, ValidationError
 
-from contracts.events import CallStart, EvalCase, Event, SmsOtp, Source
+from contracts.events import AccountChange, CallStart, EvalCase, Event, SmsOtp, Source, Turn
 from contracts.state import SessionState, UIMessage
 from services.agents.tools.errors import ToolConfigError
 from services.api import live_call
@@ -209,6 +209,21 @@ async def post_live_sms(body: SmsIn) -> dict[str, Any]:
     )
     live.submit(event)
     return {"accepted": True, "session_id": live.session_id, "t": event.t}
+
+
+@app.post("/calls/current/simulate-scam", status_code=202, dependencies=GUARD)
+async def simulate_scam() -> dict[str, Any]:
+    """Demo button: makes the running real call behave like a scam, through the normal pipeline. No scoring changes.
+    A bank code plus a SIM-change attempt reach the full alert; made-up digits from the customer make the after-call
+    plan include the callback. Marked Source.system: none of this happened on a real phone."""
+    live = hub.active()
+    if live is None:
+        raise HTTPException(409, "No real call is running. Place one first.")
+    sid, t = live.session_id, live.last_t
+    live.submit(SmsOtp(session_id=sid, t=t, source=Source.system, sender_type="bank_shortcode"))
+    live.submit(AccountChange(session_id=sid, t=t, source=Source.system, action="sim_change", status="attempted"))
+    live.submit(Turn(session_id=sid, t=t, source=Source.system, speaker="customer", text="4 8 1 5 1 6"))
+    return {"accepted": True, "session_id": sid, "t": t}
 
 
 @app.get("/sessions/{session_id}", dependencies=GUARD)

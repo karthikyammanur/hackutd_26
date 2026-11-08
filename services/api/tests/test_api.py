@@ -261,6 +261,28 @@ def test_unknown_fixture_is_404(client: TestClient) -> None:
     assert client.post("/sessions/..%2Fsecrets/replay").status_code == 404
 
 
+def test_simulate_scam_reaches_the_full_alert_and_the_callback(client: TestClient) -> None:
+    sid = "live_simulated"
+    start = {
+        "session_id": sid,
+        "t": 0,
+        "source": "network",
+        "kind": "call_start",
+        "direction": "inbound",
+        "number": "+15550101",
+        "first_seen": True,
+    }
+    assert client.post(f"/sessions/{sid}/events?offline=true", json=start).status_code == 202
+    r = client.post("/calls/current/simulate-scam")
+    assert r.status_code == 202 and r.json()["session_id"] == sid
+    state = _wait_state(client, sid, lambda s: any(a.level == Level.alert for a in s.alerts))
+    assert {x.kind for x in state.signals} >= {"otp_during_call", "account_change_during_call"}
+    end = {"session_id": sid, "t": 40, "source": "network", "kind": "call_end"}
+    assert client.post(f"/sessions/{sid}/events", json=end).status_code == 202
+    done = _wait_state(client, sid, lambda s: any(p.name == "callback" for p in s.plan))
+    assert any(p.name == "callback" for p in done.plan)
+
+
 def test_live_sms_reaches_the_live_call_without_the_code(client: TestClient) -> None:
     sid = "live_sms"
     start = {
