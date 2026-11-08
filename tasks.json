@@ -40,8 +40,8 @@
       "depends_on": [
         "L4-1"
       ],
-      "owner": "TBD",
-      "status": "todo"
+      "owner": "karthikyammanur",
+      "status": "doing"
     },
     {
       "id": "L1-2",
@@ -52,7 +52,7 @@
       "depends_on": [
         "L1-1"
       ],
-      "owner": "TBD",
+      "owner": "karthikyammanur",
       "status": "todo"
     },
     {
@@ -65,7 +65,7 @@
         "L1-2",
         "L2-2"
       ],
-      "owner": "TBD",
+      "owner": "karthikyammanur",
       "status": "todo"
     },
     {
@@ -78,7 +78,7 @@
         "L1-3",
         "L4-2"
       ],
-      "owner": "TBD",
+      "owner": "karthikyammanur",
       "status": "todo"
     },
     {
@@ -91,7 +91,7 @@
         "L1-4",
         "L4-4"
       ],
-      "owner": "TBD",
+      "owner": "karthikyammanur",
       "status": "todo"
     },
     {
