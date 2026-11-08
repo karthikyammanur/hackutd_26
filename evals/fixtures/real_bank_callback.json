@@ -1,0 +1,14 @@
+{
+  "session_id": "fx_real_bank_callback",
+  "label": {"scam": false, "type": "benign_bank_callback", "hard_negative": true, "first_scam_t": null},
+  "events": [
+    {"session_id": "fx_real_bank_callback", "t": 0, "source": "network", "kind": "call_start", "direction": "outbound", "number": "+18005550199", "carrier_label": "none", "attestation": "A", "first_seen": false, "verified_org": "Lone Star Bank"},
+    {"session_id": "fx_real_bank_callback", "t": 15, "source": "network", "kind": "turn", "speaker": "caller", "text": "Thank you for calling Lone Star Bank. How can I help?"},
+    {"session_id": "fx_real_bank_callback", "t": 22, "source": "network", "kind": "turn", "speaker": "customer", "text": "I lost my debit card and want to lock it."},
+    {"session_id": "fx_real_bank_callback", "t": 35, "source": "network", "kind": "turn", "speaker": "caller", "text": "I can help with that. I'm sending a verification code to the phone on file. Please enter it in your banking app."},
+    {"session_id": "fx_real_bank_callback", "t": 41, "source": "network", "kind": "sms_otp", "sender_type": "bank_shortcode", "org": "Lone Star Bank"},
+    {"session_id": "fx_real_bank_callback", "t": 48, "source": "network", "kind": "bank_app_traffic", "org": "Lone Star Bank"},
+    {"session_id": "fx_real_bank_callback", "t": 70, "source": "network", "kind": "turn", "speaker": "caller", "text": "Thanks, you're verified. Your card is locked and a replacement ships in five to seven days."},
+    {"session_id": "fx_real_bank_callback", "t": 84, "source": "network", "kind": "call_end"}
+  ]
+}

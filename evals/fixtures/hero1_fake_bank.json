@@ -1,0 +1,17 @@
+{
+  "session_id": "fx_hero1_fake_bank",
+  "label": {"scam": true, "type": "bank_safe_account", "hard_negative": false, "first_scam_t": 101},
+  "events": [
+    {"session_id": "fx_hero1_fake_bank", "t": 0, "source": "network", "kind": "call_start", "direction": "inbound", "number": "+12145550147", "carrier_label": "none", "attestation": "B", "first_seen": true, "verified_org": null},
+    {"session_id": "fx_hero1_fake_bank", "t": 6, "source": "network", "kind": "turn", "speaker": "caller", "text": "Hi, this is Daniel from the Lone Star Bank fraud department. Am I speaking with the account holder?"},
+    {"session_id": "fx_hero1_fake_bank", "t": 12, "source": "network", "kind": "turn", "speaker": "customer", "text": "Yes, what's going on?"},
+    {"session_id": "fx_hero1_fake_bank", "t": 20, "source": "network", "kind": "turn", "speaker": "caller", "text": "We've flagged a 1,240 dollar transfer to an account in Ohio. Did you authorize that?"},
+    {"session_id": "fx_hero1_fake_bank", "t": 28, "source": "network", "kind": "turn", "speaker": "customer", "text": "No, I didn't."},
+    {"session_id": "fx_hero1_fake_bank", "t": 40, "source": "network", "kind": "turn", "speaker": "caller", "text": "Okay, I'm going to secure your account right now. Please don't hang up and don't call the branch, it will reset the case."},
+    {"session_id": "fx_hero1_fake_bank", "t": 92, "source": "network", "kind": "sms_otp", "sender_type": "bank_shortcode", "org": "Lone Star Bank"},
+    {"session_id": "fx_hero1_fake_bank", "t": 101, "source": "network", "kind": "turn", "speaker": "caller", "text": "You just got a six digit code. Read it back to me so I can verify it's you and cancel the transfer."},
+    {"session_id": "fx_hero1_fake_bank", "t": 118, "source": "network", "kind": "turn", "speaker": "caller", "text": "After that we'll move your balance to a protected safe account until this is resolved."},
+    {"session_id": "fx_hero1_fake_bank", "t": 130, "source": "phone", "kind": "user_choice", "choice": "call_bank"},
+    {"session_id": "fx_hero1_fake_bank", "t": 131, "source": "network", "kind": "call_end"}
+  ]
+}

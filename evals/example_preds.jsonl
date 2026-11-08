@@ -1,0 +1,3 @@
+{"session_id": "fx_hero1_fake_bank", "alerts": [{"t": 41, "level": "nudge", "score": 0.42}, {"t": 93, "level": "whisper", "score": 0.71}, {"t": 102, "level": "alert", "score": 0.93}], "latency_ms": [38, 44, 52]}
+{"session_id": "fx_real_bank_callback", "alerts": [{"t": 42, "level": "nudge", "score": 0.22}], "latency_ms": [35, 40]}
+{"session_id": "fx_fake_tmobile_support", "alerts": [{"t": 31, "level": "whisper", "score": 0.66}, {"t": 65, "level": "alert", "score": 0.95}], "latency_ms": [41, 47]}

@@ -1,0 +1,16 @@
+{
+  "session_id": "fx_fake_tmobile_support",
+  "label": {"scam": true, "type": "fake_support_outbound", "hard_negative": false, "first_scam_t": 64},
+  "events": [
+    {"session_id": "fx_fake_tmobile_support", "t": 0, "source": "network", "kind": "call_start", "direction": "outbound", "number": "+18885550133", "carrier_label": "none", "attestation": "C", "first_seen": true, "verified_org": null},
+    {"session_id": "fx_fake_tmobile_support", "t": 8, "source": "network", "kind": "turn", "speaker": "caller", "text": "T-Mobile billing support, this is Kevin. How can I help you today?"},
+    {"session_id": "fx_fake_tmobile_support", "t": 16, "source": "network", "kind": "turn", "speaker": "customer", "text": "I was double charged last month and want a refund."},
+    {"session_id": "fx_fake_tmobile_support", "t": 30, "source": "network", "kind": "turn", "speaker": "caller", "text": "I see the duplicate charge. Our refund system is down today, so we process refunds through gift card credit."},
+    {"session_id": "fx_fake_tmobile_support", "t": 64, "source": "network", "kind": "turn", "speaker": "caller", "text": "Buy a 200 dollar gift card at any store, read me the number on the back, and we'll credit 400 to your account."},
+    {"session_id": "fx_fake_tmobile_support", "t": 80, "source": "network", "kind": "turn", "speaker": "caller", "text": "I'm also sending a code to your phone to move your service to our new secure SIM. Read that to me too."},
+    {"session_id": "fx_fake_tmobile_support", "t": 84, "source": "network", "kind": "account_change", "action": "sim_change", "status": "attempted"},
+    {"session_id": "fx_fake_tmobile_support", "t": 85, "source": "system", "kind": "account_change", "action": "sim_change", "status": "held"},
+    {"session_id": "fx_fake_tmobile_support", "t": 95, "source": "phone", "kind": "user_choice", "choice": "continue"},
+    {"session_id": "fx_fake_tmobile_support", "t": 120, "source": "network", "kind": "call_end"}
+  ]
+}
