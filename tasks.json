@@ -230,8 +230,8 @@
       "done_when": "Each spike prints a real response; F8 in context/decisions.md",
       "due_cst": "00:00",
       "depends_on": [],
-      "owner": "TBD",
-      "status": "todo"
+      "owner": "karthikyammanur",
+      "status": "done"
     },
     {
       "id": "L4-2",
@@ -240,8 +240,8 @@
       "done_when": "tools/mock.py type-checks against contracts/interfaces.py",
       "due_cst": "00:30",
       "depends_on": [],
-      "owner": "TBD",
-      "status": "todo"
+      "owner": "karthikyammanur",
+      "status": "done"
     },
     {
       "id": "L4-3",
