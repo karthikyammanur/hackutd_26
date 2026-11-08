@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import time
 from collections.abc import Iterator
 from pathlib import Path
@@ -11,6 +12,7 @@ from typing import Any
 
 import pytest
 from fastapi.testclient import TestClient
+from starlette.websockets import WebSocketDisconnect
 
 from contracts.events import EvalCase
 from contracts.state import Level, SessionState, UIMessage
@@ -342,3 +344,29 @@ def test_calls_start_follows_a_live_call_to_the_end(
     assert any(f.kind == "card_details" and f.t == 20 for f in final.flags)
     assert max(a.level for a in final.alerts) == Level.alert
     assert client.get("/calls/current").json()["session_id"] != sid  # ended calls are not current
+    assert re.fullmatch(r"live-[0-9a-f]{12}", sid)  # unguessable, so /choice can't be aimed at it
+
+    end = time.time() + 20
+    while not (view := client.get(f"/sessions/{sid}/view").json())["erased"] and time.time() < end:
+        time.sleep(0.05)
+    assert view["erased"] and view["ended"] and view["answered_t"] == 2
+    assert any(f == {"kind": "card_details", "t": 20} for f in view["flags"])
+    assert view["disclosed"] is False and "callback" not in [p["name"] for p in view["plan"]]
+    assert [x["node"] for x in view["timeline"]][-1] == "router"
+    raw = json.dumps(view)
+    assert "16-digit" not in raw and "cardholder" not in raw and "+1555" not in raw  # markers only
+
+
+def test_api_token_guards_the_console_routes(client: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("API_TOKEN", "s3cret")
+    assert client.get("/calls/current").status_code == 401
+    assert client.post("/calls/start").status_code == 401  # nothing is dialed without the token
+    assert client.get("/calls/current", headers={"authorization": "Bearer wrong"}).status_code == 401
+    assert client.get("/calls/current", headers={"authorization": "Bearer s3cret"}).status_code == 200
+    assert client.get("/sessions/nope/view").status_code == 401
+    assert client.get("/health").status_code == 200
+    assert (
+        client.post("/live/sms", json={"sender_type": "longcode"}).status_code == 202
+    )  # the phone has no token
+    with pytest.raises(WebSocketDisconnect), client.websocket_connect("/ws/anything") as ws:
+        ws.receive_text()

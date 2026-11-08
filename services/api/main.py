@@ -6,21 +6,24 @@ Live (the demo): POST /calls/start places the Scammer Simulator call and feeds i
 Other sources POST each Event to /sessions/{id}/events; the phone reply goes to /sessions/{id}/choice.
 Replay (lane 3 dev): POST /sessions/{fixture}/replay?speed=4. Either way, the console listens on WS /ws/{id}.
 Offline (no Brev): ?offline=true on call_start or replay, or SAFE_SIGNAL_OFFLINE=1.
+On a public tunnel, set API_TOKEN: the console's routes then need "Authorization: Bearer <API_TOKEN>" (the WebSocket
+takes ?token=). The hosted console reaches this API through its Worker, which adds the token (apps/web/worker).
 """
 
 from __future__ import annotations
 
 import asyncio
 import contextlib
+import hmac
 import os
 import re
-import time
+import secrets
 from collections.abc import AsyncIterator
 from pathlib import Path
 from typing import Annotated, Any, Literal
 
 from dotenv import load_dotenv
-from fastapi import Body, FastAPI, HTTPException, Query, WebSocket, WebSocketDisconnect
+from fastapi import Body, Depends, FastAPI, Header, HTTPException, Query, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, ConfigDict, TypeAdapter, ValidationError
 
@@ -29,6 +32,7 @@ from contracts.state import SessionState, UIMessage
 from services.agents.tools.errors import ToolConfigError
 from services.api import live_call
 from services.api.hub import Hub, LiveSession, parse_choice, tools_mode
+from services.api.view import session_view
 
 load_dotenv()  # so /health and offline defaults see .env before the first LLM call
 
@@ -46,6 +50,20 @@ def _env_offline() -> bool:
     return os.environ.get("SAFE_SIGNAL_OFFLINE", "").strip().lower() in ("1", "true", "yes")
 
 
+def _token_ok(given: str | None) -> bool:
+    token = os.environ.get("API_TOKEN", "").strip()
+    return not token or hmac.compare_digest((given or "").encode(), token.encode())
+
+
+def require_token(authorization: Annotated[str | None, Header()] = None) -> None:
+    """With API_TOKEN set, the console's routes need it. Open: /health, and the two routes that carry only a choice
+    or a sender type (the iMessage reply via the sidecar, the phone's code report), which have no token to send."""
+    given = authorization.removeprefix("Bearer ").strip() if authorization else None
+    if not _token_ok(given):
+        raise HTTPException(401, "missing or wrong API token")
+
+
+GUARD = [Depends(require_token)]
 hub = Hub()
 EVENT: TypeAdapter[Event] = TypeAdapter(Event)  # the contracts union, discriminated by `kind`
 
@@ -83,7 +101,7 @@ def health() -> dict[str, Any]:
 # ---- a real call: the console's "start call" button ---------------------------------------------------------
 
 
-@app.post("/calls/start", status_code=202)
+@app.post("/calls/start", status_code=202, dependencies=GUARD)
 async def start_call() -> dict[str, Any]:
     """Place one Scammer Simulator call to DEMO_CUSTOMER_NUMBER and follow it live. Takes no body: the number
     always comes from .env, so this route can never dial anyone else (R10). One call at a time."""
@@ -94,7 +112,7 @@ async def start_call() -> dict[str, Any]:
         env = live_call.config()
     except ToolConfigError as e:
         raise HTTPException(503, str(e)) from e
-    session_id = f"live-{int(time.time())}"
+    session_id = f"live-{secrets.token_hex(6)}"  # unguessable: the id is all /choice needs
     live = await _start(session_id, None)  # checks the adapters before anything is dialed
     el = live_call.client(env)
     try:
@@ -110,7 +128,7 @@ async def start_call() -> dict[str, Any]:
     return {"session_id": session_id, "conversation_id": conv, "ws": f"/ws/{session_id}"}
 
 
-@app.get("/calls/current")
+@app.get("/calls/current", dependencies=GUARD)
 def current_call() -> dict[str, Any]:
     """The live call's session id, so a console that did not start it can still open /ws/{id}."""
     live = hub.active()
@@ -120,7 +138,7 @@ def current_call() -> dict[str, Any]:
 # ---- live: one Event at a time -----------------------------------------------------------------------------
 
 
-@app.post("/sessions/{session_id}/events", status_code=202)
+@app.post("/sessions/{session_id}/events", status_code=202, dependencies=GUARD)
 async def post_event(
     session_id: str,
     body: Annotated[dict[str, Any], Body()],
@@ -194,7 +212,7 @@ async def post_live_sms(body: SmsIn) -> dict[str, Any]:
     return {"accepted": True, "session_id": live.session_id, "t": event.t}
 
 
-@app.get("/sessions/{session_id}")
+@app.get("/sessions/{session_id}", dependencies=GUARD)
 async def get_session(session_id: str) -> SessionState:
     live = hub.get(session_id)
     if live is None:
@@ -202,12 +220,23 @@ async def get_session(session_id: str) -> SessionState:
     return await asyncio.to_thread(live.state)
 
 
+@app.get("/sessions/{session_id}/view", dependencies=GUARD)
+async def get_view(session_id: str) -> dict[str, Any]:
+    """Markers only, for the hosted console (view.py): no turn text, quotes or numbers."""
+    live = hub.get(session_id)
+    if live is None:
+        raise HTTPException(404, f"no session {session_id!r}")
+    state = await asyncio.to_thread(live.state)
+    running = live.call_task is not None and not live.call_task.done()
+    return session_view(state, t=live.last_t, answered_t=live.answered_t, call_running=running)
+
+
 # ---- replay: a fixture paced like a real call --------------------------------------------------------------
 
 _FIXTURE_NAME = re.compile(r"[a-z0-9_]+")
 
 
-@app.post("/sessions/{fixture_name}/replay", status_code=202)
+@app.post("/sessions/{fixture_name}/replay", status_code=202, dependencies=GUARD)
 async def replay(
     fixture_name: str,
     speed: Annotated[float, Query(gt=0, le=1000)] = 4.0,
@@ -244,6 +273,9 @@ async def _pace(live: LiveSession, events: list[Any], speed: float) -> None:
 @app.websocket("/ws/{session_id}")
 async def ws(websocket: WebSocket, session_id: str) -> None:
     """UIMessage JSON: the current state on connect (if the session exists), then event / trace / state live."""
+    if not _token_ok(websocket.query_params.get("token")):
+        await websocket.close(code=1008)  # policy violation: this stream carries live turn text
+        return
     await websocket.accept()
     q = hub.subscribe(session_id)
     try:

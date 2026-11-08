@@ -26,15 +26,16 @@ def main() -> int:
     if not args.yes:
         print("Dry run. Would ask the API to place one Scammer Simulator call. Re-run with --yes.")
         return 0
-    r = httpx.post(f"{args.api}/calls/start", timeout=40)
+    token = os.environ.get("API_TOKEN", "").strip()
+    headers = {"authorization": f"Bearer {token}"} if token else {}
+    r = httpx.post(f"{args.api}/calls/start", headers=headers, timeout=40)
     if r.status_code != 202:
         print(f"API {r.status_code}: {r.text[:300]}")
         return 1
     body = r.json()
     print(f"calling. session {body['session_id']}  conversation {body['conversation_id']}")
-    print(
-        f"watch: {args.api.replace('http', 'ws', 1)}{body['ws']}   state: {args.api}/sessions/{body['session_id']}"
-    )
+    ws = f"{args.api.replace('http', 'ws', 1)}{body['ws']}" + ("?token=..." if token else "")
+    print(f"watch: {ws}   state: {args.api}/sessions/{body['session_id']}")
     return 0
 
 

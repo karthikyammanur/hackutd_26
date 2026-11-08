@@ -7,7 +7,9 @@
   "compatibility_flags": ["global_fetch_strictly_public"],
   "vars": {
     "SANDBOX_API_URL": "https://taste-difficulties-reference-ancient.trycloudflare.com",
-    "EVIDENCE_API_URL": "https://taste-difficulties-reference-ancient.trycloudflare.com/evidence"
+    "EVIDENCE_API_URL": "https://taste-difficulties-reference-ancient.trycloudflare.com/evidence",
+    // The Safe Signal API's tunnel, for real calls. Its token is a secret: wrangler secret put LIVE_API_TOKEN
+    "LIVE_API_URL": ""
   },
   "durable_objects": {
     "bindings": [{ "name": "LEDGER", "class_name": "ProxyLedger" }]
@@ -19,7 +21,7 @@
     "directory": "./dist",
     "binding": "ASSETS",
     // The proxy must run before the single-page fallback below can answer.
-    "run_worker_first": ["/sandbox-api/*", "/evidence-api/*", "/tlife-api/*"],
+    "run_worker_first": ["/sandbox-api/*", "/evidence-api/*", "/tlife-api/*", "/live-api/*"],
     // Any path without a file serves index.html, so client-side URLs load directly.
     "not_found_handling": "single-page-application"
   }

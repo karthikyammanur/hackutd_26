@@ -1,5 +1,6 @@
 import { useSyncExternalStore } from "react";
 import { traceAt, type Beat, type CallPhase, type Scenario, type Tier } from "@/lib/console/call-model";
+import { liveNow, liveScenario, placingScenario, type LiveView } from "@/lib/console/live";
 import { SCENARIOS } from "@/lib/console/scenarios";
 
 /**
@@ -10,7 +11,10 @@ import { SCENARIOS } from "@/lib/console/scenarios";
 
 export interface CallSession {
   id: string;
-  kind: "test" | "ambient";
+  /** "live" is a real call placed by the Safe Signal API. Its beats come from the API, not a script. */
+  kind: "test" | "ambient" | "live";
+  /** Live only: the API's session id. */
+  remoteId?: string;
   scenario: Scenario;
   /** Where the play head is. */
   t: number;
@@ -38,6 +42,14 @@ export type NoticeDelivery =
 
 export type TLifeStatus = { phones: number };
 
+/** The link to the Safe Signal API, through the Worker's /live-api proxy. */
+export interface LiveLink {
+  api: "unknown" | "ready" | "offline";
+  placing: boolean;
+  /** Why it's offline, or what the last attempt said. */
+  note: string | null;
+}
+
 export type SearchResult = { ok: true; mask: string } | { ok: false; reason: "incomplete" | "not-found" };
 
 interface SessionsState {
@@ -50,6 +62,7 @@ interface SessionsState {
   speed: number;
   deliveries: Record<string, NoticeDelivery>;
   tlife: TLifeStatus | null;
+  live: LiveLink;
 }
 
 export const DEMO_SPEEDS = [1, 6, 12];
@@ -62,6 +75,8 @@ const AMBIENT_RATE_MIN = 3;
 const AMBIENT_RATE_MAX = 7;
 const SPAWN_GAP_MIN_MS = 6000;
 const SPAWN_GAP_MAX_MS = 14000;
+const LIVE_POLL_MS = 1000;
+const LIVE_CURRENT_MS = 5000;
 
 /** Fixed synthetic numbers so a presenter can search a test call. 555-01XX is reserved for fiction. */
 const TEST_NUMBERS: Record<string, string> = {
@@ -73,8 +88,17 @@ const TEST_NUMBERS: Record<string, string> = {
 
 const ID_ALPHABET = "23456789ABCDEFGHJKMNPQRSTUVWXYZ";
 
-let state: SessionsState = { sessions: [], openId: null, openMask: null, receipt: null, playing: true, speed: 6, deliveries: {}, tlife: null };
+let state: SessionsState = {
+  sessions: [], openId: null, openMask: null, receipt: null, playing: true, speed: 6, deliveries: {}, tlife: null,
+  live: { api: "unknown", placing: false, note: null },
+};
 const numbers = new Map<string, string>();
+/** API session ids already shown, so a finished call is never picked up again. */
+const seenRemote = new Set<string>();
+const polling = new Set<string>();
+let checkingCurrent = false;
+let nextLivePollAt = 0;
+let nextCurrentAt = 0;
 const listeners = new Set<() => void>();
 let timer: ReturnType<typeof setInterval> | null = null;
 let lastTick = 0;
@@ -186,7 +210,7 @@ function tick() {
   const outgoing: { key: string; scenarioId: string; beatT: number }[] = [];
   const sessions: CallSession[] = [];
   for (const session of state.sessions) {
-    const rate = session.kind === "test" ? (state.playing ? state.speed : 0) : session.rate;
+    const rate = session.kind === "test" ? (state.playing ? state.speed : 0) : session.kind === "live" ? 0 : session.rate;
     const t = session.t + elapsed * rate;
     if (session.kind === "test") {
       for (const beat of session.scenario.beats) {
@@ -223,6 +247,104 @@ function tick() {
     nextStatusAt = now + TLIFE_STATUS_MS;
     refreshTLifeStatus();
   }
+
+  if (now >= nextLivePollAt) {
+    nextLivePollAt = now + LIVE_POLL_MS;
+    for (const session of state.sessions) if (session.kind === "live") pollLive(session);
+  }
+  if (now >= nextCurrentAt && document.visibilityState === "visible" && !state.sessions.some((s) => s.kind === "live")) {
+    nextCurrentAt = now + LIVE_CURRENT_MS;
+    checkCurrent();
+  }
+}
+
+// ---- real calls, through the Worker's /live-api proxy to the Safe Signal API --------------------------------
+
+function setLive(change: Partial<LiveLink>) {
+  publish({ ...state, live: { ...state.live, ...change } });
+}
+
+async function errorText(response: Response): Promise<string> {
+  const body = (await response.json().catch(() => ({}))) as { error?: string; detail?: unknown };
+  if (response.status === 401) return "The console's token doesn't match the API's";
+  return body.error ?? (typeof body.detail === "string" ? body.detail : `The live API answered ${response.status}`);
+}
+
+/** Adds the API's call to the roster. Opens it when asked, or when nothing else is open. */
+function addLiveSession(remoteId: string, open: boolean) {
+  if (seenRemote.has(remoteId)) return;
+  seenRemote.add(remoteId);
+  const id = newSessionId();
+  const session: CallSession = { id, kind: "live", remoteId, scenario: placingScenario(remoteId), t: 0, furthest: 0, rate: 0 };
+  const takeView = open || (state.openId === null && state.receipt === null);
+  publish({
+    ...state,
+    sessions: [session, ...state.sessions],
+    ...(takeView ? { openId: id, openMask: null, receipt: null } : {}),
+    live: { api: "ready", placing: false, note: null },
+  });
+  pollLive(session);
+}
+
+function pollLive(session: CallSession) {
+  const remoteId = session.remoteId;
+  if (!remoteId || polling.has(remoteId)) return;
+  polling.add(remoteId);
+  fetch(`/live-api/sessions/${encodeURIComponent(remoteId)}/view`, { cache: "no-store" })
+    .then(async (response) => {
+      if (response.status === 404) {
+        // The API restarted and forgot the call. Nothing left to show.
+        publish({
+          ...state,
+          sessions: state.sessions.filter((s) => s.id !== session.id),
+          openId: state.openId === session.id ? null : state.openId,
+          live: { ...state.live, note: "The API no longer has that call" },
+        });
+        return;
+      }
+      if (!response.ok) throw new Error(await errorText(response));
+      const view = (await response.json()) as LiveView;
+      const scenario = liveScenario(view);
+      const t = liveNow(view, scenario);
+      updateSession(session.id, (current) => ({ ...current, scenario, t, furthest: Math.max(current.furthest, t) }));
+      if (state.live.api !== "ready") setLive({ api: "ready", note: null });
+    })
+    .catch((error: unknown) => setLive({ api: "offline", note: error instanceof Error ? error.message : "Lost the live API" }))
+    .finally(() => polling.delete(remoteId));
+}
+
+/** Finds a real call started elsewhere (another console, or spikes/live_bridge.py). Also tells if the API is up. */
+function checkCurrent(open = false) {
+  if (checkingCurrent) return;
+  checkingCurrent = true;
+  fetch("/live-api/calls/current", { cache: "no-store" })
+    .then(async (response) => {
+      if (!response.ok) return setLive({ api: "offline", note: await errorText(response) });
+      const { session_id } = (await response.json()) as { session_id: string | null };
+      if (state.live.api !== "ready") setLive({ api: "ready", note: null });
+      if (session_id) addLiveSession(session_id, open);
+    })
+    .catch(() => setLive({ api: "offline", note: "Couldn't reach the console's server" }))
+    .finally(() => {
+      checkingCurrent = false;
+    });
+}
+
+/** Asks the API to ring the demo phone from the ElevenLabs scammer line. The API picks the number (rule R10). */
+function placeLiveCall() {
+  if (state.live.placing) return;
+  setLive({ placing: true, note: null });
+  fetch("/live-api/calls/start", { method: "POST" })
+    .then(async (response) => {
+      if (response.status === 409) {
+        setLive({ placing: false, note: "A real call is already running. Opening it." });
+        return checkCurrent(true);
+      }
+      if (!response.ok) throw new Error(await errorText(response));
+      const { session_id } = (await response.json()) as { session_id: string };
+      addLiveSession(session_id, true);
+    })
+    .catch((error: unknown) => setLive({ placing: false, note: error instanceof Error ? error.message : "Couldn't place the call" }));
 }
 
 /** Leaving the Live window counts as moving on, so the review goes with it. */
@@ -298,7 +420,7 @@ function openByNumber(raw: string): SearchResult {
 
 function openTestSession(id: string) {
   const session = state.sessions.find((candidate) => candidate.id === id);
-  if (session?.kind !== "test") return;
+  if (!session || session.kind === "ambient") return;
   publish({ ...state, openId: id, openMask: null, receipt: null });
 }
 
@@ -346,7 +468,7 @@ function skipToAfterCall(id: string) {
   });
 }
 
-const actions = { placeTestCall, openByNumber, openTestSession, closeView, togglePlaying, setSpeed, seek, seekReview, skipToAfterCall };
+const actions = { placeTestCall, placeLiveCall, openByNumber, openTestSession, closeView, togglePlaying, setSpeed, seek, seekReview, skipToAfterCall };
 
 export function useCallSessions() {
   const snapshot = useSyncExternalStore(subscribe, getSnapshot);

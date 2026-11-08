@@ -48,6 +48,7 @@ export function SessionRoster({ sessions, openId, erased, onOpen }: RosterProps)
             <span className="flex h-5 items-center justify-between gap-2">
               <span className="font-semibold tracking-[0.02em]">{session.id}</span>
               {session.kind === "test" && <Tag hot={open}>Test</Tag>}
+              {session.kind === "live" && <Tag hot>Live</Tag>}
             </span>
             <span className="flex h-5 items-center gap-1.5 text-[13px] whitespace-nowrap text-ink-2">
               <i className={`size-2 flex-none rounded-full ${TIER_DOT[tier]}`} aria-hidden />
@@ -59,12 +60,12 @@ export function SessionRoster({ sessions, openId, erased, onOpen }: RosterProps)
 
         return (
           <li key={session.id} className="flex-none">
-            {session.kind === "test" ? (
+            {session.kind !== "ambient" ? (
               <button
                 type="button"
                 onClick={() => onOpen(session.id)}
                 aria-pressed={open}
-                aria-label={`Open test call, session ${session.id}`}
+                aria-label={`Open ${session.kind === "live" ? "real" : "test"} call, session ${session.id}`}
                 className={`${CARD} bg-card shadow-soft ${open ? "ring-2 ring-mag" : "hover:ring-1 hover:ring-wire"}`}
               >
                 {body}

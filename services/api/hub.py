@@ -15,7 +15,7 @@ import logging
 import os
 from typing import Any
 
-from contracts.events import CallEnd, Event, Source, UserChoice
+from contracts.events import CallEnd, Event, Source, Turn, UserChoice
 from contracts.state import SessionState, UIMessage
 from services.agents import llm
 from services.agents.graph.deps import Tools
@@ -61,6 +61,7 @@ class LiveSession:
         self.inbox: asyncio.Queue[Event] = asyncio.Queue()
         self.subscribers: set[asyncio.Queue[str]] = set()
         self.last_t = 0.0  # call time of the newest accepted event
+        self.answered_t: float | None = None  # call time of the first turn: the customer picked up
         self.ended = False  # set when call_end is accepted
         self.after_done = asyncio.Event()  # set once call_end has been fully processed
         self.worker = asyncio.create_task(self._work(), name=f"session-{session_id}")
@@ -74,6 +75,8 @@ class LiveSession:
         if self.ended:
             return False
         self.last_t = max(self.last_t, event.t)
+        if isinstance(event, Turn) and self.answered_t is None:
+            self.answered_t = event.t
         if isinstance(event, CallEnd):
             self.ended = True
         self.inbox.put_nowait(event)

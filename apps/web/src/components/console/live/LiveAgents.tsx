@@ -14,7 +14,7 @@ export function LiveAgents() {
   let view: WorkspaceView;
   let viewKey: string;
   if (open) {
-    view = { mode: "tracing", trace: traceAt(open.scenario, open.t), extent: traceAt(open.scenario, open.furthest), sessionId: open.id, isTest: open.kind === "test", mask: calls.openMask };
+    view = { mode: "tracing", trace: traceAt(open.scenario, open.t), extent: traceAt(open.scenario, open.furthest), sessionId: open.id, isTest: open.kind === "test", isLive: open.kind === "live", mask: calls.openMask };
     viewKey = `call-${open.id}`;
   } else if (calls.receipt) {
     view = { mode: "erased", receipt: calls.receipt, trace: traceAt(calls.receipt.scenario, calls.receipt.t), extent: traceAt(calls.receipt.scenario, calls.receipt.heldSeconds) };
@@ -28,7 +28,7 @@ export function LiveAgents() {
 
   return (
     <div>
-      <CommandBar count={calls.sessions.length} tlife={calls.tlife} onSearch={calls.openByNumber} onPlace={calls.placeTestCall} />
+      <CommandBar count={calls.sessions.length} tlife={calls.tlife} live={calls.live} onSearch={calls.openByNumber} onPlace={calls.placeTestCall} onPlaceLive={calls.placeLiveCall} />
       <SessionRoster sessions={calls.sessions} openId={calls.openId} erased={calls.receipt} onOpen={calls.openTestSession} />
       <CallWorkspace
         key={viewKey}

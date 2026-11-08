@@ -1,0 +1,282 @@
+{
+ "s1": {
+  "session_id": "card",
+  "t": 0.0,
+  "answered_t": null,
+  "call_running": false,
+  "ended": true,
+  "erased": true,
+  "guard_paused": false,
+  "risk": {
+   "score": 0.15,
+   "level": 0
+  },
+  "signals": [
+   {
+    "kind": "unknown_caller",
+    "t": 0.0
+   }
+  ],
+  "flags": [],
+  "alerts": [],
+  "choice": null,
+  "disclosed": null,
+  "plan": [],
+  "timeline": [
+   {
+    "t": 0.0,
+    "node": "decide",
+    "score": 0.15,
+    "level": 0
+   },
+   {
+    "t": 0.0,
+    "node": "call_end"
+   }
+  ]
+ },
+ "s2": {
+  "session_id": "card",
+  "t": 45.0,
+  "answered_t": 2,
+  "call_running": false,
+  "ended": true,
+  "erased": true,
+  "guard_paused": false,
+  "risk": {
+   "score": 1.0,
+   "level": 3
+  },
+  "signals": [
+   {
+    "kind": "unknown_caller",
+    "t": 0.0
+   }
+  ],
+  "flags": [
+   {
+    "kind": "urgency_secrecy",
+    "t": 26.0
+   },
+   {
+    "kind": "read_code",
+    "t": 40.0
+   },
+   {
+    "kind": "card_details",
+    "t": 40.0
+   }
+  ],
+  "alerts": [
+   {
+    "t": 26.0,
+    "level": 1,
+    "reason": "The caller is rushing you or asking you to keep this call to yourself."
+   },
+   {
+    "t": 40.0,
+    "level": 3,
+    "reason": "The caller asked for your card number or security code, and real bank staff never ask for that."
+   }
+  ],
+  "choice": null,
+  "disclosed": false,
+  "plan": [
+   {
+    "name": "lock_account",
+    "status": "done"
+   },
+   {
+    "name": "recovery",
+    "status": "done"
+   },
+   {
+    "name": "evidence",
+    "status": "done"
+   }
+  ],
+  "timeline": [
+   {
+    "t": 0.0,
+    "node": "decide",
+    "score": 0.15,
+    "level": 0
+   },
+   {
+    "t": 26.0,
+    "node": "decide",
+    "score": 0.27,
+    "level": 1
+   },
+   {
+    "t": 40.0,
+    "node": "decide",
+    "score": 1.0,
+    "level": 3
+   },
+   {
+    "t": 45.0,
+    "node": "call_end"
+   },
+   {
+    "t": 45.0,
+    "node": "planner",
+    "disclosed": false,
+    "steps": [
+     "lock_account",
+     "recovery",
+     "evidence"
+    ]
+   },
+   {
+    "t": 45.0,
+    "node": "lock_account",
+    "status": "done"
+   },
+   {
+    "t": 45.0,
+    "node": "recovery",
+    "status": "done"
+   },
+   {
+    "t": 45.0,
+    "node": "evidence",
+    "status": "done"
+   },
+   {
+    "t": 45.0,
+    "node": "router",
+    "erased": true
+   }
+  ]
+ },
+ "s3": {
+  "session_id": "card",
+  "t": 75.0,
+  "answered_t": 2,
+  "call_running": false,
+  "ended": true,
+  "erased": true,
+  "guard_paused": false,
+  "risk": {
+   "score": 1.0,
+   "level": 3
+  },
+  "signals": [
+   {
+    "kind": "unknown_caller",
+    "t": 0.0
+   }
+  ],
+  "flags": [
+   {
+    "kind": "urgency_secrecy",
+    "t": 26.0
+   },
+   {
+    "kind": "read_code",
+    "t": 40.0
+   },
+   {
+    "kind": "card_details",
+    "t": 40.0
+   },
+   {
+    "kind": "card_details",
+    "t": 58.0
+   }
+  ],
+  "alerts": [
+   {
+    "t": 26.0,
+    "level": 1,
+    "reason": "The caller is rushing you or asking you to keep this call to yourself."
+   },
+   {
+    "t": 40.0,
+    "level": 3,
+    "reason": "The caller asked for your card number or security code, and real bank staff never ask for that."
+   }
+  ],
+  "choice": null,
+  "disclosed": true,
+  "plan": [
+   {
+    "name": "lock_account",
+    "status": "done"
+   },
+   {
+    "name": "callback",
+    "status": "done"
+   },
+   {
+    "name": "recovery",
+    "status": "done"
+   },
+   {
+    "name": "evidence",
+    "status": "done"
+   }
+  ],
+  "timeline": [
+   {
+    "t": 0.0,
+    "node": "decide",
+    "score": 0.15,
+    "level": 0
+   },
+   {
+    "t": 26.0,
+    "node": "decide",
+    "score": 0.27,
+    "level": 1
+   },
+   {
+    "t": 40.0,
+    "node": "decide",
+    "score": 1.0,
+    "level": 3
+   },
+   {
+    "t": 75.0,
+    "node": "call_end"
+   },
+   {
+    "t": 75.0,
+    "node": "planner",
+    "disclosed": true,
+    "steps": [
+     "lock_account",
+     "callback",
+     "recovery",
+     "evidence"
+    ]
+   },
+   {
+    "t": 75.0,
+    "node": "lock_account",
+    "status": "done"
+   },
+   {
+    "t": 75.0,
+    "node": "callback",
+    "status": "done"
+   },
+   {
+    "t": 75.0,
+    "node": "recovery",
+    "status": "done"
+   },
+   {
+    "t": 75.0,
+    "node": "evidence",
+    "status": "done"
+   },
+   {
+    "t": 75.0,
+    "node": "router",
+    "erased": true
+   }
+  ]
+ }
+}

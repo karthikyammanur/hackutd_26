@@ -15,7 +15,7 @@ import { NodeDetail } from "./NodeDetail";
 /** `trace` is the moment under the play head. `extent` is the furthest the call has reached. */
 export type WorkspaceView = { trace: CallTrace; extent: CallTrace } & (
   | { mode: "idle" }
-  | { mode: "tracing"; sessionId: string; isTest: boolean; mask: string | null }
+  | { mode: "tracing"; sessionId: string; isTest: boolean; isLive: boolean; mask: string | null }
   | { mode: "erased"; receipt: Receipt }
 );
 
@@ -72,6 +72,7 @@ export function CallWorkspace({ view, demo, onClose, onReviewSeek, deliveries }:
                 Session {tracing ? tracing.sessionId : erased?.receipt.sessionId}
                 {tracing?.mask && <span className="font-normal text-ink-2">Number ending in {tracing.mask}</span>}
                 {tracing?.isTest && <Tag>Test call</Tag>}
+                {tracing?.isLive && <Tag hot>Real call</Tag>}
                 {tracing && (
                   <button type="button" onClick={onClose} className="text-[13px] font-medium text-ink-2 hover:text-ink">
                     Close

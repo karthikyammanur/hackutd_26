@@ -82,10 +82,10 @@ charge, "don't hang up", then asks for the card number, expiry and security code
 | S2 | Answers, hears the card ask, gets the alert, hangs up | `alert` the moment the card is asked for -> APK `urgent`. After the call: lock account, recovery, evidence. **No callback** |
 | S3 | Answers and reads out a card (use a fake one: 4242 4242 4242 4242, 12/28, 123) | Same alert, then the **callback** call offering the bank (follow-up agent, `transfer_to_number` to `DEMO_BANK_NUMBER`) |
 
-- **Start a call:** the console calls `POST /calls/start` (no body; it always dials `DEMO_CUSTOMER_NUMBER`, R10)
-  and opens `WS /ws/{session_id}` from the reply. `GET /calls/current` gives the live session id. From a terminal:
-  `python spikes/live_bridge.py --yes`. The API follows the call itself (`services/api/live_call.py`), one at a
-  time. The hosted console is an allowed CORS origin; add others with `CORS_ORIGINS`.
+- **Start a call:** "Place real call" in the console's Live window (setup below), or from a terminal
+  `python spikes/live_bridge.py --yes`. Both call `POST /calls/start` (no body; it always dials
+  `DEMO_CUSTOMER_NUMBER`, R10). The API follows the call itself (`services/api/live_call.py`), one at a time.
+  The console also picks up a call started from the terminal (`GET /calls/current`, every 5 s).
 - **Alerts to the Intercept APK** (`services/agents/tools/fcm.py`): with `FCM_SERVICE_ACCOUNT_FILE` (or a short-lived
   `FCM_ACCESS_TOKEN`) set, every customer alert also goes by FCM to topic `tlife`: whisper -> `warning`, alert ->
   `urgent`, recovery text -> `summary`, callback -> `callback`. iMessage still goes out too; either route failing
@@ -95,6 +95,34 @@ charge, "don't hang up", then asks for the card number, expiry and security code
   digits the customer said. Callback only when the customer read out digits, or pressed "call my bank". The
   planner's own "yes" needs at least a few customer digits (it once claimed a disclosure that never happened).
   The transcript is erased when the after-call work ends, or at call end when none runs. Never written to disk (R8).
+
+## Run it from the hosted console
+
+```
+hosted console (Cloudflare) --/live-api, adds the token--> tunnel --> API on the demo laptop --> ElevenLabs, FCM, Photon
+```
+
+The browser never talks to the API itself. The console's Worker (`apps/web/worker/live-proxy.ts`) exposes four
+routes only: `POST /calls/start`, `GET /calls/current`, `GET /sessions/{id}/view`, `GET /health`. The view
+(`services/api/view.py`) is markers only: kinds, times, levels, the alert sentence and step statuses. No turn text,
+quotes or numbers reach the public site. The console polls it every second.
+
+1. **Token.** Make one (`python -c "import secrets; print(secrets.token_urlsafe(24))"`) and put it in `.env` as
+   `API_TOKEN`. With it set, every console route needs `Authorization: Bearer <token>` (the WebSocket takes
+   `?token=`). Left open: `/health`, `/sessions/{id}/choice` (the sidecar) and `/live/sms` (the phone), which carry
+   only a choice or a sender type. Live session ids are random, so a choice can't be aimed at a call.
+2. **API.** `TOOLS=real` in `.env`, then `uvicorn services.api.main:app --port 8000`. Check `/health`:
+   `tools: real`, `fcm: true`, both Nemotron tiers true.
+3. **Tunnel.** `ngrok http 8000 --url <your-static-domain>` (a free ngrok account has one static domain, so the
+   URL never changes). The same URL goes in the call-screener app's "API address" box.
+4. **Point the console at it** (once, from `apps/web`, logged in to the Cloudflare account that owns the Worker):
+   `npx wrangler secret put LIVE_API_TOKEN` (paste the same token), set `LIVE_API_URL` in `wrangler.jsonc` to the
+   tunnel URL, then `npm run deploy`.
+5. **Sidecar** for iMessage (above), and the customer has texted the Photon line.
+
+The command bar shows "Rings the demo phone from the scammer line" when the console can reach the API, or why not
+("The live API isn't configured", "The console's token doesn't match the API's", "The live API isn't reachable").
+Anyone who can open the console can press the button while the API is up, so stop the tunnel after the demo.
 
 ## Hero 1 with a real bank code
 
@@ -107,8 +135,8 @@ charge, "don't hang up", then asks for the card number, expiry and security code
    Only `bank_shortcode` counts, so a teammate texting a code from their own number will not trigger it.
    **Never read the real code aloud**: ElevenLabs keeps the scammer call's transcript.
 4. The phone reaches the API through a tunnel (`ngrok http 8000`): set the URL in the app's
-   "API address" box, or `SAFE_SIGNAL_PHONE_API_URL` in `.env` before building. The tunnel also exposes
-   `WS /ws/{id}` (live turn text), so stop it after the demo.
+   "API address" box, or `SAFE_SIGNAL_PHONE_API_URL` in `.env` before building. `/live/sms` needs no token.
+   Set `API_TOKEN` before opening the tunnel: without it, `WS /ws/{id}` (live turn text) is open to anyone.
 
 ## Spikes and checks
 

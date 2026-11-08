@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import type { SearchResult, TLifeStatus } from "@/hooks/useCallSessions";
+import type { LiveLink, SearchResult, TLifeStatus } from "@/hooks/useCallSessions";
 import { SCENARIOS } from "@/lib/console/scenarios";
 import { SectionTitle } from "../../ui";
 
@@ -8,11 +8,21 @@ const HINT = "Exact full number only. Nothing is saved.";
 interface CommandBarProps {
   count: number;
   tlife: TLifeStatus | null;
+  live: LiveLink;
   onSearch: (raw: string) => SearchResult;
   onPlace: (scenarioId: string) => void;
+  onPlaceLive: () => void;
 }
 
-export function CommandBar({ count, tlife, onSearch, onPlace }: CommandBarProps) {
+function liveNote(live: LiveLink): string {
+  if (live.placing) return "Ringing the demo phone…";
+  if (live.note) return live.note;
+  if (live.api === "ready") return "Rings the demo phone from the scammer line.";
+  if (live.api === "offline") return "The live API is offline.";
+  return "Checking the live API…";
+}
+
+export function CommandBar({ count, tlife, live, onSearch, onPlace, onPlaceLive }: CommandBarProps) {
   const [number, setNumber] = useState("");
   const [note, setNote] = useState(HINT);
   const [scenarioId, setScenarioId] = useState(SCENARIOS[0].id);
@@ -87,6 +97,20 @@ export function CommandBar({ count, tlife, onSearch, onPlace }: CommandBarProps)
         >
           Place test call
         </button>
+      </div>
+
+      <div className="w-[236px]">
+        <button
+          type="button"
+          onClick={onPlaceLive}
+          disabled={live.placing || live.api === "offline"}
+          className="h-11 w-full rounded-full border-2 border-mag px-5 font-semibold whitespace-nowrap text-mag transition-colors hover:bg-mag hover:text-white disabled:cursor-not-allowed disabled:opacity-45 disabled:hover:bg-transparent disabled:hover:text-mag"
+        >
+          {live.placing ? "Placing real call…" : "Place real call"}
+        </button>
+        <p role="status" className="mt-1 pl-4 text-[12.5px] text-ink-2">
+          {liveNote(live)}
+        </p>
       </div>
     </div>
   );

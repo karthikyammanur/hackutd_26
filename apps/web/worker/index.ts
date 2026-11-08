@@ -1,12 +1,13 @@
 import { EVIDENCE_PREFIX, handleEvidenceProxy, type EvidenceEnv } from "./evidence-proxy";
 import type { Ledger } from "./ledger";
+import { handleLiveProxy, LIVE_PREFIX, type LiveEnv } from "./live-proxy";
 import type { ProxyLedger } from "./ledger-do";
 import { handleProxy, PREFIX, type ProxyEnv } from "./proxy";
 import { handleTLife, TLIFE_PREFIX, type TLifeEnv } from "./tlife";
 
 export { ProxyLedger } from "./ledger-do";
 
-interface Env extends ProxyEnv, EvidenceEnv, TLifeEnv {
+interface Env extends ProxyEnv, EvidenceEnv, TLifeEnv, LiveEnv {
   ASSETS: { fetch(request: Request): Promise<Response> };
   LEDGER: DurableObjectNamespace<ProxyLedger>;
 }
@@ -22,6 +23,7 @@ export default {
       return handleEvidenceProxy(request, env);
     }
     if (pathname.startsWith(`${TLIFE_PREFIX}/`)) return handleTLife(request, env);
+    if (pathname.startsWith(`${LIVE_PREFIX}/`)) return handleLiveProxy(request, env);
     return env.ASSETS.fetch(request);
   },
 };
