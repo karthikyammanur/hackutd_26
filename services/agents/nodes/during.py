@@ -13,6 +13,7 @@ from services.agents.graph import stubs
 from services.agents.graph.deps import Tools
 from services.agents.graph.state import WINDOW_TURNS, GraphState
 from services.agents.nodes.blocks import blocks, context_line, flags_lines, signals_line
+from services.agents.nodes.grounding import draft_reason, unsupported_claims
 from services.agents.prompts import AlertCopy, load_prompt
 
 log = logging.getLogger(__name__)
@@ -119,23 +120,32 @@ WHISPER_TEMPLATE = "Take a moment before you share anything on this call."
 
 
 def alert_copy(state: GraphState, structured: Structured) -> tuple[str, str, str]:
-    """(reason, whisper, source). Nemotron fast writes it; the template is the fallback."""
+    """(reason, whisper, source). The reason starts as a grounded draft; Nemotron fast only rephrases it.
+
+    If the output claims anything no flag or signal supports, or the call fails, the draft is used as is.
+    """
     r = state.risk
     assert r is not None
+    draft = draft_reason(state)
     user = blocks(
         ("call_context", context_line(state)),
         ("flags", flags_lines(state)),
         ("signals", signals_line(state)),
+        ("draft", draft),
         tail=[f"level: {r.level.name}"],
     )
     try:
         out = structured(
             load_prompt("alert"), user, AlertCopy, llm.NODE_TIER["alert"], timeout=ALERT_TIMEOUT_S
         )
-        return out.reason, out.whisper, "nemotron"
     except Exception as exc:
         log.warning("alert copy failed: %s", type(exc).__name__)
-        return stubs.alert_reason(r), WHISPER_TEMPLATE, "template"
+        return draft, WHISPER_TEMPLATE, "template"
+    bad = unsupported_claims(out.reason, state) + unsupported_claims(out.whisper, state)
+    if bad:
+        log.warning("alert copy claimed %s without evidence; using the draft", bad)
+        return draft, WHISPER_TEMPLATE, f"template (ungrounded: {', '.join(dict.fromkeys(bad))})"
+    return out.reason, out.whisper, "nemotron"
 
 
 def make_alert(tools: Tools, structured: Structured) -> Node:
@@ -153,7 +163,7 @@ def make_alert(tools: Tools, structured: Structured) -> Node:
         if r.level >= Level.whisper:
             reason, whisper, source = alert_copy(state, structured)
         else:
-            reason, whisper, source = stubs.alert_reason(r), "", "template"
+            reason, whisper, source = draft_reason(state), "", "template"
         buttons = list(BUTTONS) if r.level >= Level.alert else []
         sid = state.session_id
         try:

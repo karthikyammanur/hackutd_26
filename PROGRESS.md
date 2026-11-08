@@ -12,6 +12,7 @@ Update on every merge: newest at the top, one line each. Anyone (or a fresh Clau
 | 4 Platform + demo | L4-1 spikes | |
 
 ## Log
+- 2026-11-08 L1: alert copy grounded in code: draft reason from the newest flag/signal, Nemotron only rephrases, every claim keyword (code, read back, gift card, safe account, remote access, transfer, SIM) must map to a flag or signal or the draft is used. Live hero1 t=92 whisper now says the code arrived, not that the caller wants it.
 - 2026-11-08 L1-4 done: Nemotron planner (deep) with rules in code (lock_account kept at alert unless continue; notify only on choice; call_bank forces callback; evidence last), Callback/Recovery (deep, 25 s) and Evidence summary (fast) with template fallbacks, AlertCopy wording (fast, 1.5 s). Live hero1: every step ran on Nemotron, in order, with results. Guardian: no hindsight flags; hero1 alert at t=101.
 - 2026-11-08 L1-2 done: Nemotron Guardian (fast, 3 s timeout), quote->turn t matching, caller-only, dedupe, guard_paused on failure (keyword fallback off). Live: hero1 read_code@101, real bank no flags, 12 checks p50 546 / p95 1137 ms. Runner --offline keeps the keyword stand-in.
 - 2026-11-08 LEAD contracts: Store.official_number + Account.hold_changes. L1: Alert node delivers (whisper -> Voice.whisper, alert -> Comms.notify + 3 buttons, template wording); lock_account uses Account; callback uses Store.official_number. pyright now runs in check.sh. Guardian LLM waits on l1-prompts merge.
@@ -19,6 +20,9 @@ Update on every merge: newest at the top, one line each. Anyone (or a fresh Clau
 - 2026-11-08 L1-1 done: llm.py routes fast/deep tiers to their own Brev servers, thinking off at source, NIM fallback per tier (models TBD). Live: fast p50 383 / p95 1696 ms, deep p50 712 / p95 1634 ms (10 calls each, p95 = cold first call).
 - 2026-11-08 L1-1 (partial): services/agents/llm.py, Brev to NIM fallback, validate + retry once; 9 offline tests pass. Next: live Brev test, then walking skeleton.
 - 2026-11-07 22:50 Kit created: AGENTS.md, context/, contracts/, evals/, checks/.
+
+## Known issues (for red team)
+- Guardian (fast 4B) gives policy_contradiction 0.85 to a first-turn story on a scam call ("your number was used to open accounts in two states") despite the rule that a story with no ask is not a contradiction. Harmless on that call (it is a scam), but the same opener on a real fraud alert would add risk. The judged-turn rule only stops hindsight re-flags, not a first look. Lead decision: leave as is.
 
 ## Gates
 - [ ] 12:00am contracts frozen, spikes done
