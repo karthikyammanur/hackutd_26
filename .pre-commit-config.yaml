@@ -1,0 +1,33 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-added-large-files
+        args: ["--maxkb=800"]
+      - id: check-merge-conflict
+      - id: detect-private-key
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.4
+    hooks:
+      - id: ruff
+        args: ["--fix"]
+      - id: ruff-format
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.21.2
+    hooks:
+      - id: gitleaks
+  - repo: local
+    hooks:
+      - id: no-audio-or-env
+        name: no audio, transcripts or .env files (R8, R14)
+        entry: bash -c 'for f in "$@"; do case "$f" in *.wav|*.mp3|*.m4a|*.ogg|*.flac|*.webm|.env|*/.env) echo "blocked: $f"; exit 1;; esac; done' --
+        language: system
+        pass_filenames: true
+      - id: contracts-and-decision-tests
+        name: contracts + decision rules
+        entry: bash -c 'python -m pytest -q contracts && { [ ! -d services/agents/decision/tests ] || python -m pytest -q services/agents/decision/tests; }'
+        language: system
+        pass_filenames: false
+        files: ^(contracts|services/agents/decision|evals/fixtures)/

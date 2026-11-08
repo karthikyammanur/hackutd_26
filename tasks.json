@@ -1,0 +1,297 @@
+{
+  "rules": "Status only moves todo -> doing -> done. Mark done only when done_when is verified. Never edit others' rows.",
+  "tasks": [
+    {
+      "id": "LEAD-1",
+      "lane": "lead",
+      "title": "Freeze contracts with the team",
+      "done_when": "All 4 lanes say OK in team chat; pytest contracts passes",
+      "due_cst": "00:00",
+      "depends_on": [],
+      "owner": "TBD",
+      "status": "todo"
+    },
+    {
+      "id": "LEAD-2",
+      "lane": "lead",
+      "title": "Repo up: kit pushed, branch protection, pre-commit installed by everyone",
+      "done_when": "./checks/check.sh passes on main",
+      "due_cst": "00:00",
+      "depends_on": [],
+      "owner": "TBD",
+      "status": "todo"
+    },
+    {
+      "id": "LEAD-3",
+      "lane": "lead",
+      "title": "Fresh-Claude review of every PR against context/rules.md",
+      "done_when": "Each merged PR has a review comment",
+      "due_cst": "ongoing",
+      "depends_on": [],
+      "owner": "TBD",
+      "status": "todo"
+    },
+    {
+      "id": "L1-1",
+      "lane": "1",
+      "title": "Model client (llm.py) with schema-validated output",
+      "done_when": "pytest services/agents/tests/test_llm.py passes against Brev",
+      "due_cst": "00:30",
+      "depends_on": [
+        "L4-1"
+      ],
+      "owner": "TBD",
+      "status": "todo"
+    },
+    {
+      "id": "L1-2",
+      "lane": "1",
+      "title": "Call Guardian",
+      "done_when": "Flags read_code on hero1; no read_code > 0.5 on real_bank_callback",
+      "due_cst": "02:00",
+      "depends_on": [
+        "L1-1"
+      ],
+      "owner": "TBD",
+      "status": "todo"
+    },
+    {
+      "id": "L1-3",
+      "lane": "1",
+      "title": "During graph",
+      "done_when": "Replaying hero1 reaches alert with 3 buttons in state",
+      "due_cst": "03:00",
+      "depends_on": [
+        "L1-2",
+        "L2-2"
+      ],
+      "owner": "TBD",
+      "status": "todo"
+    },
+    {
+      "id": "L1-4",
+      "lane": "1",
+      "title": "Aftercare Planner with trace",
+      "done_when": "After call_end, ordered plan runs mock tools; trace has every step",
+      "due_cst": "05:00",
+      "depends_on": [
+        "L1-3",
+        "L4-2"
+      ],
+      "owner": "TBD",
+      "status": "todo"
+    },
+    {
+      "id": "L1-5",
+      "lane": "1",
+      "title": "Swap mocks for real tools",
+      "done_when": "Hero 1 end to end with a real callback",
+      "due_cst": "07:00",
+      "depends_on": [
+        "L1-4",
+        "L4-4"
+      ],
+      "owner": "TBD",
+      "status": "todo"
+    },
+    {
+      "id": "L2-1",
+      "lane": "2",
+      "title": "Fixtures: 3 given + 2 more hard negatives",
+      "done_when": "pytest contracts passes; 5 fixtures",
+      "due_cst": "00:00",
+      "depends_on": [],
+      "owner": "TBD",
+      "status": "todo"
+    },
+    {
+      "id": "L2-2",
+      "lane": "2",
+      "title": "decide() with rule fallback and Jev adapter",
+      "done_when": "Tests prove R1 R4 R5 R6 R7; hero1 alert, real bank <= nudge",
+      "due_cst": "01:30",
+      "depends_on": [
+        "L2-1"
+      ],
+      "owner": "TBD",
+      "status": "todo"
+    },
+    {
+      "id": "L2-3",
+      "lane": "2",
+      "title": "Caller Screen + Signal Watcher",
+      "done_when": "Emit Signal objects on all fixtures",
+      "due_cst": "03:00",
+      "depends_on": [
+        "L2-2"
+      ],
+      "owner": "TBD",
+      "status": "todo"
+    },
+    {
+      "id": "L2-4",
+      "lane": "2",
+      "title": "Synthetic data: 500+ train, 100+ eval (30% hard negatives)",
+      "done_when": "All sessions validate as EvalCase",
+      "due_cst": "05:00",
+      "depends_on": [
+        "L2-1"
+      ],
+      "owner": "TBD",
+      "status": "todo"
+    },
+    {
+      "id": "L2-5",
+      "lane": "2",
+      "title": "Eval numbers",
+      "done_when": "run_eval.py report on data/eval committed to evals/report.md",
+      "due_cst": "07:00",
+      "depends_on": [
+        "L2-4",
+        "L1-3"
+      ],
+      "owner": "TBD",
+      "status": "todo"
+    },
+    {
+      "id": "L2-6",
+      "lane": "2",
+      "title": "Lean proofs + red team",
+      "done_when": "R1 R5 R6 proved; 5+ breaks logged in evals/redteam.md",
+      "due_cst": "10:00",
+      "depends_on": [
+        "L2-2"
+      ],
+      "owner": "TBD",
+      "status": "todo"
+    },
+    {
+      "id": "L3-1",
+      "lane": "3",
+      "title": "Replay in /console",
+      "done_when": "hero1 plays in order from fixtures",
+      "due_cst": "00:30",
+      "depends_on": [],
+      "owner": "TBD",
+      "status": "todo"
+    },
+    {
+      "id": "L3-2",
+      "lane": "3",
+      "title": "Console: risk chart, reasons, level, trace",
+      "done_when": "Renders for all fixtures",
+      "due_cst": "03:00",
+      "depends_on": [
+        "L3-1"
+      ],
+      "owner": "TBD",
+      "status": "todo"
+    },
+    {
+      "id": "L3-3",
+      "lane": "3",
+      "title": "Phone view with alert card and 3 buttons",
+      "done_when": "Tapping sends user_choice",
+      "due_cst": "04:00",
+      "depends_on": [
+        "L3-1"
+      ],
+      "owner": "TBD",
+      "status": "todo"
+    },
+    {
+      "id": "L3-4",
+      "lane": "3",
+      "title": "Switch replay to live WebSocket",
+      "done_when": "One env flag flips it; works with API",
+      "due_cst": "06:00",
+      "depends_on": [
+        "L4-3"
+      ],
+      "owner": "TBD",
+      "status": "todo"
+    },
+    {
+      "id": "L3-5",
+      "lane": "3",
+      "title": "Landing page + polish",
+      "done_when": "Checked on a real phone; copy only from context/facts.md",
+      "due_cst": "10:00",
+      "depends_on": [
+        "L3-2"
+      ],
+      "owner": "TBD",
+      "status": "todo"
+    },
+    {
+      "id": "L4-1",
+      "lane": "4",
+      "title": "Spikes: Brev, Photon call, ElevenLabs; answer F8",
+      "done_when": "Each spike prints a real response; F8 in context/decisions.md",
+      "due_cst": "00:00",
+      "depends_on": [],
+      "owner": "TBD",
+      "status": "todo"
+    },
+    {
+      "id": "L4-2",
+      "lane": "4",
+      "title": "Tool protocols implemented as mocks",
+      "done_when": "tools/mock.py type-checks against contracts/interfaces.py",
+      "due_cst": "00:30",
+      "depends_on": [],
+      "owner": "TBD",
+      "status": "todo"
+    },
+    {
+      "id": "L4-3",
+      "lane": "4",
+      "title": "API replay + WebSocket",
+      "done_when": "/ws/{id} streams hero1 as UIMessages",
+      "due_cst": "02:00",
+      "depends_on": [
+        "L4-2"
+      ],
+      "owner": "TBD",
+      "status": "todo"
+    },
+    {
+      "id": "L4-4",
+      "lane": "4",
+      "title": "Real adapters + Tiger DB",
+      "done_when": "Photon + ElevenLabs work; events stored without turn rows",
+      "due_cst": "05:00",
+      "depends_on": [
+        "L4-1"
+      ],
+      "owner": "TBD",
+      "status": "todo"
+    },
+    {
+      "id": "L4-5",
+      "lane": "4",
+      "title": "Live Hero 1",
+      "done_when": "Scammer Simulator call triggers alert + callback on a real phone",
+      "due_cst": "07:00",
+      "depends_on": [
+        "L1-5",
+        "L4-4"
+      ],
+      "owner": "TBD",
+      "status": "todo"
+    },
+    {
+      "id": "L4-6",
+      "lane": "4",
+      "title": "Demo video + Devpost",
+      "done_when": "Video recorded; Devpost maps each track requirement to a feature",
+      "due_cst": "11:30",
+      "depends_on": [
+        "L4-5",
+        "L2-5"
+      ],
+      "owner": "TBD",
+      "status": "todo"
+    }
+  ]
+}
