@@ -1,0 +1,19 @@
+{
+  "name": "safe-signal-photon-spike",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node --env-file=../../.env --experimental-strip-types check.ts",
+    "send": "node --env-file=../../.env --experimental-strip-types send.ts",
+    "sidecar": "node --env-file=../../.env --experimental-strip-types sidecar.ts",
+    "test": "node --experimental-strip-types --test choice.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@photon-ai/api": "0.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "typescript": "^5.9.3"
+  }
+}

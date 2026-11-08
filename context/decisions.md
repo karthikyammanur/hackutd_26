@@ -9,7 +9,7 @@
 | F5 | Money back wording, credit card | Open | Say "files a cancel request"; confirm T-Mobile credit card exists before pitching it. |
 | F6 | Nemotron's role | Decided | Every agent is a LangGraph node on Nemotron via Brev; Aftercare Planner shows its trace. |
 | F7 | Which tracks | Open | Ask organizers if MLH prizes count toward the limit of 3. |
-| F8 | Photon live call | Open | Ask Photon; fallback is our own conference bridge. |
+| F8 | Photon live call | Decided (L4-1) | From the working spike: Photon handles iMessage only (send/list messages). Calls are placed by ElevenLabs over a SIP trunk (`/convai/sip-trunk/outbound-call`), using a number labelled "Call Guardian Photon". Our code cannot join, end or transfer a call it didn't place; the Scammer Simulator is our own ElevenLabs call, which we watch by polling its conversation. `Comms.call` = ElevenLabs outbound; `Comms.notify`/`message` = Photon iMessage line, which reaches Android over RCS (inbound messages carry `metadata.transport`; tested both ways 2026-11-08); `transfer` unverified. |
 | F9 | Pitch wording | Open | Proposed: "Your carrier's protection stops the moment you pick up." |
 | F10 | Unsourced claims | Open | Only use `context/facts.md`. |
 | F11 | Consent for listening | Open | Proposed: signals-only for everyone, transcript listening opt-in. |
