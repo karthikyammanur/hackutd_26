@@ -95,20 +95,43 @@ def make_decide(tools: Tools) -> Node:
     return decide
 
 
-def alert(state: GraphState) -> Update:
-    """New Alert only when the level goes up. Buttons only at alert level. No hang-up, ever (R2)."""
-    r = state.risk
-    prev = max((a.level for a in state.alerts), default=Level.none)
-    if r is None or r.level <= prev or r.level < Level.nudge:
-        return {}
-    reason = stubs.alert_reason(r)
-    buttons: list[Any] = ["call_bank", "ask_trusted_contact", "continue"] if r.level >= Level.alert else []
-    return {
-        "alerts": [
-            Alert(t=state.event.t if state.event else 0.0, level=r.level, reason=reason, buttons=buttons)
-        ],
-        "trace": trace(state, "alert", r.level.name, reason),
-    }
+CUSTOMER = "customer"  # logical recipient; lane 4's adapter maps it to the real number
+BUTTONS: list[Any] = ["call_bank", "ask_trusted_contact", "continue"]
+
+
+def make_alert(tools: Tools) -> Node:
+    """New Alert only when the level goes up. There is no hang-up tool here, by design (R2).
+
+    nudge: state only (UI shows it). whisper: Voice.whisper. alert: Comms.notify with the 3 buttons.
+    A failed tool call is traced and the alert stays in state; the call itself is never touched (R4).
+    """
+
+    def alert(state: GraphState) -> Update:
+        r = state.risk
+        prev = max((a.level for a in state.alerts), default=Level.none)
+        if r is None or r.level <= prev or r.level < Level.nudge:
+            return {}
+        reason = stubs.alert_reason(r)  # template until AlertCopy (step 4 LLM part) lands
+        buttons = list(BUTTONS) if r.level >= Level.alert else []
+        sid = state.session_id
+        try:
+            if r.level >= Level.alert:
+                action, result = "comms.notify", tools.comms.notify(sid, CUSTOMER, reason, buttons)
+            elif r.level == Level.whisper:
+                action, result = "voice.whisper", tools.voice.whisper(sid, reason)
+            else:
+                action, result = "show nudge", ""
+        except Exception as exc:
+            log.warning("alert delivery failed: %s", type(exc).__name__)
+            action, result = "delivery failed", type(exc).__name__
+        return {
+            "alerts": [
+                Alert(t=state.event.t if state.event else 0.0, level=r.level, reason=reason, buttons=buttons)
+            ],
+            "trace": trace(state, "alert", f"{r.level.name}: {action}", f"{reason} {result}".strip()),
+        }
+
+    return alert
 
 
 def record_choice(state: GraphState) -> Update:

@@ -10,13 +10,11 @@ from collections.abc import Callable
 from typing import Any, Literal
 
 from contracts.state import PlanStep, StepName
-from services.agents.graph import stubs
 from services.agents.graph.deps import Tools
 from services.agents.graph.state import GraphState
-from services.agents.nodes.during import Node, Update, trace
+from services.agents.nodes.during import CUSTOMER, Node, Update, trace
 
 MAX_ITERATIONS = 8
-CUSTOMER = "customer"
 TRUSTED_CONTACT = "trusted_contact"
 
 Status = Literal["done", "failed", "skipped"]
@@ -78,14 +76,23 @@ def _bank(state: GraphState) -> str | None:
     return state.caller.verified_org if state.caller else None
 
 
+HOLD_ACTIONS = ["sim_change", "port_out", "call_forwarding_on"]
+HOLD_MINUTES = 60
+
+
 def lock_account(state: GraphState, tools: Tools) -> StepResult:
-    # No account tool in contracts/interfaces.py yet; account changes are already held at alert level.
-    return "done", "hold account changes (stub)", "SIM change and port-out held", {}
+    hold_id = tools.account.hold_changes(state.session_id, HOLD_ACTIONS, HOLD_MINUTES)
+    return (
+        "done",
+        "account.hold_changes",
+        f"{', '.join(HOLD_ACTIONS)} held {HOLD_MINUTES} min ({hold_id})",
+        {},
+    )
 
 
 def callback(state: GraphState, tools: Tools) -> StepResult:
     bank = _bank(state)
-    number = stubs.verified_number_for(bank) if bank else None
+    number = tools.store.official_number(bank) if bank else None
     sid = state.session_id
     if state.user_choice == "call_bank" and bank and number:
         call_id = tools.comms.call(

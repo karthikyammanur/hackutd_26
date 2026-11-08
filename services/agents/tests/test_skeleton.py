@@ -53,16 +53,21 @@ def test_hero1_after_phase_plans_and_traces_every_step() -> None:
     )
     assert final.evidence_id == "ev-fx_hero1_fake_bank"
     # call_bank -> warm transfer to the verified bank number
-    kinds = [c[0] for c in tools.comms.calls]
-    assert kinds[:2] == ["call", "transfer"]
-    assert tools.comms.calls[1][2] == "+18005550199"
+    after_calls = [c for c in tools.comms.calls if c[0] != "notify"]
+    assert [c[0] for c in after_calls[:2]] == ["call", "transfer"]
+    assert after_calls[1][2] == "+18005550199"  # Store.official_number("Lone Star Bank")
+    # lock_account goes through the Account protocol
+    assert tools.account.holds == [
+        ("fx_hero1_fake_bank", ("sim_change", "port_out", "call_forwarding_on"), 60)
+    ]
 
 
 def test_continue_skips_lock_account_but_keeps_evidence() -> None:
-    final, _, _ = _run("fake_tmobile_support.json")
+    final, tools, _ = _run("fake_tmobile_support.json")
     status = {p.name: p.status for p in final.plan}
     assert status["lock_account"] == "skipped" and status["evidence"] == "done"
     assert "lock_account" not in [x.node for x in final.trace]
+    assert tools.account.holds == []
 
 
 def test_real_bank_callback_stays_quiet() -> None:
@@ -95,7 +100,9 @@ def test_emergency_number_does_nothing() -> None:
         e["session_id"] = "fx_emergency"
     case["events"][0]["number"] = "911"
     comms, voice = stubs.FakeComms(), stubs.FakeVoice()
-    tools = Tools(decider=stubs.decide, comms=comms, voice=voice, store=stubs.FakeStore())
+    tools = Tools(
+        decider=stubs.decide, comms=comms, voice=voice, store=stubs.FakeStore(), account=stubs.FakeAccount()
+    )
     final, pred = replay_case(EvalCase.model_validate(case), tools)
     assert final.alerts == [] and final.signals == [] and final.flags == [] and final.plan == []
     assert comms.calls == [] and voice.calls == []

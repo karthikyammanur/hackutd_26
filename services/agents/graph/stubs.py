@@ -22,11 +22,6 @@ def is_emergency(number: str) -> bool:
     return re.sub(r"\D", "", number) in EMERGENCY_NUMBERS
 
 
-def verified_number_for(org: str) -> str | None:
-    """org -> official number. Not in the Store protocol yet (contract gap, see PR notes)."""
-    return ORG_NUMBERS.get(org)
-
-
 # ---- scoring -----------------------------------------------------------------------------------------------
 
 LEVEL_AT = ((0.75, Level.alert), (0.5, Level.whisper), (0.2, Level.nudge))
@@ -232,4 +227,6 @@ _account: Account = FakeAccount()
 
 
 def fake_tools() -> Tools:
-    return Tools(decider=decide, comms=FakeComms(), voice=FakeVoice(), store=FakeStore())
+    return Tools(
+        decider=decide, comms=FakeComms(), voice=FakeVoice(), store=FakeStore(), account=FakeAccount()
+    )

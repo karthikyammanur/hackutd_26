@@ -74,7 +74,7 @@ def build_graph(tools: Tools, checkpointer: InMemorySaver | None = None) -> Comp
     g.add_node("signal_watcher", during.signal_watcher)
     g.add_node("guardian", during.guardian)
     g.add_node("decide", during.make_decide(tools))
-    g.add_node("alert", during.alert)
+    g.add_node("alert", during.make_alert(tools))
     g.add_node("record_choice", during.record_choice)
     g.add_node("end_call", during.end_call)
 

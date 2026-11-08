@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from contracts.interfaces import Comms, Decider, Store, Voice
+from contracts.interfaces import Account, Comms, Decider, Store, Voice
 
 
 @dataclass(frozen=True)
@@ -13,3 +13,4 @@ class Tools:
     comms: Comms
     voice: Voice
     store: Store
+    account: Account
