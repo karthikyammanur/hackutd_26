@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_tech_007",
+ "label": {
+  "scam": true,
+  "type": "tech_support_remote",
+  "hard_negative": false,
+  "first_scam_t": 43.0
+ },
+ "events": [
+  {
+   "session_id": "ev_tech_007",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+13465550131",
+   "carrier_label": "none",
+   "attestation": "C",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_tech_007",
+   "t": 7.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "This is your computer's security department. We've found a virus."
+  },
+  {
+   "session_id": "ev_tech_007",
+   "t": 15.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "How do you have my number?"
+  },
+  {
+   "session_id": "ev_tech_007",
+   "t": 27.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "We have it from your warranty. I'll help you remove it."
+  },
+  {
+   "session_id": "ev_tech_007",
+   "t": 43.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "First go to this website and download the program. Then give me control of your mouse."
+  },
+  {
+   "session_id": "ev_tech_007",
+   "t": 68.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Hmm."
+  },
+  {
+   "session_id": "ev_tech_007",
+   "t": 72.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Sir, please don't hang up, you will lose everything."
+  },
+  {
+   "session_id": "ev_tech_007",
+   "t": 112.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

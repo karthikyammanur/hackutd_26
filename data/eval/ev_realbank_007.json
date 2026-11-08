@@ -1,0 +1,69 @@
+{
+ "session_id": "ev_realbank_007",
+ "label": {
+  "scam": false,
+  "type": "benign_bank_callback",
+  "hard_negative": true,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_realbank_007",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "outbound",
+   "number": "+18005550177",
+   "carrier_label": "none",
+   "attestation": "A",
+   "first_seen": false,
+   "verified_org": "Mesquite Community Bank"
+  },
+  {
+   "session_id": "ev_realbank_007",
+   "t": 12.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Mesquite Community Bank, loans department."
+  },
+  {
+   "session_id": "ev_realbank_007",
+   "t": 19.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I'd like to ask about the payoff on my car loan."
+  },
+  {
+   "session_id": "ev_realbank_007",
+   "t": 32.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Certainly. Let me verify you. There's a code heading your way."
+  },
+  {
+   "session_id": "ev_realbank_007",
+   "t": 42.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "bank_shortcode",
+   "org": "Mesquite Community Bank"
+  },
+  {
+   "session_id": "ev_realbank_007",
+   "t": 58.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Thanks. Your payoff is 3,811 through the end of the month."
+  },
+  {
+   "session_id": "ev_realbank_007",
+   "t": 75.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

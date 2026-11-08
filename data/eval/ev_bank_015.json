@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_bank_015",
+ "label": {
+  "scam": true,
+  "type": "bank_safe_account",
+  "hard_negative": false,
+  "first_scam_t": 67.0
+ },
+ "events": [
+  {
+   "session_id": "ev_bank_015",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+18065550115",
+   "carrier_label": "none",
+   "attestation": "C",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_bank_015",
+   "t": 8.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hi, Lone Star Bank here. Your new card was issued but it needs activating over the phone."
+  },
+  {
+   "session_id": "ev_bank_015",
+   "t": 16.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I didn't order a card."
+  },
+  {
+   "session_id": "ev_bank_015",
+   "t": 29.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Someone did, so we'll deactivate it, then. I'll just need the card number and the three digits on the back."
+  },
+  {
+   "session_id": "ev_bank_015",
+   "t": 45.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Okay, it's 4..."
+  },
+  {
+   "session_id": "ev_bank_015",
+   "t": 67.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "And a text is coming, that's the last step. Read it to me and we're done."
+  },
+  {
+   "session_id": "ev_bank_015",
+   "t": 70.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "bank_shortcode",
+   "org": "Lone Star Bank"
+  },
+  {
+   "session_id": "ev_bank_015",
+   "t": 95.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

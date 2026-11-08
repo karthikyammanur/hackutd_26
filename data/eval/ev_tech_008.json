@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_tech_008",
+ "label": {
+  "scam": true,
+  "type": "tech_support_remote",
+  "hard_negative": false,
+  "first_scam_t": 60.0
+ },
+ "events": [
+  {
+   "session_id": "ev_tech_008",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+19155550132",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_tech_008",
+   "t": 6.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Your printer's manufacturer here. We noticed a driver fault on your account."
+  },
+  {
+   "session_id": "ev_tech_008",
+   "t": 12.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "A driver fault?"
+  },
+  {
+   "session_id": "ev_tech_008",
+   "t": 25.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "It opens your network. I can repair it in five minutes."
+  },
+  {
+   "session_id": "ev_tech_008",
+   "t": 60.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "If you go to the support page and type in the session number, I'll be able to view your desktop and fix it."
+  },
+  {
+   "session_id": "ev_tech_008",
+   "t": 82.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "And how much is that?"
+  },
+  {
+   "session_id": "ev_tech_008",
+   "t": 87.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Just 150 for lifetime service, I'll take a gift card or Zelle."
+  },
+  {
+   "session_id": "ev_tech_008",
+   "t": 120.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

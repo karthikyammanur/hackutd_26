@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_family_006",
+ "label": {
+  "scam": true,
+  "type": "family_emergency_scam",
+  "hard_negative": false,
+  "first_scam_t": 51.0
+ },
+ "events": [
+  {
+   "session_id": "ev_family_006",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+12545550157",
+   "carrier_label": "none",
+   "attestation": "C",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_family_006",
+   "t": 8.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "This is Nurse Adams at Parkland County ER. Your son was brought in after a crash, and he's unconscious."
+  },
+  {
+   "session_id": "ev_family_006",
+   "t": 15.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Oh my god!"
+  },
+  {
+   "session_id": "ev_family_006",
+   "t": 30.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "We need a deposit to start the surgery. We can't wait for insurance."
+  },
+  {
+   "session_id": "ev_family_006",
+   "t": 51.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Read me a card number, or if you can't, buy prepaid cards and give me those numbers."
+  },
+  {
+   "session_id": "ev_family_006",
+   "t": 72.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I'm driving over there now."
+  },
+  {
+   "session_id": "ev_family_006",
+   "t": 78.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "There's no time, sir. You have to stay on the phone."
+  },
+  {
+   "session_id": "ev_family_006",
+   "t": 112.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

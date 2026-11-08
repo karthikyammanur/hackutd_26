@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_gov_002",
+ "label": {
+  "scam": true,
+  "type": "gov_impersonation",
+  "hard_negative": false,
+  "first_scam_t": 63.0
+ },
+ "events": [
+  {
+   "session_id": "ev_gov_002",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+12025550135",
+   "carrier_label": "none",
+   "attestation": "none",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_gov_002",
+   "t": 5.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Social Security Administration, this is Agent Lowe. Your social number has been suspended due to fraud."
+  },
+  {
+   "session_id": "ev_gov_002",
+   "t": 13.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Suspended?"
+  },
+  {
+   "session_id": "ev_gov_002",
+   "t": 30.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "A car rented in your name was found with narcotics. We have to protect your assets."
+  },
+  {
+   "session_id": "ev_gov_002",
+   "t": 63.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Take your funds out and buy Bitcoin at the ATM I'll direct you to. That money will be held in a government wallet."
+  },
+  {
+   "session_id": "ev_gov_002",
+   "t": 90.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Should I talk to my son first?"
+  },
+  {
+   "session_id": "ev_gov_002",
+   "t": 95.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "This is confidential. You can't tell anyone or you'll be obstructing the case."
+  },
+  {
+   "session_id": "ev_gov_002",
+   "t": 140.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

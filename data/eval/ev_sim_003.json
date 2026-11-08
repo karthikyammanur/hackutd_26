@@ -1,0 +1,85 @@
+{
+ "session_id": "ev_sim_003",
+ "label": {
+  "scam": true,
+  "type": "carrier_sim_swap",
+  "hard_negative": false,
+  "first_scam_t": 40.0
+ },
+ "events": [
+  {
+   "session_id": "ev_sim_003",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+12145550145",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_sim_003",
+   "t": 6.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "This is T-Mobile care. Your SIM is out of date and it'll stop working tonight."
+  },
+  {
+   "session_id": "ev_sim_003",
+   "t": 14.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "It's working fine."
+  },
+  {
+   "session_id": "ev_sim_003",
+   "t": 24.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "We can push an update. There's a code coming."
+  },
+  {
+   "session_id": "ev_sim_003",
+   "t": 33.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "other_shortcode",
+   "org": "T-Mobile"
+  },
+  {
+   "session_id": "ev_sim_003",
+   "t": 40.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "What digits did you get? I'll enter those and activate the new one."
+  },
+  {
+   "session_id": "ev_sim_003",
+   "t": 55.0,
+   "source": "network",
+   "kind": "account_change",
+   "action": "sim_change",
+   "status": "attempted"
+  },
+  {
+   "session_id": "ev_sim_003",
+   "t": 57.0,
+   "source": "system",
+   "kind": "account_change",
+   "action": "sim_change",
+   "status": "held"
+  },
+  {
+   "session_id": "ev_sim_003",
+   "t": 88.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_care_004",
+ "label": {
+  "scam": false,
+  "type": "benign_carrier_care",
+  "hard_negative": true,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_care_004",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "outbound",
+   "number": "+18005550182",
+   "carrier_label": "none",
+   "attestation": "A",
+   "first_seen": false,
+   "verified_org": "T-Mobile"
+  },
+  {
+   "session_id": "ev_care_004",
+   "t": 8.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "T-Mobile billing department, how can I help you today?"
+  },
+  {
+   "session_id": "ev_care_004",
+   "t": 16.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I was double charged last month."
+  },
+  {
+   "session_id": "ev_care_004",
+   "t": 31.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "I can see that. It's been credited to your next bill. We don't do gift cards or anything like that, the credit just shows on your bill."
+  },
+  {
+   "session_id": "ev_care_004",
+   "t": 58.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Thanks."
+  },
+  {
+   "session_id": "ev_care_004",
+   "t": 65.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "You're welcome. I'll send a text confirming."
+  },
+  {
+   "session_id": "ev_care_004",
+   "t": 67.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "other_shortcode",
+   "org": "T-Mobile"
+  },
+  {
+   "session_id": "ev_care_004",
+   "t": 80.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

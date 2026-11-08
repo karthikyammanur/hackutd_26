@@ -1,0 +1,61 @@
+{
+ "session_id": "ev_family_real_005",
+ "label": {
+  "scam": false,
+  "type": "benign_family_emergency",
+  "hard_negative": true,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_family_real_005",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+19035550164",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_family_real_005",
+   "t": 5.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "It's your sister's neighbor. Her house flooded, and she can't reach you."
+  },
+  {
+   "session_id": "ev_family_real_005",
+   "t": 12.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Oh no, is she okay?"
+  },
+  {
+   "session_id": "ev_family_real_005",
+   "t": 24.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "She's fine. She needs a place to stay tonight."
+  },
+  {
+   "session_id": "ev_family_real_005",
+   "t": 40.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "She said she'd call you back when she gets a charger."
+  },
+  {
+   "session_id": "ev_family_real_005",
+   "t": 55.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

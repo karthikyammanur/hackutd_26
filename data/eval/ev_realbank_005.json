@@ -1,0 +1,84 @@
+{
+ "session_id": "ev_realbank_005",
+ "label": {
+  "scam": false,
+  "type": "benign_bank_callback",
+  "hard_negative": true,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_realbank_005",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "outbound",
+   "number": "+18005550175",
+   "carrier_label": "none",
+   "attestation": "A",
+   "first_seen": false,
+   "verified_org": "Trinity Valley Bank"
+  },
+  {
+   "session_id": "ev_realbank_005",
+   "t": 9.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Trinity Valley, this is Grace."
+  },
+  {
+   "session_id": "ev_realbank_005",
+   "t": 16.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I'd like to move money from savings into my checking."
+  },
+  {
+   "session_id": "ev_realbank_005",
+   "t": 27.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Of course, I can transfer that for you. For security I'm sending a code."
+  },
+  {
+   "session_id": "ev_realbank_005",
+   "t": 38.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "bank_shortcode",
+   "org": "Trinity Valley Bank"
+  },
+  {
+   "session_id": "ev_realbank_005",
+   "t": 54.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Go ahead and open your app to approve that."
+  },
+  {
+   "session_id": "ev_realbank_005",
+   "t": 57.0,
+   "source": "network",
+   "kind": "bank_app_traffic",
+   "org": "Trinity Valley Bank"
+  },
+  {
+   "session_id": "ev_realbank_005",
+   "t": 73.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Done. It's in your checking."
+  },
+  {
+   "session_id": "ev_realbank_005",
+   "t": 85.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

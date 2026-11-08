@@ -1,0 +1,85 @@
+{
+ "session_id": "ev_bank_002",
+ "label": {
+  "scam": true,
+  "type": "bank_safe_account",
+  "hard_negative": false,
+  "first_scam_t": 71.0
+ },
+ "events": [
+  {
+   "session_id": "ev_bank_002",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+12145550102",
+   "carrier_label": "none",
+   "attestation": "C",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_bank_002",
+   "t": 6.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "This is Officer Grant with Red River Bank's security team. Your debit card was just used in Tampa."
+  },
+  {
+   "session_id": "ev_bank_002",
+   "t": 14.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I've never been to Tampa."
+  },
+  {
+   "session_id": "ev_bank_002",
+   "t": 27.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Right. Your whole account is compromised, so we have to move your money somewhere that's protected until we issue a new one."
+  },
+  {
+   "session_id": "ev_bank_002",
+   "t": 49.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "How do we do that?"
+  },
+  {
+   "session_id": "ev_bank_002",
+   "t": 71.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Open your app and send the full balance to the holding account I'm about to give you. It's in your name, it's a safe account."
+  },
+  {
+   "session_id": "ev_bank_002",
+   "t": 88.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Is that normal?"
+  },
+  {
+   "session_id": "ev_bank_002",
+   "t": 95.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Very normal, and please don't call the branch, the teller may be part of it."
+  },
+  {
+   "session_id": "ev_bank_002",
+   "t": 120.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

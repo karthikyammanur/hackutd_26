@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_tech_001",
+ "label": {
+  "scam": true,
+  "type": "tech_support_remote",
+  "hard_negative": false,
+  "first_scam_t": 48.0
+ },
+ "events": [
+  {
+   "session_id": "ev_tech_001",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+12145550125",
+   "carrier_label": "none",
+   "attestation": "C",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_tech_001",
+   "t": 6.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "This is Windows technical department. Your computer is sending us error signals."
+  },
+  {
+   "session_id": "ev_tech_001",
+   "t": 13.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "What errors?"
+  },
+  {
+   "session_id": "ev_tech_001",
+   "t": 26.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hackers are getting in through the network. I have to fix this before they steal your files."
+  },
+  {
+   "session_id": "ev_tech_001",
+   "t": 48.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Go to your browser, type the address I give you, and install AnyDesk."
+  },
+  {
+   "session_id": "ev_tech_001",
+   "t": 70.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Okay, it's installing."
+  },
+  {
+   "session_id": "ev_tech_001",
+   "t": 76.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Good. Read me the code on the screen."
+  },
+  {
+   "session_id": "ev_tech_001",
+   "t": 120.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

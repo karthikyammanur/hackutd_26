@@ -1,0 +1,84 @@
+{
+ "session_id": "ev_support_009",
+ "label": {
+  "scam": true,
+  "type": "fake_support_outbound",
+  "hard_negative": false,
+  "first_scam_t": 60.0
+ },
+ "events": [
+  {
+   "session_id": "ev_support_009",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "outbound",
+   "number": "+18445550124",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_support_009",
+   "t": 7.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "PayPal-style dispute center, how can I assist?"
+  },
+  {
+   "session_id": "ev_support_009",
+   "t": 15.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I got a receipt for 450 dollars I didn't buy."
+  },
+  {
+   "session_id": "ev_support_009",
+   "t": 33.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "That's fraud. We'll process a refund to you. I need remote control to look at your statement."
+  },
+  {
+   "session_id": "ev_support_009",
+   "t": 60.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Install the screen connect tool from this page. When it asks to allow, tap allow."
+  },
+  {
+   "session_id": "ev_support_009",
+   "t": 79.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Okay it's asking me to allow."
+  },
+  {
+   "session_id": "ev_support_009",
+   "t": 85.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Yes. Then log in to your bank, I'll wait."
+  },
+  {
+   "session_id": "ev_support_009",
+   "t": 88.0,
+   "source": "network",
+   "kind": "bank_app_traffic",
+   "org": "Lone Star Bank"
+  },
+  {
+   "session_id": "ev_support_009",
+   "t": 120.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

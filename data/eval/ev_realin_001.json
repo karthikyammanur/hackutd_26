@@ -1,0 +1,69 @@
+{
+ "session_id": "ev_realin_001",
+ "label": {
+  "scam": false,
+  "type": "benign_bank_inbound",
+  "hard_negative": true,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_realin_001",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+18005550185",
+   "carrier_label": "none",
+   "attestation": "A",
+   "first_seen": false,
+   "verified_org": "Lone Star Bank"
+  },
+  {
+   "session_id": "ev_realin_001",
+   "t": 5.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hello, this is Lone Star Bank's automated fraud service calling about a charge of 58 dollars."
+  },
+  {
+   "session_id": "ev_realin_001",
+   "t": 13.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Okay."
+  },
+  {
+   "session_id": "ev_realin_001",
+   "t": 22.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Press one if you recognize this charge, press two if you don't."
+  },
+  {
+   "session_id": "ev_realin_001",
+   "t": 30.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I pressed one."
+  },
+  {
+   "session_id": "ev_realin_001",
+   "t": 38.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Thanks. No further action needed. We will never ask for your PIN or code by phone."
+  },
+  {
+   "session_id": "ev_realin_001",
+   "t": 50.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_refund_002",
+ "label": {
+  "scam": true,
+  "type": "refund_overpayment",
+  "hard_negative": false,
+  "first_scam_t": 55.0
+ },
+ "events": [
+  {
+   "session_id": "ev_refund_002",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+14695550165",
+   "carrier_label": "none",
+   "attestation": "C",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_refund_002",
+   "t": 5.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Calling about a refund on your warranty that was cancelled."
+  },
+  {
+   "session_id": "ev_refund_002",
+   "t": 12.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Which warranty?"
+  },
+  {
+   "session_id": "ev_refund_002",
+   "t": 27.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "The extended one. I'll refund it directly to your account. Which bank do you use?"
+  },
+  {
+   "session_id": "ev_refund_002",
+   "t": 36.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Lone Star."
+  },
+  {
+   "session_id": "ev_refund_002",
+   "t": 55.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Let me connect to your computer and pull up the transfer page. Install this app here."
+  },
+  {
+   "session_id": "ev_refund_002",
+   "t": 80.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "You've been overpaid. I need you to go to the bank and wire 4,700 back."
+  },
+  {
+   "session_id": "ev_refund_002",
+   "t": 125.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

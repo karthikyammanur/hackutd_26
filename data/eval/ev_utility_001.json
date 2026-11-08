@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_utility_001",
+ "label": {
+  "scam": true,
+  "type": "utility_shutoff",
+  "hard_negative": false,
+  "first_scam_t": 38.0
+ },
+ "events": [
+  {
+   "session_id": "ev_utility_001",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+12145550159",
+   "carrier_label": "none",
+   "attestation": "C",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_utility_001",
+   "t": 6.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "This is Oncor-area Power Services. Your electricity will be cut in 45 minutes for a past due balance."
+  },
+  {
+   "session_id": "ev_utility_001",
+   "t": 13.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I paid that!"
+  },
+  {
+   "session_id": "ev_utility_001",
+   "t": 24.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "We don't have it on file."
+  },
+  {
+   "session_id": "ev_utility_001",
+   "t": 38.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "The only way to stop the truck is a payment of 412 through a prepaid card. Can you get to a store?"
+  },
+  {
+   "session_id": "ev_utility_001",
+   "t": 60.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I'll call the company."
+  },
+  {
+   "session_id": "ev_utility_001",
+   "t": 65.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "That'd take too long. Stay on the line, and I'll walk you through it."
+  },
+  {
+   "session_id": "ev_utility_001",
+   "t": 98.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

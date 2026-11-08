@@ -1,0 +1,92 @@
+{
+ "session_id": "ev_utility_004",
+ "label": {
+  "scam": true,
+  "type": "utility_shutoff",
+  "hard_negative": false,
+  "first_scam_t": 55.0
+ },
+ "events": [
+  {
+   "session_id": "ev_utility_004",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+18065550162",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_utility_004",
+   "t": 6.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Internet billing department. There's a credit owed back to you, but your service will be cancelled."
+  },
+  {
+   "session_id": "ev_utility_004",
+   "t": 14.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Why?"
+  },
+  {
+   "session_id": "ev_utility_004",
+   "t": 29.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "We need to update your payment. Go into your bank and I'll walk you through it."
+  },
+  {
+   "session_id": "ev_utility_004",
+   "t": 33.0,
+   "source": "network",
+   "kind": "bank_app_traffic",
+   "org": "Lone Star Bank"
+  },
+  {
+   "session_id": "ev_utility_004",
+   "t": 55.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "A code will show up. Don't enter it. Read it to me first so I can apply the credit."
+  },
+  {
+   "session_id": "ev_utility_004",
+   "t": 58.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "bank_shortcode",
+   "org": "Lone Star Bank"
+  },
+  {
+   "session_id": "ev_utility_004",
+   "t": 80.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Why can't I type it?"
+  },
+  {
+   "session_id": "ev_utility_004",
+   "t": 84.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "It won't work unless I do it from here."
+  },
+  {
+   "session_id": "ev_utility_004",
+   "t": 115.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_gov_009",
+ "label": {
+  "scam": true,
+  "type": "gov_impersonation",
+  "hard_negative": false,
+  "first_scam_t": 56.0
+ },
+ "events": [
+  {
+   "session_id": "ev_gov_009",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+15125550142",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_gov_009",
+   "t": 5.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "This is Sergeant Hall from the police department. Your nephew's been in a crash and he has been charged."
+  },
+  {
+   "session_id": "ev_gov_009",
+   "t": 13.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Oh no, is he okay?"
+  },
+  {
+   "session_id": "ev_gov_009",
+   "t": 29.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "He needs bail. The bondsman is on the other line."
+  },
+  {
+   "session_id": "ev_gov_009",
+   "t": 56.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "The bond is 7,500. A courier can pick up the cash from your house, or you can use a Bitcoin machine."
+  },
+  {
+   "session_id": "ev_gov_009",
+   "t": 80.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Can I talk to him?"
+  },
+  {
+   "session_id": "ev_gov_009",
+   "t": 85.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "He's in holding, and the judge ordered that nobody discuss this."
+  },
+  {
+   "session_id": "ev_gov_009",
+   "t": 125.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

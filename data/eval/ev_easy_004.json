@@ -1,0 +1,45 @@
+{
+ "session_id": "ev_easy_004",
+ "label": {
+  "scam": false,
+  "type": "benign_service",
+  "hard_negative": false,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_easy_004",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+18175550174",
+   "carrier_label": "none",
+   "attestation": "A",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_easy_004",
+   "t": 5.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hello, your package is outside, but I need a signature."
+  },
+  {
+   "session_id": "ev_easy_004",
+   "t": 10.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Be right there."
+  },
+  {
+   "session_id": "ev_easy_004",
+   "t": 16.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

@@ -1,0 +1,85 @@
+{
+ "session_id": "ev_support_004",
+ "label": {
+  "scam": true,
+  "type": "fake_support_outbound",
+  "hard_negative": false,
+  "first_scam_t": 44.0
+ },
+ "events": [
+  {
+   "session_id": "ev_support_004",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "outbound",
+   "number": "+18555550119",
+   "carrier_label": "none",
+   "attestation": "C",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_support_004",
+   "t": 7.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "T-Mobile care, good afternoon."
+  },
+  {
+   "session_id": "ev_support_004",
+   "t": 13.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I need to unlock my phone."
+  },
+  {
+   "session_id": "ev_support_004",
+   "t": 25.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Sure. Unlocking is free but there's a one time carrier release. You'd pay that through the Cash App handle I give you."
+  },
+  {
+   "session_id": "ev_support_004",
+   "t": 44.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "It's 75 dollars. And I'll text you a code too, read that back so I can link the unlock."
+  },
+  {
+   "session_id": "ev_support_004",
+   "t": 48.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "other_shortcode",
+   "org": "T-Mobile"
+  },
+  {
+   "session_id": "ev_support_004",
+   "t": 65.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I usually just pay in the T-Life app."
+  },
+  {
+   "session_id": "ev_support_004",
+   "t": 70.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Not for unlocks."
+  },
+  {
+   "session_id": "ev_support_004",
+   "t": 98.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

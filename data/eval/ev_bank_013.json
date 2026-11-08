@@ -1,0 +1,85 @@
+{
+ "session_id": "ev_bank_013",
+ "label": {
+  "scam": true,
+  "type": "bank_safe_account",
+  "hard_negative": false,
+  "first_scam_t": 61.0
+ },
+ "events": [
+  {
+   "session_id": "ev_bank_013",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+19725550113",
+   "carrier_label": "none",
+   "attestation": "none",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_bank_013",
+   "t": 5.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hello, this is the security department of Trinity Valley Bank. Press one if you did not make a charge of 899 dollars."
+  },
+  {
+   "session_id": "ev_bank_013",
+   "t": 13.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I pressed it."
+  },
+  {
+   "session_id": "ev_bank_013",
+   "t": 21.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Thank you. I'm an agent. To reverse this we use a voucher system."
+  },
+  {
+   "session_id": "ev_bank_013",
+   "t": 44.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "A voucher?"
+  },
+  {
+   "session_id": "ev_bank_013",
+   "t": 61.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Yes, go to a nearby store and load 899 on prepaid cards, then give me the numbers. The bank reimburses you tomorrow."
+  },
+  {
+   "session_id": "ev_bank_013",
+   "t": 85.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Why can't you just reverse it?"
+  },
+  {
+   "session_id": "ev_bank_013",
+   "t": 91.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "It's the federal rule on disputed charges."
+  },
+  {
+   "session_id": "ev_bank_013",
+   "t": 125.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

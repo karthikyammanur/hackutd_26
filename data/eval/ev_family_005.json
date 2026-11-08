@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_family_005",
+ "label": {
+  "scam": true,
+  "type": "family_emergency_scam",
+  "hard_negative": false,
+  "first_scam_t": 56.0
+ },
+ "events": [
+  {
+   "session_id": "ev_family_005",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+18175550156",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_family_005",
+   "t": 6.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Aunt Carol, it's your nephew. I'm stuck in Mexico, I lost my passport."
+  },
+  {
+   "session_id": "ev_family_005",
+   "t": 13.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Danny?"
+  },
+  {
+   "session_id": "ev_family_005",
+   "t": 25.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Yeah. I need help getting home. The embassy told me I need money right now."
+  },
+  {
+   "session_id": "ev_family_005",
+   "t": 56.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Could you go to Walmart and send 1,400 through a money transfer to this name?"
+  },
+  {
+   "session_id": "ev_family_005",
+   "t": 80.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Have you called your mother?"
+  },
+  {
+   "session_id": "ev_family_005",
+   "t": 85.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "No, and please don't tell her, I'd be so embarrassed."
+  },
+  {
+   "session_id": "ev_family_005",
+   "t": 120.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

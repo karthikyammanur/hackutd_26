@@ -1,0 +1,84 @@
+{
+ "session_id": "ev_bank_005",
+ "label": {
+  "scam": true,
+  "type": "bank_safe_account",
+  "hard_negative": false,
+  "first_scam_t": 52.0
+ },
+ "events": [
+  {
+   "session_id": "ev_bank_005",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+17135550105",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_bank_005",
+   "t": 5.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Good morning, Bluebonnet Savings fraud line. I show a Zelle payment for 980 to a person named Lindsay. Do you recognize her?"
+  },
+  {
+   "session_id": "ev_bank_005",
+   "t": 13.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "No I don't."
+  },
+  {
+   "session_id": "ev_bank_005",
+   "t": 26.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "I'll stop it. To cancel a Zelle I need the confirmation the system sends you."
+  },
+  {
+   "session_id": "ev_bank_005",
+   "t": 42.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "bank_shortcode",
+   "org": "Bluebonnet Savings"
+  },
+  {
+   "session_id": "ev_bank_005",
+   "t": 44.0,
+   "source": "network",
+   "kind": "bank_app_traffic",
+   "org": "Bluebonnet Savings"
+  },
+  {
+   "session_id": "ev_bank_005",
+   "t": 52.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Perfect, now it should be on your screen. Read me what it says, every digit."
+  },
+  {
+   "session_id": "ev_bank_005",
+   "t": 71.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "After that I'll need you to add a new payee named Reversal Department."
+  },
+  {
+   "session_id": "ev_bank_005",
+   "t": 110.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

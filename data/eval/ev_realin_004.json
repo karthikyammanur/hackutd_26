@@ -1,0 +1,68 @@
+{
+ "session_id": "ev_realin_004",
+ "label": {
+  "scam": false,
+  "type": "benign_bank_inbound",
+  "hard_negative": true,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_realin_004",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+18005550188",
+   "carrier_label": "none",
+   "attestation": "A",
+   "first_seen": true,
+   "verified_org": "Bluebonnet Savings"
+  },
+  {
+   "session_id": "ev_realin_004",
+   "t": 6.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hi, it's Bluebonnet Savings. Your new card is in the mail. Is your address still 12 Elm?"
+  },
+  {
+   "session_id": "ev_realin_004",
+   "t": 15.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Yes."
+  },
+  {
+   "session_id": "ev_realin_004",
+   "t": 25.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Good. If you see a text from us, you can activate the card in the app. We'll never call and ask you for the code."
+  },
+  {
+   "session_id": "ev_realin_004",
+   "t": 40.0,
+   "source": "network",
+   "kind": "bank_app_traffic",
+   "org": "Bluebonnet Savings"
+  },
+  {
+   "session_id": "ev_realin_004",
+   "t": 58.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Okay, thanks."
+  },
+  {
+   "session_id": "ev_realin_004",
+   "t": 66.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_support_001",
+ "label": {
+  "scam": true,
+  "type": "fake_support_outbound",
+  "hard_negative": false,
+  "first_scam_t": 49.0
+ },
+ "events": [
+  {
+   "session_id": "ev_support_001",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "outbound",
+   "number": "+18885550116",
+   "carrier_label": "none",
+   "attestation": "C",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_support_001",
+   "t": 7.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "T-Mobile billing, this is Sean, what can I help with?"
+  },
+  {
+   "session_id": "ev_support_001",
+   "t": 14.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I found this number online, I was charged twice for my plan."
+  },
+  {
+   "session_id": "ev_support_001",
+   "t": 27.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "I see that. Our refunds are issued through store credit codes these days."
+  },
+  {
+   "session_id": "ev_support_001",
+   "t": 49.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "If you pick up a 150 dollar gift card, I activate it for 300 on your account. Just read me the back."
+  },
+  {
+   "session_id": "ev_support_001",
+   "t": 70.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "A gift card? Really?"
+  },
+  {
+   "session_id": "ev_support_001",
+   "t": 75.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "It's our new promo refund process."
+  },
+  {
+   "session_id": "ev_support_001",
+   "t": 105.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

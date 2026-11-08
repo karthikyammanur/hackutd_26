@@ -1,0 +1,84 @@
+{
+ "session_id": "ev_realbank_008",
+ "label": {
+  "scam": false,
+  "type": "benign_bank_callback",
+  "hard_negative": true,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_realbank_008",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "outbound",
+   "number": "+18005550178",
+   "carrier_label": "none",
+   "attestation": "A",
+   "first_seen": false,
+   "verified_org": "Pecos Valley Credit Union"
+  },
+  {
+   "session_id": "ev_realbank_008",
+   "t": 11.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Pecos Valley Credit Union, it's Alma."
+  },
+  {
+   "session_id": "ev_realbank_008",
+   "t": 17.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I need to set up a new payee, and the app's failing."
+  },
+  {
+   "session_id": "ev_realbank_008",
+   "t": 34.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Let's walk through it. Open the app and go to payees."
+  },
+  {
+   "session_id": "ev_realbank_008",
+   "t": 38.0,
+   "source": "network",
+   "kind": "bank_app_traffic",
+   "org": "Pecos Valley Credit Union"
+  },
+  {
+   "session_id": "ev_realbank_008",
+   "t": 52.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "You'll see a security code by text. Type that in and press confirm. Don't share it with anyone, even me."
+  },
+  {
+   "session_id": "ev_realbank_008",
+   "t": 56.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "bank_shortcode",
+   "org": "Pecos Valley Credit Union"
+  },
+  {
+   "session_id": "ev_realbank_008",
+   "t": 78.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "That went through."
+  },
+  {
+   "session_id": "ev_realbank_008",
+   "t": 90.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

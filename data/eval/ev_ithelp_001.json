@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_ithelp_001",
+ "label": {
+  "scam": false,
+  "type": "benign_it_helpdesk",
+  "hard_negative": true,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_ithelp_001",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+19725550168",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_ithelp_001",
+   "t": 6.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hi, this is Sam from the IT help desk at your office. You opened a ticket about your VPN."
+  },
+  {
+   "session_id": "ev_ithelp_001",
+   "t": 15.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Yes, it keeps failing."
+  },
+  {
+   "session_id": "ev_ithelp_001",
+   "t": 26.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "I can remote in and take a look if you have a minute."
+  },
+  {
+   "session_id": "ev_ithelp_001",
+   "t": 46.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Sure."
+  },
+  {
+   "session_id": "ev_ithelp_001",
+   "t": 55.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "You'll see a pop up asking to allow remote access. Click accept."
+  },
+  {
+   "session_id": "ev_ithelp_001",
+   "t": 90.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Alright, that fixed it. I'll close the ticket."
+  },
+  {
+   "session_id": "ev_ithelp_001",
+   "t": 100.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

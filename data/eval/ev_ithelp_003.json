@@ -1,0 +1,69 @@
+{
+ "session_id": "ev_ithelp_003",
+ "label": {
+  "scam": false,
+  "type": "benign_it_helpdesk",
+  "hard_negative": true,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_ithelp_003",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "outbound",
+   "number": "+18885550170",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_ithelp_003",
+   "t": 8.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Thanks for calling the campus help desk."
+  },
+  {
+   "session_id": "ev_ithelp_003",
+   "t": 16.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I'm locked out of the student portal."
+  },
+  {
+   "session_id": "ev_ithelp_003",
+   "t": 28.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "I'll trigger a reset code. It'll go to your phone."
+  },
+  {
+   "session_id": "ev_ithelp_003",
+   "t": 37.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "other_shortcode",
+   "org": "State University"
+  },
+  {
+   "session_id": "ev_ithelp_003",
+   "t": 48.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Enter it on the login page. Don't read it to me."
+  },
+  {
+   "session_id": "ev_ithelp_003",
+   "t": 70.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

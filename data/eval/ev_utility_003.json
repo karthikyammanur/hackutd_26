@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_utility_003",
+ "label": {
+  "scam": true,
+  "type": "utility_shutoff",
+  "hard_negative": false,
+  "first_scam_t": 44.0
+ },
+ "events": [
+  {
+   "session_id": "ev_utility_003",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+17135550161",
+   "carrier_label": "none",
+   "attestation": "C",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_utility_003",
+   "t": 8.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "This is City Water. We've got a shutoff order on your address."
+  },
+  {
+   "session_id": "ev_utility_003",
+   "t": 15.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "For what?"
+  },
+  {
+   "session_id": "ev_utility_003",
+   "t": 25.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "An unpaid balance of 288."
+  },
+  {
+   "session_id": "ev_utility_003",
+   "t": 44.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Go to the corner store and load a Green Dot card, then give me the numbers on it."
+  },
+  {
+   "session_id": "ev_utility_003",
+   "t": 65.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I'll pay on the city website."
+  },
+  {
+   "session_id": "ev_utility_003",
+   "t": 69.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "The site is down today."
+  },
+  {
+   "session_id": "ev_utility_003",
+   "t": 100.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

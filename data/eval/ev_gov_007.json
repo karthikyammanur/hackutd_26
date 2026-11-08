@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_gov_007",
+ "label": {
+  "scam": true,
+  "type": "gov_impersonation",
+  "hard_negative": false,
+  "first_scam_t": 65.0
+ },
+ "events": [
+  {
+   "session_id": "ev_gov_007",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+18325550140",
+   "carrier_label": "none",
+   "attestation": "C",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_gov_007",
+   "t": 6.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "State Police fraud bureau calling, I'm investigating an identity theft in your name."
+  },
+  {
+   "session_id": "ev_gov_007",
+   "t": 13.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Me?"
+  },
+  {
+   "session_id": "ev_gov_007",
+   "t": 25.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Yes. We think your bank has an insider. You have to help us catch them."
+  },
+  {
+   "session_id": "ev_gov_007",
+   "t": 65.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Withdraw 6,000 in cash, put it in an envelope, and a courier will collect it as evidence."
+  },
+  {
+   "session_id": "ev_gov_007",
+   "t": 90.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "A courier?"
+  },
+  {
+   "session_id": "ev_gov_007",
+   "t": 95.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Tell the teller it's for home repairs. Do not tell them the truth."
+  },
+  {
+   "session_id": "ev_gov_007",
+   "t": 145.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

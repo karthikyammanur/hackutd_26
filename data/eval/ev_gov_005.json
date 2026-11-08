@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_gov_005",
+ "label": {
+  "scam": true,
+  "type": "gov_impersonation",
+  "hard_negative": false,
+  "first_scam_t": 57.0
+ },
+ "events": [
+  {
+   "session_id": "ev_gov_005",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+12145550138",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_gov_005",
+   "t": 6.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "This is the U.S. Treasury grants office. You've been selected for a 9,000 dollar grant."
+  },
+  {
+   "session_id": "ev_gov_005",
+   "t": 14.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I didn't apply for one."
+  },
+  {
+   "session_id": "ev_gov_005",
+   "t": 28.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "You were selected from tax records. It only needs a small release fee."
+  },
+  {
+   "session_id": "ev_gov_005",
+   "t": 57.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "It's 250 dollars. Buy gift cards in that amount and we'll wire the grant to you the same day."
+  },
+  {
+   "session_id": "ev_gov_005",
+   "t": 85.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Shouldn't this be free?"
+  },
+  {
+   "session_id": "ev_gov_005",
+   "t": 90.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Taxes must be paid first by law."
+  },
+  {
+   "session_id": "ev_gov_005",
+   "t": 125.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

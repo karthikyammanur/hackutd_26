@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_refund_004",
+ "label": {
+  "scam": true,
+  "type": "refund_overpayment",
+  "hard_negative": false,
+  "first_scam_t": 59.0
+ },
+ "events": [
+  {
+   "session_id": "ev_refund_004",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+17375550167",
+   "carrier_label": "none",
+   "attestation": "none",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_refund_004",
+   "t": 6.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hello ma'am, it's your tax preparer's office. There's an IRS refund of 2,000 waiting."
+  },
+  {
+   "session_id": "ev_refund_004",
+   "t": 13.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Oh."
+  },
+  {
+   "session_id": "ev_refund_004",
+   "t": 30.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "We deposited too much by mistake, so we'll need part of it back."
+  },
+  {
+   "session_id": "ev_refund_004",
+   "t": 59.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Please send 1,200 back through Bitcoin. I'll text you the QR code and you scan it at the machine."
+  },
+  {
+   "session_id": "ev_refund_004",
+   "t": 85.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Why Bitcoin?"
+  },
+  {
+   "session_id": "ev_refund_004",
+   "t": 90.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "It's the fastest way to fix our error."
+  },
+  {
+   "session_id": "ev_refund_004",
+   "t": 125.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

@@ -1,0 +1,85 @@
+{
+ "session_id": "ev_support_008",
+ "label": {
+  "scam": true,
+  "type": "fake_support_outbound",
+  "hard_negative": false,
+  "first_scam_t": 47.0
+ },
+ "events": [
+  {
+   "session_id": "ev_support_008",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "outbound",
+   "number": "+18665550123",
+   "carrier_label": "none",
+   "attestation": "C",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_support_008",
+   "t": 6.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hotel booking helpline, how may I direct your call?"
+  },
+  {
+   "session_id": "ev_support_008",
+   "t": 13.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I'm trying to cancel a reservation I found on a site."
+  },
+  {
+   "session_id": "ev_support_008",
+   "t": 28.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Yes, it's non-refundable unless we file a waiver."
+  },
+  {
+   "session_id": "ev_support_008",
+   "t": 47.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "The waiver is 89 dollars. Give me your full card number, the expiry, the CVV and the code that comes by text."
+  },
+  {
+   "session_id": "ev_support_008",
+   "t": 51.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "bank_shortcode",
+   "org": "Red River Bank"
+  },
+  {
+   "session_id": "ev_support_008",
+   "t": 69.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Isn't that code for a purchase?"
+  },
+  {
+   "session_id": "ev_support_008",
+   "t": 74.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "It only looks like that."
+  },
+  {
+   "session_id": "ev_support_008",
+   "t": 105.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

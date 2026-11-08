@@ -1,0 +1,45 @@
+{
+ "session_id": "ev_easy_007",
+ "label": {
+  "scam": false,
+  "type": "benign_service",
+  "hard_negative": false,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_easy_007",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+17135550177",
+   "carrier_label": "none",
+   "attestation": "A",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_easy_007",
+   "t": 6.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hi, this is a reminder from Green Valley Vet. Biscuit is due for shots."
+  },
+  {
+   "session_id": "ev_easy_007",
+   "t": 13.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I'll book it this week."
+  },
+  {
+   "session_id": "ev_easy_007",
+   "t": 20.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

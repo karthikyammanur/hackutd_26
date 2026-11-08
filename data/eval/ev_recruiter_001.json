@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_recruiter_001",
+ "label": {
+  "scam": false,
+  "type": "benign_recruiter",
+  "hard_negative": true,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_recruiter_001",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+14695550195",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_recruiter_001",
+   "t": 6.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hi, it's Stephanie, a recruiter at Halcyon Staffing. I saw your profile."
+  },
+  {
+   "session_id": "ev_recruiter_001",
+   "t": 14.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Oh, hello."
+  },
+  {
+   "session_id": "ev_recruiter_001",
+   "t": 25.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "We've got a role in Plano. Could you do a phone screen?"
+  },
+  {
+   "session_id": "ev_recruiter_001",
+   "t": 40.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Yes, I could."
+  },
+  {
+   "session_id": "ev_recruiter_001",
+   "t": 52.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Great. I'll transfer you to the hiring manager right now, don't hang up. It should be quick."
+  },
+  {
+   "session_id": "ev_recruiter_001",
+   "t": 85.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hi, this is Ben. Tell me about your last project."
+  },
+  {
+   "session_id": "ev_recruiter_001",
+   "t": 130.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

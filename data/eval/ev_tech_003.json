@@ -1,0 +1,84 @@
+{
+ "session_id": "ev_tech_003",
+ "label": {
+  "scam": true,
+  "type": "tech_support_remote",
+  "hard_negative": false,
+  "first_scam_t": 71.0
+ },
+ "events": [
+  {
+   "session_id": "ev_tech_003",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+17135550127",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_tech_003",
+   "t": 5.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Apple security center here, your iCloud has been hacked, I'm required to notify you."
+  },
+  {
+   "session_id": "ev_tech_003",
+   "t": 13.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Oh no."
+  },
+  {
+   "session_id": "ev_tech_003",
+   "t": 28.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "We'll need to secure it. Do you have online banking on the computer?"
+  },
+  {
+   "session_id": "ev_tech_003",
+   "t": 44.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Yes."
+  },
+  {
+   "session_id": "ev_tech_003",
+   "t": 71.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Okay, I'll share my screen with you, and you just share yours back with me so I can check the bank portal."
+  },
+  {
+   "session_id": "ev_tech_003",
+   "t": 95.0,
+   "source": "network",
+   "kind": "bank_app_traffic",
+   "org": "Red River Bank"
+  },
+  {
+   "session_id": "ev_tech_003",
+   "t": 110.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Stay on the line and don't touch the mouse."
+  },
+  {
+   "session_id": "ev_tech_003",
+   "t": 150.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

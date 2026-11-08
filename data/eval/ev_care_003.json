@@ -1,0 +1,85 @@
+{
+ "session_id": "ev_care_003",
+ "label": {
+  "scam": false,
+  "type": "benign_carrier_care",
+  "hard_negative": true,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_care_003",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "outbound",
+   "number": "+18005550181",
+   "carrier_label": "none",
+   "attestation": "A",
+   "first_seen": false,
+   "verified_org": "T-Mobile"
+  },
+  {
+   "session_id": "ev_care_003",
+   "t": 10.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "T-Mobile care, this is Devon."
+  },
+  {
+   "session_id": "ev_care_003",
+   "t": 17.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I'm traveling and I want to forward calls to my other number."
+  },
+  {
+   "session_id": "ev_care_003",
+   "t": 30.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Sure, you can dial star seven two followed by the number. Do you want me to do it?"
+  },
+  {
+   "session_id": "ev_care_003",
+   "t": 45.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Yes please."
+  },
+  {
+   "session_id": "ev_care_003",
+   "t": 52.0,
+   "source": "network",
+   "kind": "account_change",
+   "action": "call_forwarding_on",
+   "status": "attempted"
+  },
+  {
+   "session_id": "ev_care_003",
+   "t": 57.0,
+   "source": "network",
+   "kind": "account_change",
+   "action": "call_forwarding_on",
+   "status": "completed"
+  },
+  {
+   "session_id": "ev_care_003",
+   "t": 72.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Done. To undo it, dial star seven three."
+  },
+  {
+   "session_id": "ev_care_003",
+   "t": 85.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

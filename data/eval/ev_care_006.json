@@ -1,0 +1,69 @@
+{
+ "session_id": "ev_care_006",
+ "label": {
+  "scam": false,
+  "type": "benign_carrier_care",
+  "hard_negative": true,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_care_006",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "outbound",
+   "number": "+18005550184",
+   "carrier_label": "none",
+   "attestation": "A",
+   "first_seen": false,
+   "verified_org": "T-Mobile"
+  },
+  {
+   "session_id": "ev_care_006",
+   "t": 10.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "T-Mobile tech support."
+  },
+  {
+   "session_id": "ev_care_006",
+   "t": 17.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "My phone keeps dropping calls."
+  },
+  {
+   "session_id": "ev_care_006",
+   "t": 30.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Let me look at the towers. I can walk you through a network reset and if that fails, I'll transfer you to a specialist who can see the device diagnostics."
+  },
+  {
+   "session_id": "ev_care_006",
+   "t": 62.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Okay."
+  },
+  {
+   "session_id": "ev_care_006",
+   "t": 80.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "It looks good on our end now."
+  },
+  {
+   "session_id": "ev_care_006",
+   "t": 95.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

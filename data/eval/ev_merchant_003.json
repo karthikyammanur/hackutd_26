@@ -1,0 +1,76 @@
+{
+ "session_id": "ev_merchant_003",
+ "label": {
+  "scam": false,
+  "type": "benign_otp_coincidence",
+  "hard_negative": true,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_merchant_003",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+17135550167",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_merchant_003",
+   "t": 6.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hello, this is Hector with the moving company. What time works on Saturday?"
+  },
+  {
+   "session_id": "ev_merchant_003",
+   "t": 13.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Morning. Let me pay the deposit online while we talk."
+  },
+  {
+   "session_id": "ev_merchant_003",
+   "t": 27.0,
+   "source": "network",
+   "kind": "bank_app_traffic",
+   "org": "Trinity Valley Bank"
+  },
+  {
+   "session_id": "ev_merchant_003",
+   "t": 33.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "bank_shortcode",
+   "org": "Trinity Valley Bank"
+  },
+  {
+   "session_id": "ev_merchant_003",
+   "t": 50.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Okay, it's paid. Did it come through?"
+  },
+  {
+   "session_id": "ev_merchant_003",
+   "t": 56.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Yes, I can see it. Thanks."
+  },
+  {
+   "session_id": "ev_merchant_003",
+   "t": 75.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

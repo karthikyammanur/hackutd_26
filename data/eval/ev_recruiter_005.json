@@ -1,0 +1,61 @@
+{
+ "session_id": "ev_recruiter_005",
+ "label": {
+  "scam": false,
+  "type": "benign_recruiter",
+  "hard_negative": true,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_recruiter_005",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+15125550199",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_recruiter_005",
+   "t": 8.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "It's Luis, from the warehouse. We need someone for the Saturday shift, are you interested?"
+  },
+  {
+   "session_id": "ev_recruiter_005",
+   "t": 15.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "How much does it pay?"
+  },
+  {
+   "session_id": "ev_recruiter_005",
+   "t": 26.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Twenty-one an hour, paid by direct deposit. You'd need to bring your ID."
+  },
+  {
+   "session_id": "ev_recruiter_005",
+   "t": 42.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Sure."
+  },
+  {
+   "session_id": "ev_recruiter_005",
+   "t": 50.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

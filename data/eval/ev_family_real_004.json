@@ -1,0 +1,61 @@
+{
+ "session_id": "ev_family_real_004",
+ "label": {
+  "scam": false,
+  "type": "benign_family_emergency",
+  "hard_negative": true,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_family_real_004",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "outbound",
+   "number": "+18325550163",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_family_real_004",
+   "t": 9.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Harris County jail information, how can I help?"
+  },
+  {
+   "session_id": "ev_family_real_004",
+   "t": 16.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "My son was arrested last night, and I want to know how to post bail."
+  },
+  {
+   "session_id": "ev_family_real_004",
+   "t": 30.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "You can post bond at the county office or through a licensed bondsman. We never take payment over the phone."
+  },
+  {
+   "session_id": "ev_family_real_004",
+   "t": 65.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Okay, thanks."
+  },
+  {
+   "session_id": "ev_family_real_004",
+   "t": 72.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

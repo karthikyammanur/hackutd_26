@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_realin_002",
+ "label": {
+  "scam": false,
+  "type": "benign_bank_inbound",
+  "hard_negative": true,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_realin_002",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+18005550186",
+   "carrier_label": "none",
+   "attestation": "A",
+   "first_seen": false,
+   "verified_org": "Prairie Federal Credit Union"
+  },
+  {
+   "session_id": "ev_realin_002",
+   "t": 6.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Good morning. It's Lamar from Prairie Federal. I'm returning your call regarding your mortgage application."
+  },
+  {
+   "session_id": "ev_realin_002",
+   "t": 15.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Yes, thanks for getting back to me."
+  },
+  {
+   "session_id": "ev_realin_002",
+   "t": 30.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "I just need you to upload two pay stubs through the secure message center. I'll send a text link."
+  },
+  {
+   "session_id": "ev_realin_002",
+   "t": 45.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "bank_shortcode",
+   "org": "Prairie Federal Credit Union"
+  },
+  {
+   "session_id": "ev_realin_002",
+   "t": 62.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Got it."
+  },
+  {
+   "session_id": "ev_realin_002",
+   "t": 70.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Thanks. We'll be in touch by Thursday."
+  },
+  {
+   "session_id": "ev_realin_002",
+   "t": 85.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_family_002",
+ "label": {
+  "scam": true,
+  "type": "family_emergency_scam",
+  "hard_negative": false,
+  "first_scam_t": 52.0
+ },
+ "events": [
+  {
+   "session_id": "ev_family_002",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+14695550153",
+   "carrier_label": "none",
+   "attestation": "C",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_family_002",
+   "t": 7.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Mom, it's me, I got a new number, my phone broke."
+  },
+  {
+   "session_id": "ev_family_002",
+   "t": 14.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Oh, hi sweetie."
+  },
+  {
+   "session_id": "ev_family_002",
+   "t": 31.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "I'm so stressed, I've got a bill that has to be paid today, and my bank app is locked since the phone broke."
+  },
+  {
+   "session_id": "ev_family_002",
+   "t": 52.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Can you Zelle 1,900 to this person? It's my landlord. I'll pay you back on Friday."
+  },
+  {
+   "session_id": "ev_family_002",
+   "t": 75.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Which landlord?"
+  },
+  {
+   "session_id": "ev_family_002",
+   "t": 80.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Just please do it, don't tell Dad, he'll be so mad."
+  },
+  {
+   "session_id": "ev_family_002",
+   "t": 112.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

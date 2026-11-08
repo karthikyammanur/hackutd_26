@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_utility_005",
+ "label": {
+  "scam": true,
+  "type": "utility_shutoff",
+  "hard_negative": false,
+  "first_scam_t": 47.0
+ },
+ "events": [
+  {
+   "session_id": "ev_utility_005",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+15125550163",
+   "carrier_label": "none",
+   "attestation": "C",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_utility_005",
+   "t": 7.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Solar rebate program. Your electric company owes you 600 dollars, but it expires today."
+  },
+  {
+   "session_id": "ev_utility_005",
+   "t": 14.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Who is this?"
+  },
+  {
+   "session_id": "ev_utility_005",
+   "t": 27.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "A program partner. I can release it to your account."
+  },
+  {
+   "session_id": "ev_utility_005",
+   "t": 47.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "All I need is your online banking login and password, so that I can deposit it."
+  },
+  {
+   "session_id": "ev_utility_005",
+   "t": 68.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I don't give that out."
+  },
+  {
+   "session_id": "ev_utility_005",
+   "t": 72.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Then you'll lose the rebate, and your bill goes up."
+  },
+  {
+   "session_id": "ev_utility_005",
+   "t": 100.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

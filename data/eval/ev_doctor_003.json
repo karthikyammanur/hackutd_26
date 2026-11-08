@@ -1,0 +1,92 @@
+{
+ "session_id": "ev_doctor_003",
+ "label": {
+  "scam": false,
+  "type": "benign_doctor_office",
+  "hard_negative": true,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_doctor_003",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+17135550191",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_doctor_003",
+   "t": 7.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hi, calling from Lakeside Dental. We've got a balance of 112 on your account."
+  },
+  {
+   "session_id": "ev_doctor_003",
+   "t": 15.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Oh, I thought insurance paid that."
+  },
+  {
+   "session_id": "ev_doctor_003",
+   "t": 31.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "They paid part. You can pay online or give me a card number now, whichever you prefer."
+  },
+  {
+   "session_id": "ev_doctor_003",
+   "t": 50.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I'll do it online."
+  },
+  {
+   "session_id": "ev_doctor_003",
+   "t": 54.0,
+   "source": "network",
+   "kind": "bank_app_traffic",
+   "org": "Lone Star Bank"
+  },
+  {
+   "session_id": "ev_doctor_003",
+   "t": 62.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "bank_shortcode",
+   "org": "Lone Star Bank"
+  },
+  {
+   "session_id": "ev_doctor_003",
+   "t": 78.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Okay, I just paid it."
+  },
+  {
+   "session_id": "ev_doctor_003",
+   "t": 85.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Great, thank you very much."
+  },
+  {
+   "session_id": "ev_doctor_003",
+   "t": 95.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

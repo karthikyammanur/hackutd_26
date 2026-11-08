@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_family_004",
+ "label": {
+  "scam": true,
+  "type": "family_emergency_scam",
+  "hard_negative": false,
+  "first_scam_t": 47.0
+ },
+ "events": [
+  {
+   "session_id": "ev_family_004",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+19405550155",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_family_004",
+   "t": 6.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Dad? Dad, they've got me. Please help!"
+  },
+  {
+   "session_id": "ev_family_004",
+   "t": 12.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "What?! Who is this?"
+  },
+  {
+   "session_id": "ev_family_004",
+   "t": 20.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Listen carefully. We've got your daughter. If you call the police you'll never see her."
+  },
+  {
+   "session_id": "ev_family_004",
+   "t": 47.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "You'll go and buy gift cards, 3,000 dollars' worth. You stay on this phone the entire time."
+  },
+  {
+   "session_id": "ev_family_004",
+   "t": 70.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Please don't hurt her."
+  },
+  {
+   "session_id": "ev_family_004",
+   "t": 75.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Then do what I say."
+  },
+  {
+   "session_id": "ev_family_004",
+   "t": 110.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

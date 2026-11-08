@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_realbank_002",
+ "label": {
+  "scam": false,
+  "type": "benign_bank_callback",
+  "hard_negative": true,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_realbank_002",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "outbound",
+   "number": "+18005550172",
+   "carrier_label": "none",
+   "attestation": "A",
+   "first_seen": false,
+   "verified_org": "Prairie Federal Credit Union"
+  },
+  {
+   "session_id": "ev_realbank_002",
+   "t": 10.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Prairie Federal, this is Tomas. What can I do for you?"
+  },
+  {
+   "session_id": "ev_realbank_002",
+   "t": 18.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I think somebody used my card. I got a fraud alert text."
+  },
+  {
+   "session_id": "ev_realbank_002",
+   "t": 31.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Let's look. Oh yes, I see two charges. I'll block the card and I'll transfer you to the claims team."
+  },
+  {
+   "session_id": "ev_realbank_002",
+   "t": 45.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "bank_shortcode",
+   "org": "Prairie Federal Credit Union"
+  },
+  {
+   "session_id": "ev_realbank_002",
+   "t": 61.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Please go ahead and enter that code in the app. We'd never ask for it on the phone."
+  },
+  {
+   "session_id": "ev_realbank_002",
+   "t": 77.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "You're all set, and a new card ships in five days."
+  },
+  {
+   "session_id": "ev_realbank_002",
+   "t": 92.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

@@ -1,0 +1,77 @@
+{
+ "session_id": "ev_recruiter_003",
+ "label": {
+  "scam": false,
+  "type": "benign_recruiter",
+  "hard_negative": true,
+  "first_scam_t": null
+ },
+ "events": [
+  {
+   "session_id": "ev_recruiter_003",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+18325550197",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_recruiter_003",
+   "t": 5.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "It's Claire from Vantage Group, I'm calling about your interview on Tuesday."
+  },
+  {
+   "session_id": "ev_recruiter_003",
+   "t": 12.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Yes?"
+  },
+  {
+   "session_id": "ev_recruiter_003",
+   "t": 25.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "We're sending a code to your phone so you can log into the assessment."
+  },
+  {
+   "session_id": "ev_recruiter_003",
+   "t": 32.0,
+   "source": "network",
+   "kind": "sms_otp",
+   "sender_type": "other_shortcode",
+   "org": "Vantage Group"
+  },
+  {
+   "session_id": "ev_recruiter_003",
+   "t": 45.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Got it, thanks."
+  },
+  {
+   "session_id": "ev_recruiter_003",
+   "t": 55.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Good luck!"
+  },
+  {
+   "session_id": "ev_recruiter_003",
+   "t": 65.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}

@@ -1,0 +1,84 @@
+{
+ "session_id": "ev_tech_006",
+ "label": {
+  "scam": true,
+  "type": "tech_support_remote",
+  "hard_negative": false,
+  "first_scam_t": 58.0
+ },
+ "events": [
+  {
+   "session_id": "ev_tech_006",
+   "t": 0.0,
+   "source": "network",
+   "kind": "call_start",
+   "direction": "inbound",
+   "number": "+18175550130",
+   "carrier_label": "none",
+   "attestation": "B",
+   "first_seen": true,
+   "verified_org": null
+  },
+  {
+   "session_id": "ev_tech_006",
+   "t": 5.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Hi, it's the Geek team calling regarding your yearly protection plan."
+  },
+  {
+   "session_id": "ev_tech_006",
+   "t": 12.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "I don't remember that."
+  },
+  {
+   "session_id": "ev_tech_006",
+   "t": 29.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "We owe you 200 back. Do you use online banking on your phone?"
+  },
+  {
+   "session_id": "ev_tech_006",
+   "t": 38.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "customer",
+   "text": "Sure."
+  },
+  {
+   "session_id": "ev_tech_006",
+   "t": 58.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Install this helper app from the link, and I can see your phone and put the refund in."
+  },
+  {
+   "session_id": "ev_tech_006",
+   "t": 80.0,
+   "source": "network",
+   "kind": "turn",
+   "speaker": "caller",
+   "text": "Okay. Now open your bank, I'll guide you."
+  },
+  {
+   "session_id": "ev_tech_006",
+   "t": 83.0,
+   "source": "network",
+   "kind": "bank_app_traffic",
+   "org": "Pecos Valley Credit Union"
+  },
+  {
+   "session_id": "ev_tech_006",
+   "t": 130.0,
+   "source": "network",
+   "kind": "call_end"
+  }
+ ]
+}
