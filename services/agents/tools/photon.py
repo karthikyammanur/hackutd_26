@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import logging
 import os
+import re
 
 import httpx
 
@@ -20,6 +21,7 @@ from services.agents.tools.errors import (
     ToolConfigError,
     ToolError,
     ToolUnsupported,
+    demo_number,
     guard_not_emergency,
     mask,
 )
@@ -59,18 +61,26 @@ class Sidecar:
 
 
 class PhotonComms:
-    def __init__(self, *, sidecar: Sidecar, voice: ElevenLabsVoice, customer_number: str) -> None:
+    def __init__(
+        self, *, sidecar: Sidecar, voice: ElevenLabsVoice, customer_number: str, bank_number: str = ""
+    ) -> None:
         if not customer_number:
             raise ToolConfigError("set DEMO_CUSTOMER_NUMBER")
         guard_not_emergency(customer_number)
+        if bank_number:
+            guard_not_emergency(bank_number)
         self._sidecar = sidecar
         self._voice = voice
         self._customer = customer_number
+        self._bank = bank_number  # the follow-up agent's transfer_to_number destination (DEMO_BANK_NUMBER)
 
     @classmethod
     def from_env(cls, sidecar: Sidecar, voice: ElevenLabsVoice) -> PhotonComms:
         return cls(
-            sidecar=sidecar, voice=voice, customer_number=os.environ.get("DEMO_CUSTOMER_NUMBER", "").strip()
+            sidecar=sidecar,
+            voice=voice,
+            customer_number=demo_number("DEMO_CUSTOMER_NUMBER", os.environ.get("DEMO_CUSTOMER_NUMBER", "")),
+            bank_number=demo_number("DEMO_BANK_NUMBER", os.environ.get("DEMO_BANK_NUMBER", "")),
         )
 
     def _number_for(self, role: str) -> str:
@@ -103,5 +113,16 @@ class PhotonComms:
         return self._voice.callback(session_id, script)
 
     def transfer(self, session_id: str, call_id: str, to_number: str) -> str:
+        """Our code cannot transfer a live call (F8). The follow-up agent can: its transfer_to_number tool is
+        set to DEMO_BANK_NUMBER and connects the customer only when they say yes. So this just records that."""
         guard_not_emergency(to_number)
-        raise ToolUnsupported("warm transfer is not supported on our ElevenLabs outbound calls (F8)")
+        digits = re.sub(r"\D", "", to_number)
+        if not self._bank or digits[-10:] != re.sub(r"\D", "", self._bank)[-10:]:
+            raise ToolUnsupported("the follow-up agent only transfers to DEMO_BANK_NUMBER (F8)")
+        log.info(
+            "transfer offered session=%s call=%s to=%s (agent connects on yes)",
+            session_id,
+            call_id,
+            mask(to_number),
+        )
+        return f"agent-transfer-on-yes:{call_id}"

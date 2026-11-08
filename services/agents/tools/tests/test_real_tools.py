@@ -11,7 +11,7 @@ from contracts.interfaces import Account, Comms, Store, Voice
 from services.agents.tools import real_tools
 from services.agents.tools.demo import DemoStore, SimAccount
 from services.agents.tools.elevenlabs import OUTBOUND_URL, ElevenLabsVoice
-from services.agents.tools.errors import ToolConfigError, ToolError, ToolUnsupported
+from services.agents.tools.errors import ToolConfigError, ToolError, ToolUnsupported, demo_number
 from services.agents.tools.photon import PhotonComms, Sidecar
 
 CUSTOMER = "+15555550100"  # synthetic (R10)
@@ -104,10 +104,25 @@ def test_whisper_goes_out_as_text() -> None:
     assert rec.requests[0].url.path == "/message"
 
 
-def test_transfer_unsupported_and_emergency_refused() -> None:
-    comms, _ = build(Recorder())
-    with pytest.raises(ToolUnsupported):
+def test_transfer_only_to_the_agents_bank_number_and_emergency_refused() -> None:
+    comms, voice = build(Recorder())
+    with pytest.raises(ToolUnsupported):  # no DEMO_BANK_NUMBER: the agent has no transfer destination
         comms.transfer("s1", "conv_1", "+18005550199")
+    rec = Recorder()
+    bank = PhotonComms(
+        sidecar=Sidecar("http://x", httpx.Client(transport=httpx.MockTransport(rec))),
+        voice=voice,
+        customer_number="+12145550100",
+        bank_number="+1 (800) 555-0199",
+    )
+    assert bank.transfer("s1", "conv_1", "+18005550199") == "agent-transfer-on-yes:conv_1"
+    assert rec.requests == []  # nothing dialled: the agent connects only if the customer says yes
+    with pytest.raises(ToolUnsupported):
+        bank.transfer("s1", "conv_1", "+12145550147")
+    with pytest.raises(ToolError, match="R1"):
+        PhotonComms(
+            sidecar=Sidecar("http://x"), voice=voice, customer_number="+12145550100", bank_number="911"
+        )
     with pytest.raises(ToolError, match="R1"):
         comms.transfer("s1", "conv_1", "911")
     with pytest.raises(ToolError, match="R1"):
@@ -141,3 +156,18 @@ def test_real_tools_fails_clearly_without_sidecar(monkeypatch: pytest.MonkeyPatc
     monkeypatch.delenv("PHOTON_SIDECAR_URL", raising=False)
     with pytest.raises(ToolConfigError, match="PHOTON_SIDECAR_URL"):
         real_tools()
+
+
+def test_placeholder_demo_numbers_fail_clearly(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr("services.agents.tools.load_dotenv", lambda: None)
+    monkeypatch.setenv("PHOTON_SIDECAR_URL", "http://sidecar.test")
+    monkeypatch.setenv("DEMO_CUSTOMER_NUMBER", CUSTOMER)
+    monkeypatch.setenv("DEMO_BANK_NUMBER", "+1XXXXXXXXXX")  # the .env.example placeholder
+    with pytest.raises(ToolConfigError, match="DEMO_BANK_NUMBER is not a phone number"):
+        real_tools()
+    monkeypatch.setenv("DEMO_BANK_NUMBER", "")  # empty is fine: the fake verified number is used
+    assert DemoStore.from_env().official_number("Lone Star Bank") == "+18005550199"
+    monkeypatch.setenv("DEMO_BANK_NUMBER", "+12145550111")
+    assert DemoStore.from_env().official_number("Lone Star Bank") == "+12145550111"
+    with pytest.raises(ToolConfigError):
+        demo_number("DEMO_BANK_NUMBER", "911")  # an emergency number is never a valid demo number

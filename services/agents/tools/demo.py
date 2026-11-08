@@ -10,6 +10,7 @@ import logging
 import os
 
 from services.agents.graph.stubs import VERIFIED_NUMBERS, FakeAccount, FakeStore
+from services.agents.tools.errors import demo_number
 
 log = logging.getLogger(__name__)
 
@@ -29,7 +30,7 @@ class DemoStore(FakeStore):
 
     @classmethod
     def from_env(cls) -> DemoStore:
-        return cls(bank_number=os.environ.get("DEMO_BANK_NUMBER", "").strip())
+        return cls(bank_number=demo_number("DEMO_BANK_NUMBER", os.environ.get("DEMO_BANK_NUMBER", "")))
 
     def lookup_verified(self, number: str) -> str | None:
         return self.verified.get(number)
