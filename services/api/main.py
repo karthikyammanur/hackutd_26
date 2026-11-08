@@ -93,7 +93,6 @@ def health() -> dict[str, Any]:
         "tools": tools_mode(),
         "nemotron_fast": bool(os.environ.get("NEMOTRON_BASE_URL")),
         "nemotron_deep": bool(os.environ.get("NEMOTRON_DEEP_BASE_URL")),
-        "fcm": bool(os.environ.get("FCM_SERVICE_ACCOUNT_FILE") or os.environ.get("FCM_ACCESS_TOKEN")),
         "sessions": len(hub.sessions),
     }
 

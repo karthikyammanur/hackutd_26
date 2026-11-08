@@ -1,7 +1,9 @@
 import { describe, expect, test } from "bun:test";
 import { handleLiveProxy } from "../worker/live-proxy";
+import { findNotice } from "../worker/tlife";
 import { traceAt } from "../src/lib/console/call-model";
-import { liveNow, liveScenario, placingScenario, type LiveView } from "../src/lib/console/live";
+import { liveNoticeMoments, liveNow, liveScenario, placingScenario, type LiveView } from "../src/lib/console/live";
+import { LIVE_CARD_FRAUD, SCENARIOS } from "../src/lib/console/scenarios";
 import views from "./fixtures/live-views.json";
 
 // Written by services/api/tests/test_view.py from the card-fraud call: S1 declined, S2 hung up, S3 read the card out.
@@ -106,5 +108,44 @@ describe("live call beats", () => {
     const scenario = liveScenario(quiet);
     expect(scenario.duration).toBeGreaterThan(liveNow(quiet, scenario));
     expect(scenario.beats.some((beat) => beat.phase === "deleted")).toBe(false);
+  });
+});
+
+describe("real-call notices to T-Life", () => {
+  const levels = (view: LiveView) =>
+    liveNoticeMoments(liveScenario(view)).map(({ noticeT }) => findNotice({ scenarioId: LIVE_CARD_FRAUD.id, beatT: noticeT })?.level);
+
+  test("the pre-written live notices reach T-Life at the right loudness", () => {
+    const sent = LIVE_CARD_FRAUD.beats.map((beat) => findNotice({ scenarioId: "live-card-fraud", beatT: beat.t }));
+    expect(sent.map((item) => item?.level)).toEqual(["warning", "urgent", "summary", "callback"]);
+    expect(sent.map((item) => item?.notice.title)).toEqual([
+      "Be careful on this call",
+      "Stop: this call is a scam",
+      "After your call: what to do now",
+      "Safe Signal is calling you",
+    ]);
+  });
+
+  test("never offered as a test call or played as an ambient call", () => {
+    expect(SCENARIOS.map((scenario) => scenario.id)).not.toContain("live-card-fraud");
+  });
+
+  test("S1 sends nothing; S2 alert and recovery; S3 adds the callback. Nudges send nothing", () => {
+    expect(levels(s1)).toEqual([]);
+    expect(levels(s2)).toEqual(["urgent", "summary"]);
+    expect(levels(s3)).toEqual(["urgent", "callback", "summary"]); // the plan calls back before it texts the steps
+    const nudge = liveScenario({ ...s2, alerts: s2.alerts.filter((alert) => alert.level < 2) });
+    expect(liveNoticeMoments(nudge).map(({ noticeT }) => noticeT)).not.toContain(2);
+  });
+
+  test("a whisper alert sends the warning", () => {
+    const whisper: LiveView = { ...s2, alerts: [{ t: 30, level: 2, reason: "x" }] };
+    expect(levels(whisper)[0]).toBe("warning");
+  });
+
+  test("the console shows the same text the phone gets", () => {
+    const scenario = liveScenario(s3);
+    const titles = LIVE_CARD_FRAUD.beats.map((beat) => beat.notice?.body);
+    for (const beat of scenario.beats.filter((item) => item.notice)) expect(titles).toContain(beat.notice?.body);
   });
 });

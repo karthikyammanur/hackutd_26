@@ -1,7 +1,7 @@
 import { useSyncExternalStore } from "react";
 import { traceAt, type Beat, type CallPhase, type Scenario, type Tier } from "@/lib/console/call-model";
-import { liveNow, liveScenario, placingScenario, type LiveView } from "@/lib/console/live";
-import { SCENARIOS } from "@/lib/console/scenarios";
+import { liveNoticeMoments, liveNow, liveScenario, placingScenario, type LiveView } from "@/lib/console/live";
+import { LIVE_CARD_FRAUD, SCENARIOS } from "@/lib/console/scenarios";
 
 /**
  * Calls in progress, held in this tab's memory only. Nothing here is written to storage or sent
@@ -96,6 +96,8 @@ const numbers = new Map<string, string>();
 /** API session ids already shown, so a finished call is never picked up again. */
 const seenRemote = new Set<string>();
 const polling = new Set<string>();
+/** `${sessionId}:${noticeT}` for each real-call notice already sent, so each goes to T-Life once. */
+const sentLive = new Set<string>();
 let checkingCurrent = false;
 let nextLivePollAt = 0;
 let nextCurrentAt = 0;
@@ -307,10 +309,28 @@ function pollLive(session: CallSession) {
       const scenario = liveScenario(view);
       const t = liveNow(view, scenario);
       updateSession(session.id, (current) => ({ ...current, scenario, t, furthest: Math.max(current.furthest, t) }));
+      sendLiveNotices(session.id, scenario);
       if (state.live.api !== "ready") setLive({ api: "ready", note: null });
     })
     .catch((error: unknown) => setLive({ api: "offline", note: error instanceof Error ? error.message : "Lost the live API" }))
     .finally(() => polling.delete(remoteId));
+}
+
+/** Each notice a real call reaches goes to T-Life once, the same way a test call's does. Nudges carry none. */
+function sendLiveNotices(sessionId: string, scenario: Scenario) {
+  let { deliveries } = state;
+  const outgoing: { key: string; noticeT: number }[] = [];
+  for (const { beatT, noticeT } of liveNoticeMoments(scenario)) {
+    const key = deliveryKey(sessionId, beatT);
+    const moment = `${sessionId}:${noticeT}`;
+    if (deliveries[key] || sentLive.has(moment)) continue;
+    sentLive.add(moment);
+    deliveries = { ...deliveries, [key]: { state: "sending" } };
+    outgoing.push({ key, noticeT });
+  }
+  if (outgoing.length === 0) return;
+  publish({ ...state, deliveries });
+  for (const { key, noticeT } of outgoing) sendToTLife(key, LIVE_CARD_FRAUD.id, noticeT);
 }
 
 /** Finds a real call started elsewhere (another console, or spikes/live_bridge.py). Also tells if the API is up. */
@@ -399,7 +419,12 @@ function placeTestCall(scenarioId: string) {
   const id = newSessionId();
   numbers.set(id, number);
   const session: CallSession = { id, kind: "test", scenario, t: 0, furthest: 0, rate: 0 };
-  publish({ ...state, sessions: [session, ...sessions], openId: id, openMask: null, receipt: null, playing: true, deliveries: sessions.some((item) => item.kind === "test") ? state.deliveries : {} });
+  // A fresh test run starts with no test deliveries, but a real call's stay.
+  const live = new Set(sessions.filter((item) => item.kind === "live").map((item) => item.id));
+  const deliveries = sessions.some((item) => item.kind === "test")
+    ? state.deliveries
+    : Object.fromEntries(Object.entries(state.deliveries).filter(([key]) => live.has(key.split(":")[0])));
+  publish({ ...state, sessions: [session, ...sessions], openId: id, openMask: null, receipt: null, playing: true, deliveries });
 }
 
 /** Opens one call by its exact, complete number. There is no partial match by design. */

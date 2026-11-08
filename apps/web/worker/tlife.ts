@@ -1,6 +1,6 @@
-/** Carries a test call's notices to the T-Life demo, over a private binding between the two Workers. */
+/** Carries a test or real call's notices to the T-Life demo, over a private binding between the two Workers. */
 
-import { SCENARIOS } from "../src/lib/console/scenarios";
+import { NOTICE_SCENARIOS } from "../src/lib/console/scenarios";
 import type { Beat, CustomerNotice } from "../src/lib/console/call-model";
 
 export const TLIFE_PREFIX = "/tlife-api";
@@ -36,7 +36,7 @@ export function levelOf(beat: Beat & { notice: CustomerNotice }): NoticeLevel {
 export function findNotice(body: unknown): { level: NoticeLevel; notice: CustomerNotice } | null {
   if (typeof body !== "object" || body === null) return null;
   const { scenarioId, beatT } = body as { scenarioId?: unknown; beatT?: unknown };
-  const beat = SCENARIOS.find((scenario) => scenario.id === scenarioId)?.beats.find((item) => item.t === beatT);
+  const beat = NOTICE_SCENARIOS.find((scenario) => scenario.id === scenarioId)?.beats.find((item) => item.t === beatT);
   return beat?.notice ? { level: levelOf(beat as Beat & { notice: CustomerNotice }), notice: beat.notice } : null;
 }
 

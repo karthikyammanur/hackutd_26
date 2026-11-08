@@ -1,6 +1,7 @@
 import type { Beat, CallPhase, CustomerNotice, NodeId, Scenario, Tier } from "./call-model";
 import { TIERS } from "./call-model";
 import type { RedFlag } from "./flags";
+import { LIVE_CARD_FRAUD, LIVE_NOTICES } from "./scenarios";
 
 /**
  * A real call, as the Safe Signal API reports it (GET /sessions/{id}/view, services/api/view.py), turned into
@@ -143,14 +144,14 @@ export function liveScenario(view: LiveView): Scenario {
         t: a.t, marker: "Customer alerted", detail: a.reason,
         links: ["window>jev", "jev>alerting", "alerting>tlife"],
         status: { jev: rating(tier), alerting: "Alerting the customer", tlife: "Alert sent to the phone" },
-        notice: { channel: "t-life", timing: "during-call", title: "Stop: this call is a scam", body: a.reason },
+        notice: LIVE_NOTICES.urgent, // the same pre-written text T-Life sends to the phone
       });
     } else if (tier === 2) {
       during.push({
         t: a.t, marker: "Customer warned", detail: a.reason,
         links: ["window>jev", "jev>alerting", "alerting>tlife"],
         status: { jev: rating(tier), alerting: "Sending a warning", tlife: "Warning sent to the phone" },
-        notice: { channel: "t-life", timing: "during-call", title: "Be careful on this call", body: a.reason },
+        notice: LIVE_NOTICES.warning,
       });
     } else if (tier === 1) {
       during.push({
@@ -233,14 +234,14 @@ function stepBeat(name: string, status: string): Pick<Beat, "marker" | "detail" 
         marker: "Urgent callback placed", detail: "The follow-up agent offers to connect the bank's verified number",
         links: ["check>alerting", "alerting>callback"],
         status: { alerting: "Calling the customer", callback: "Calling now" },
-        notice: { channel: "urgent-callback", timing: "after-call", title: "Safe Signal is calling you", body: "To connect you with your bank's verified number." },
+        notice: LIVE_NOTICES.callback,
       };
     case "recovery":
       return {
         marker: "Recovery steps sent", detail: "What to do now, sent to the phone",
         links: ["check>alerting", "alerting>tlife"],
         status: { alerting: "Sending recovery steps", tlife: "Summary sent to the phone" },
-        notice: { channel: "t-life", timing: "after-call", title: "After your call: what to do now", body: "Steps to protect your account." },
+        notice: LIVE_NOTICES.summary,
       };
     case "lock_account":
       return { marker: "Account changes held", detail: "Simulated hold on the demo account", links: ["check>alerting"], status: { alerting: "Holding account changes" } };
@@ -259,6 +260,17 @@ function erasedBeat(t: number, aftercare: boolean): Draft {
     status: { window: "Erased", purge: "Complete", ...(aftercare ? { alerting: "Finished", check: "Finished" } : {}) },
     settled: done,
   };
+}
+
+/**
+ * The T-Life notices a real call has reached: a whisper alert, a full alert, recovery sent, callback placed.
+ * beatT is the live beat (the deliveries key); noticeT is the pre-written beat in LIVE_CARD_FRAUD that T-Life sends.
+ */
+export function liveNoticeMoments(scenario: Scenario): { beatT: number; noticeT: number }[] {
+  return scenario.beats.flatMap((beat) => {
+    const fixed = beat.notice ? LIVE_CARD_FRAUD.beats.find((item) => item.notice === beat.notice) : undefined;
+    return fixed ? [{ beatT: beat.t, noticeT: fixed.t }] : [];
+  });
 }
 
 /** The play head for a live call: wherever the API has reached. */

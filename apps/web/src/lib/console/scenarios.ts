@@ -1,4 +1,4 @@
-import { FAKE_BANK_SCENARIO, type Beat, type NodeId, type Scenario } from "./call-model";
+import { FAKE_BANK_SCENARIO, type Beat, type CustomerNotice, type NodeId, type Scenario } from "./call-model";
 
 /** Synthetic scripts for test calls. Danger only rises within a scenario (rule R5). */
 
@@ -228,6 +228,53 @@ const ID_DISCLOSED: Scenario = {
 };
 
 export const SCENARIOS: Scenario[] = [FAKE_BANK_SCENARIO, ORDINARY_CALL, FRIENDLY_STRANGER, ID_DISCLOSED];
+
+export type LiveMoment = "warning" | "urgent" | "summary" | "callback";
+
+/** What a real call sends to T-Life. Written in advance, so the public /tlife-api route still carries no free text. */
+export const LIVE_NOTICES: Record<LiveMoment, CustomerNotice> = {
+  warning: {
+    channel: "t-life", timing: "during-call",
+    title: "Be careful on this call", body: "Don't share codes, card numbers or passwords with this caller.",
+  },
+  urgent: {
+    channel: "t-life", timing: "during-call",
+    title: "Stop: this call is a scam", body: "Your bank will never ask for your card number, security code or a one-time code on a call.",
+  },
+  summary: {
+    channel: "t-life", timing: "after-call",
+    title: "After your call: what to do now", body: "Here's how to protect your account. We've also texted you the steps.",
+  },
+  callback: {
+    channel: "urgent-callback", timing: "after-call",
+    title: "Safe Signal is calling you", body: "We'll offer to connect you to your bank's verified number.",
+  },
+};
+
+/**
+ * The real-call notices as beats, so T-Life looks them up like any test call's. Never played, never offered as a
+ * test call or an ambient call: only the T-Life route and live calls read it. Tier sets the loudness (tlife.ts).
+ */
+export const LIVE_CARD_FRAUD: Scenario = {
+  id: "live-card-fraud",
+  name: "Real call: card fraud",
+  duration: 10,
+  beats: (["warning", "urgent", "summary", "callback"] as const).map((moment, i) => ({
+    t: i + 1,
+    phase: moment === "warning" || moment === "urgent" ? "live" : "responding",
+    danger: moment === "warning" ? 0.6 : 0.9,
+    tier: moment === "warning" ? 2 : 3,
+    marker: LIVE_NOTICES[moment].title, detail: "Sent to T-Life during a real call",
+    links: [], status: {},
+    notice: LIVE_NOTICES[moment],
+  })),
+};
+
+/** The beat of LIVE_CARD_FRAUD that carries this moment's notice. */
+export const liveNoticeBeat = (moment: LiveMoment) => LIVE_CARD_FRAUD.beats.find((beat) => beat.notice === LIVE_NOTICES[moment])!;
+
+/** Every scenario T-Life may send a notice from. */
+export const NOTICE_SCENARIOS: Scenario[] = [...SCENARIOS, LIVE_CARD_FRAUD];
 
 /** No call open: every node waiting, nothing lit. Never offered as a test call. */
 export const IDLE_SCENARIO: Scenario = {

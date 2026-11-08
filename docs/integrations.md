@@ -86,10 +86,20 @@ charge, "don't hang up", then asks for the card number, expiry and security code
   `python spikes/live_bridge.py --yes`. Both call `POST /calls/start` (no body; it always dials
   `DEMO_CUSTOMER_NUMBER`, R10). The API follows the call itself (`services/api/live_call.py`), one at a time.
   The console also picks up a call started from the terminal (`GET /calls/current`, every 5 s).
-- **Alerts to the Intercept APK** (`services/agents/tools/fcm.py`): with `FCM_SERVICE_ACCOUNT_FILE` (or a short-lived
-  `FCM_ACCESS_TOKEN`) set, every customer alert also goes by FCM to topic `tlife`: whisper -> `warning`, alert ->
-  `urgent`, recovery text -> `summary`, callback -> `callback`. iMessage still goes out too; either route failing
-  never blocks the other. `/health` shows `"fcm": true` when it is on. Restart the API after changing `.env`.
+- **Alerts to the Intercept APK** go through Berny's T-Life path, exactly like test calls, and the open console
+  page sends them. When a real call first reaches a whisper alert, a full alert, recovery sent or callback placed,
+  the page posts `/tlife-api/notices` with scenario `live-card-fraud` and that notice's beat. The text is written in
+  advance (`LIVE_NOTICES` in `apps/web/src/lib/console/scenarios.ts`), so no route carries free text:
+
+  | Moment | T-Life level | Title |
+  | --- | --- | --- |
+  | Whisper alert | `warning` | Be careful on this call |
+  | Full alert | `urgent` | Stop: this call is a scam |
+  | Recovery sent | `summary` | After your call: what to do now |
+  | Callback placed | `callback` | Safe Signal is calling you |
+
+  Each goes once per call; nudges send nothing. The console shows "Sent to T-Life" or "Couldn't reach T-Life" on
+  each one. iMessage alerts (Photon, sent by the API) go out as before.
 - **S1 needs the APK's scam number** set to the ElevenLabs caller ID (the number on `ELEVENLABS_PHONE_NUMBER_ID`).
 - **Did they hand it over?** The after-call planner reads the full transcript (memory only) and the code counts the
   digits the customer said. Callback only when the customer read out digits, or pressed "call my bank". The
@@ -99,7 +109,9 @@ charge, "don't hang up", then asks for the card number, expiry and security code
 ## Run it from the hosted console
 
 ```
-hosted console (Cloudflare) --/live-api, adds the token--> tunnel --> API on the demo laptop --> ElevenLabs, FCM, Photon
+console page (safe-signal.berenis-fopa.workers.dev)
+  --/live-api, the Worker adds the token--> tunnel --> API on Berny's laptop --> ElevenLabs (calls), Photon (iMessage)
+  --/tlife-api, pre-written notices------> T-Life demo worker --> Intercept APK
 ```
 
 The browser never talks to the API itself. The console's Worker (`apps/web/worker/live-proxy.ts`) exposes four
@@ -107,18 +119,34 @@ routes only: `POST /calls/start`, `GET /calls/current`, `GET /sessions/{id}/view
 (`services/api/view.py`) is markers only: kinds, times, levels, the alert sentence and step statuses. No turn text,
 quotes or numbers reach the public site. The console polls it every second.
 
-1. **Token.** Make one (`python -c "import secrets; print(secrets.token_urlsafe(24))"`) and put it in `.env` as
-   `API_TOKEN`. With it set, every console route needs `Authorization: Bearer <token>` (the WebSocket takes
-   `?token=`). Left open: `/health`, `/sessions/{id}/choice` (the sidecar) and `/live/sms` (the phone), which carry
-   only a choice or a sender type. Live session ids are random, so a choice can't be aimed at a call.
-2. **API.** `TOOLS=real` in `.env`, then `uvicorn services.api.main:app --port 8000`. Check `/health`:
-   `tools: real`, `fcm: true`, both Nemotron tiers true.
-3. **Tunnel.** `ngrok http 8000 --url <your-static-domain>` (a free ngrok account has one static domain, so the
-   URL never changes). The same URL goes in the call-screener app's "API address" box.
-4. **Point the console at it** (once, from `apps/web`, logged in to the Cloudflare account that owns the Worker):
-   `npx wrangler secret put LIVE_API_TOKEN` (paste the same token), set `LIVE_API_URL` in `wrangler.jsonc` to the
-   tunnel URL, then `npm run deploy`.
-5. **Sidecar** for iMessage (above), and the customer has texted the Photon line.
+Already hosted, nothing to do: the T-Life demo worker, Nemotron (Brev), ElevenLabs and Photon.
+
+**Berny's laptop runs the backend during the demo:**
+
+1. **`.env`** is not in git: get it privately. It holds the ElevenLabs, Photon, Nemotron and demo numbers, plus
+   `API_TOKEN` (make one with `python -c "import secrets; print(secrets.token_urlsafe(24))"`) and `TOOLS=real`.
+   With `API_TOKEN` set, every console route needs `Authorization: Bearer <token>` (the WebSocket takes `?token=`).
+   Left open: `/health`, `/sessions/{id}/choice` (the sidecar) and `/live/sms` (the phone), which carry only a choice
+   or a sender type. Live session ids are random, so a choice can't be aimed at a call.
+2. **Python dependencies:** `pip install -e .` from the repo root.
+3. **API:** `uvicorn services.api.main:app --port 8000`. Check `http://localhost:8000/health`: `tools: real` and both
+   Nemotron tiers true.
+4. **Photon sidecar:** `cd spikes/photon && npm install && npm run sidecar` (see above).
+5. **Tunnel:** `cloudflared tunnel --url http://localhost:8000`. A quick tunnel gets a new URL every restart, so
+   step 6 has to be redone each time; a named Cloudflare tunnel or an ngrok static domain keeps one URL. The same URL
+   goes in the call-screener app's "API address" box.
+
+**Berny redeploys the console** (an update to the Worker he already hosts), on his Mac:
+
+6. Pull `l4-5-live-bridge`, then `cd apps/web && npm ci`. `npx wrangler secret put LIVE_API_TOKEN` (the same value as
+   `API_TOKEN`), set `LIVE_API_URL` in `wrangler.jsonc` to the tunnel URL, then `npm run deploy`.
+
+**Before each run:** the customer's phone has texted "hi" to the Photon line (top of this page).
+
+**During the run, keep the console page open and on screen, on the Live view, until the after-call steps finish**
+(the call shows "Call data deleted"). That page sends the APK notices: closed, hidden or on another view, they
+don't go out. Use one console tab only (each open tab sends its own copy) and don't reload it mid-call (a reload
+sends the notices again).
 
 The command bar shows "Rings the demo phone from the scammer line" when the console can reach the API, or why not
 ("The live API isn't configured", "The console's token doesn't match the API's", "The live API isn't reachable").
