@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import time
 from collections.abc import Iterator
 from pathlib import Path
@@ -16,6 +17,9 @@ from contracts.state import Level, SessionState, UIMessage
 from services.agents.graph import stubs
 from services.agents.graph.runner import replay_case
 from services.agents.nodes.during import keyword_guardian
+from services.agents.tools.errors import ToolConfigError
+from services.agents.tools.mock import mock_tools
+from services.api import hub as hub_module
 from services.api.main import app
 
 FIX = Path(__file__).resolve().parents[3] / "evals" / "fixtures"
@@ -31,8 +35,14 @@ GRAPH_ONLY = (
 
 @pytest.fixture(scope="module")
 def client() -> Iterator[TestClient]:
+    old = os.environ.get("TOOLS")
+    os.environ["TOOLS"] = "mock"  # a local .env with TOOLS=real must never send real iMessages from tests
     with TestClient(app) as c:
         yield c
+    if old is None:
+        os.environ.pop("TOOLS", None)
+    else:
+        os.environ["TOOLS"] = old
 
 
 def _case(name: str, session_id: str | None = None) -> dict[str, Any]:
@@ -187,6 +197,61 @@ def test_choice_mapping_and_late_events(client: TestClient) -> None:
     assert (
         client.post(f"/sessions/{sid}/events?offline=true", json=start).status_code == 202
     )  # a new call may reuse the id
+
+
+START = {
+    "t": 0,
+    "source": "network",
+    "kind": "call_start",
+    "direction": "inbound",
+    "number": "+15555550123",
+    "first_seen": True,
+}
+
+
+def test_sidecar_choice_body_with_digit(client: TestClient) -> None:
+    sid = "sidecar_choice"
+    assert (
+        client.post(f"/sessions/{sid}/events?offline=true", json={**START, "session_id": sid}).status_code
+        == 202
+    )
+    r = client.post(f"/sessions/{sid}/choice", json={"choice": "call_bank", "digit": "1"})
+    assert r.status_code == 202 and r.json()["choice"] == "call_bank"
+    r = client.post(f"/sessions/{sid}/choice", json={"choice": "dismiss", "digit": "4", "via": "imessage"})
+    assert r.status_code == 202 and r.json()["choice"] == "dismiss"  # choice wins; extra fields are ignored
+    r = client.post(f"/sessions/{sid}/choice", json={"choice": "", "digit": "2"})
+    assert r.status_code == 202 and r.json()["choice"] == "ask_trusted_contact"  # digit is the fallback
+    assert client.post(f"/sessions/{sid}/choice", json={"choice": "x", "digit": "9"}).status_code == 422
+
+
+def test_tools_switch(client: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:
+    built: list[str] = []
+
+    def fake_real() -> Any:
+        built.append("real")
+        return mock_tools()
+
+    monkeypatch.setattr(hub_module, "real_tools", fake_real)
+    monkeypatch.setenv("TOOLS", "real")
+    assert client.get("/health").json()["tools"] == "real"
+    sid = "tools_real"
+    assert (
+        client.post(f"/sessions/{sid}/events?offline=true", json={**START, "session_id": sid}).status_code
+        == 202
+    )
+    assert built == ["real"]
+
+    def broken() -> Any:
+        raise ToolConfigError("set PHOTON_SIDECAR_URL (e.g. http://localhost:8787)")
+
+    monkeypatch.setattr(hub_module, "real_tools", broken)
+    sid = "tools_broken"
+    r = client.post(f"/sessions/{sid}/events?offline=true", json={**START, "session_id": sid})
+    assert r.status_code == 503 and "PHOTON_SIDECAR_URL" in r.json()["detail"]
+    assert client.post(f"/sessions/{sid}/choice", json={"choice": "1"}).status_code == 404  # no session made
+
+    monkeypatch.setenv("TOOLS", "mock")
+    assert client.get("/health").json()["tools"] == "mock"
 
 
 def test_unknown_fixture_is_404(client: TestClient) -> None:

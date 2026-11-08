@@ -20,11 +20,12 @@ from typing import Annotated, Any, Literal
 from dotenv import load_dotenv
 from fastapi import Body, FastAPI, HTTPException, Query, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, TypeAdapter, ValidationError
+from pydantic import BaseModel, ConfigDict, TypeAdapter, ValidationError
 
 from contracts.events import CallStart, EvalCase, Event
 from contracts.state import SessionState, UIMessage
-from services.api.hub import Hub, LiveSession, parse_choice
+from services.agents.tools.errors import ToolConfigError
+from services.api.hub import Hub, LiveSession, parse_choice, tools_mode
 
 load_dotenv()  # so /health and offline defaults see .env before the first LLM call
 
@@ -50,11 +51,19 @@ app = FastAPI(title="Safe Signal API", lifespan=lifespan)
 app.add_middleware(CORSMiddleware, allow_origins=CORS_ORIGINS, allow_methods=["*"], allow_headers=["*"])
 
 
+async def _start(session_id: str, offline: bool | None) -> LiveSession:
+    try:
+        return await hub.start(session_id, offline=_env_offline() if offline is None else offline)
+    except ToolConfigError as e:  # TOOLS=real but an adapter env var is missing; the message names it
+        raise HTTPException(503, f"TOOLS=real: {e}") from e
+
+
 @app.get("/health")
 def health() -> dict[str, Any]:
     return {
         "ok": True,
         "offline_default": _env_offline(),
+        "tools": tools_mode(),
         "nemotron_fast": bool(os.environ.get("NEMOTRON_BASE_URL")),
         "nemotron_deep": bool(os.environ.get("NEMOTRON_DEEP_BASE_URL")),
         "sessions": len(hub.sessions),
@@ -81,7 +90,7 @@ async def post_event(
     if isinstance(event, CallStart):
         if live and not live.ended:
             raise HTTPException(409, "a call is already running for this session_id")
-        live = await hub.start(session_id, offline=_env_offline() if offline is None else offline)
+        live = await _start(session_id, offline)
     elif live is None:
         raise HTTPException(404, f"no session {session_id!r}; send call_start first")
     if not live.submit(event):
@@ -90,7 +99,11 @@ async def post_event(
 
 
 class ChoiceIn(BaseModel):
+    """The Photon sidecar sends {"choice": "call_bank", "digit": "1"}; the web UI may send just {"choice": "1"}."""
+
+    model_config = ConfigDict(extra="ignore")
     choice: str  # "1" | "2" | "3" | "call_bank" | "ask_trusted_contact" | "continue" | "dismiss"
+    digit: str | None = None  # used only when choice itself is not recognised
 
 
 @app.post("/sessions/{session_id}/choice", status_code=202)
@@ -99,7 +112,7 @@ async def post_choice(session_id: str, body: ChoiceIn) -> dict[str, Any]:
     live = hub.get(session_id)
     if live is None:
         raise HTTPException(404, f"no session {session_id!r}")
-    choice = parse_choice(body.choice)
+    choice = parse_choice(body.choice) or (parse_choice(body.digit) if body.digit else None)
     if choice is None:
         raise HTTPException(422, f"unknown choice {body.choice!r}; use 1, 2, 3 or a choice name")
     event = live.choice_event(choice)
@@ -133,7 +146,7 @@ async def replay(
     if not _FIXTURE_NAME.fullmatch(fixture_name) or not path.is_file():
         raise HTTPException(404, f"no fixture {fixture_name!r}")
     case = EvalCase.model_validate_json(path.read_text(encoding="utf-8"))
-    live = await hub.start(case.session_id, offline=_env_offline() if offline is None else offline)
+    live = await _start(case.session_id, offline)
     events = [e for e in case.events if not (choices == "live" and e.kind == "user_choice")]
     live.replay_task = asyncio.create_task(_pace(live, events, speed))
     return {

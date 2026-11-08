@@ -12,19 +12,33 @@ from __future__ import annotations
 import asyncio
 import contextlib
 import logging
+import os
 from typing import Any
 
 from contracts.events import CallEnd, Event, Source, UserChoice
 from contracts.state import SessionState, UIMessage
 from services.agents import llm
+from services.agents.graph.deps import Tools
 from services.agents.graph.runner import Session
-from services.agents.graph.stubs import fake_tools, offline_structured
+from services.agents.graph.stubs import offline_structured
 from services.agents.nodes.during import keyword_guardian
+from services.agents.tools import real_tools
+from services.agents.tools.mock import mock_tools
 
 log = logging.getLogger(__name__)
 
 CHOICES: dict[str, str] = {"1": "call_bank", "2": "ask_trusted_contact", "3": "continue"}
 VALID_CHOICES = frozenset({*CHOICES.values(), "dismiss"})
+
+
+def tools_mode() -> str:
+    """TOOLS=real in .env wires Lane 4's live adapters (Photon, ElevenLabs); anything else uses the mocks."""
+    return "real" if os.environ.get("TOOLS", "").strip().lower() == "real" else "mock"
+
+
+def session_tools() -> Tools:
+    """Raises ToolConfigError (it names the env var) when TOOLS=real but the adapters are not configured."""
+    return real_tools() if tools_mode() == "real" else mock_tools()
 
 
 def parse_choice(raw: str) -> str | None:
@@ -35,13 +49,13 @@ def parse_choice(raw: str) -> str | None:
 
 
 class LiveSession:
-    def __init__(self, session_id: str, offline: bool) -> None:
+    def __init__(self, session_id: str, offline: bool, tools: Tools) -> None:
         self.session_id = session_id
         self.offline = offline
         self.session = (
-            Session(session_id, fake_tools(), guardian=keyword_guardian, structured=offline_structured)
+            Session(session_id, tools, guardian=keyword_guardian, structured=offline_structured)
             if offline
-            else Session(session_id, fake_tools(), structured=llm.structured)
+            else Session(session_id, tools, structured=llm.structured)
         )
         self.loop = asyncio.get_running_loop()
         self.inbox: asyncio.Queue[Event] = asyncio.Queue()
@@ -128,8 +142,9 @@ class Hub:
 
     async def start(self, session_id: str, offline: bool) -> LiveSession:
         """A fresh session (an old one with the same id is closed). Sockets already waiting are attached."""
+        tools = session_tools()  # before touching the old session, so a config error leaves it running
         old = self.sessions.pop(session_id, None)
-        live = LiveSession(session_id, offline)
+        live = LiveSession(session_id, offline, tools)
         if old:
             live.subscribers |= old.subscribers
             await old.close()
