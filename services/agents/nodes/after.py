@@ -185,6 +185,50 @@ def unknown_numbers(script: str, allowed: str | None) -> list[str]:
     return [m for m in _PHONE.findall(script) if len(_digits(m)) >= 7 and _digits(m)[-10:] != ok[-10:]]
 
 
+# The customer chose this callback, so it never verifies them: no question about anything personal or account.
+_PERSONAL = re.compile(
+    r"\b(?:(?:home |mailing |billing |street )?address|zip(?: code)?|postal code|last (?:four|4)|digits?"
+    r"|card number|account number|routing number|member number|date of birth|birth ?date|birthday|dob"
+    r"|social security|ssn|pin|passcode|password|code|security question|maiden name|full name)\b",
+    re.I,
+)
+_REQUEST = re.compile(
+    r"\b(?:can|could|would|will) you\b|\bplease\b|\bwhat(?:'s| is| are) (?:your|the)\b|\b(?:i|we)(?:'ll| will)? need\b"
+    r"|\b(?:may|can|could) (?:i|we) (?:have|get|take)\b"
+    r"|\b(?:tell|give|confirm|provide|share|read|say|enter|type|spell|verify|repeat) (?:me |us )?(?:your|the)\b",
+    re.I,
+)
+_IDENTITY = re.compile(
+    r"\b(?:verify|verifying|confirm|confirming|authenticate)\w* (?:your |the customer's )?(?:identity|who you are)\b"
+    r"|\bidentity (?:check|verification)\b|\bsecurity (?:check|questions?)\b",
+    re.I,
+)
+# Only a negated ask counts ("I will never ask you for a code"); "Don't worry, can you confirm..." does not.
+_NEGATION = re.compile(
+    r"\b(?:never|won't|will not|don't|do not|not)(?: \w+)?? (?:ask|need|request)\b|\bno need to\b", re.I
+)
+# "The caller asked you to read back a code to verify your identity" reports the scam; it asks nothing.
+_REPORTED = re.compile(
+    r"\b(?:the|that) (?:caller|person)\b|\b(?:they|he|she) (?:asked|wanted|said|told|tried|pushed)\b", re.I
+)
+
+
+def asks_personal_info(script: str) -> list[str]:
+    """Sentences that ask the customer for personal or account details, or verify who they are.
+
+    Fine: "I will never ask you for a code" (a negation) and "The caller asked you to verify your identity"
+    (a statement about the scam call). Any sentence ending in "?" that asks for something is still caught.
+    """
+    hits: list[str] = []
+    for sentence in re.split(r"(?<=[.!?])\s+", script):
+        reported = _REPORTED.search(sentence) and not sentence.rstrip().endswith("?")
+        if _NEGATION.search(sentence) or reported:
+            continue
+        if _IDENTITY.search(sentence) or (_REQUEST.search(sentence) and _PERSONAL.search(sentence)):
+            hits.append(sentence.strip())
+    return hits
+
+
 def callback_template(org: str | None, number: str | None) -> str:
     who = org or "the organisation"
     where = "on its official number" if number else "on the number printed on your card or bill"
@@ -217,6 +261,9 @@ def make_callback(structured: Structured) -> Callable[[GraphState, Tools, Struct
         source = "nemotron"
         if not out or unknown_numbers(script, number):
             script, source = callback_template(org, number), "template"
+        elif asks_personal_info(script):  # never ask for address, card digits, codes... or verify identity
+            log.warning("callback script asked for personal info; using the template")
+            script, source = callback_template(org, number), "template (script asked for personal info)"
         sid = state.session_id
         call_id = tools.comms.call(sid, CUSTOMER, script)
         if state.user_choice == "call_bank" and org and number:

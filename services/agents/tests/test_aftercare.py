@@ -159,6 +159,55 @@ def test_callback_script_with_an_unknown_number_is_replaced() -> None:
     assert update["trace"][0].action.startswith("template script")
 
 
+def test_callback_script_that_asks_for_personal_info_is_replaced() -> None:
+    bad = SCRIPT.model_copy(
+        update={
+            "transfer_offer": "Before I connect you, can you confirm your address? "
+            "And what are the last 4 digits of your card?"
+        }
+    )
+    f = Fakes()
+    update = _run_step("callback", _state("call_bank"), FakeLLM(CallbackScript=bad), f)
+    spoken = f.comms.calls[0][2]
+    assert "address" not in spoken and "last 4" not in spoken
+    assert update["trace"][0].action.startswith("template (script asked for personal info)")
+    assert [c[0] for c in f.comms.calls] == ["call", "transfer"]  # the customer's choice still happens
+
+
+@pytest.mark.parametrize(
+    "line",
+    [
+        "Can you confirm your address for me?",
+        "What are the last 4 digits of your card?",
+        "Please tell me your date of birth.",
+        "I'll need your account number before I connect you.",
+        "First, let me verify your identity.",
+        "Could you read me the code we just sent?",
+        "May I have your PIN?",
+        "Don't worry, can you confirm your address?",
+        "The caller had your card, so can you confirm the last four digits?",
+    ],
+)
+def test_asks_personal_info_catches_requests(line: str) -> None:
+    assert after.asks_personal_info(f"Hi, this is Safe Signal. {line} Thanks.") == [line]
+
+
+def test_asks_personal_info_allows_promises_and_descriptions() -> None:
+    ok = [
+        SCRIPT.opening,
+        SCRIPT.explanation,
+        SCRIPT.transfer_offer,
+        "That caller asked for the digits your credit union texted you, and wanted your checking moved.",
+        "I can connect you to your credit union on the number printed on the back of your card.",
+        "I'll never ask for your address or card details.",
+        # hero1's live Nemotron script describes the scam this way
+        "The caller asked you to read back a code to verify your identity and cancel a transfer.",
+        after.callback_template("Lone Star Bank", BANK_NUMBER),
+        after.callback_template(None, None),
+    ]
+    assert [after.asks_personal_info(x) for x in ok] == [[] for _ in ok]
+
+
 def test_callback_without_call_bank_offers_but_does_not_transfer() -> None:
     f = Fakes()
     _run_step("callback", _state(None), FakeLLM(CallbackScript=SCRIPT), f)
