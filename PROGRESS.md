@@ -1,6 +1,6 @@
 # Progress
 
-Update on every merge: newest at the top, one line each. Anyone (or a fresh Claude session) should be able to pick up from here.
+Update on every merge: newest at the top, one line each. Anyone (or a fresh agent session) should be able to pick up from here.
 
 ## Now
 | Lane | Working on | Blocked by |

@@ -39,6 +39,6 @@ to PROGRESS.md, and commit with a message starting "L2-1:" or "L2-2:".
 
 ## Next tasks (paste after L2-2 is merged, or use the resume prompt)
 - **L2-3** Caller Screen (scam list + anomaly features) and Signal Watcher (Trigger A: `sms_otp` or `bank_app_traffic` during a call with an unverified number) emitting `Signal`s.
-- **L2-4** `data/forge/`: Nemotron generator writing EvalCase JSON; 500+ train sessions, 30%+ hard negatives. Eval set (100+) written separately (Claude or by hand) into `data/eval/` and never used for tuning.
+- **L2-4** `data/forge/`: Nemotron generator writing EvalCase JSON; 500+ train sessions, 30%+ hard negatives. Eval set (100+) written separately (a different model or by hand) into `data/eval/` and never used for tuning.
 - **L2-5** Replay `data/eval/` through the graph, write predictions JSONL, run `evals/run_eval.py --gate`, commit the report to `evals/report.md`.
 - **L2-6** `proofs/`: Lean statements and proofs of R1, R5, R6 on a small model of the policy; red-team log in `evals/redteam.md`.

@@ -24,7 +24,7 @@
     {
       "id": "LEAD-3",
       "lane": "lead",
-      "title": "Fresh-Claude review of every PR against context/rules.md",
+      "title": "Fresh-session review of every PR against context/rules.md",
       "done_when": "Each merged PR has a review comment",
       "due_cst": "ongoing",
       "depends_on": [],

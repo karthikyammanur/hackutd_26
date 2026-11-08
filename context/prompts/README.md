@@ -2,12 +2,12 @@
 
 ## How to use
 1. Clone the repo, `pip install -e ".[dev]" && pre-commit install`, copy `.env.example` to `.env`.
-2. Open **Claude Code at the repo root** (it loads `CLAUDE.md` → `AGENTS.md` automatically).
-3. Paste your lane's **start prompt** once. Claude plans first and waits for your OK.
+2. Open **your coding agent at the repo root** (it loads `CLAUDE.md` → `AGENTS.md` automatically).
+3. Paste your lane's **start prompt** once. The agent plans first and waits for your OK.
 4. Every new session after that (new terminal, context got long, next morning): paste the **resume prompt** below.
-5. One Claude session per task. When a task's done-when passes: commit, open a PR, start a fresh session.
+5. One agent session per task. When a task's done-when passes: commit, open a PR, start a fresh session.
 
-Using Claude chat instead of Claude Code? Upload `AGENTS.md`, `context/rules.md`, your lane brief and `contracts/` first, then paste the prompt.
+Using a chat assistant instead of a coding agent? Upload `AGENTS.md`, `context/rules.md`, your lane brief and `contracts/` first, then paste the prompt.
 
 | Lane | Start prompt |
 | --- | --- |
